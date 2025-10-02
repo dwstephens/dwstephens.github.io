@@ -1,0 +1,2211 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Pandas/Polars versus SQL – DWS</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../portfolio/dw/Task7/Task_7HD.html" rel="next">
+<link href="../../../portfolio/dw/Task4/Task_4P.html" rel="prev">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-4a990d8dcb58f517c7c86712b8f2ac7c.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-46f4cc9626f044588a66931b604fc9c8.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-4a990d8dcb58f517c7c86712b8f2ac7c.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-21f8cd6094585e260519947556241a12.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-145fe0d1efd24aec0418ad41d9eec7c6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-21f8cd6094585e260519947556241a12.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script>
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+
+
+</head>
+
+<body class="nav-sidebar docked nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../assets/images/logo.png" alt="Darrin Stephens logo" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">DWS</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../../portfolio.html" aria-current="page"> 
+<span class="menu-text">Portfolio</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.linkedin.com/in/darrin-stephens"> 
+<span class="menu-text"><iconify-icon role="img" inline="" icon="fa7-brands:linkedin" aria-label="LinkedIn" title="LinkedIn"></iconify-icon></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/dwstephens"> 
+<span class="menu-text"><iconify-icon role="img" inline="" icon="octicon:mark-github-16" aria-label="GitHub" title="GitHub"></iconify-icon></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../data_wrangling.html">Data Wrangling</a></li><li class="breadcrumb-item"><a href="../../../portfolio/dw/Task6/Task_6D.html">Pandas/Polars versus SQL</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../data_wrangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Wrangling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task1/Task_1P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task2/Task_2P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with numpy vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task3/Task_3P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with numpy Matrices (Multidimensional Data)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task4/Task_4P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with pandas Data Frames (Heterogeneous Data)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task6/Task_6D.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Pandas/Polars versus SQL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task7/Task_7HD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Mining</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task8/Task_8HD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Cleaning and Text Analysis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true">
+ <span class="menu-text">Machine Learning</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ml/empty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Empty</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../data_wrangling.html">Data Wrangling</a></li><li class="breadcrumb-item"><a href="../../../portfolio/dw/Task6/Task_6D.html">Pandas/Polars versus SQL</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Pandas/Polars versus SQL</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<div id="34ec126b" class="cell" data-execution_count="1">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> os</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> sqlite3</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> numpy <span class="im">as</span> np</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> polars <span class="im">as</span> pl</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> tempfile</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> timeit</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="introduction" class="level2">
+<h2 class="anchored" data-anchor-id="introduction">Introduction</h2>
+<p>This task requires working with <code>pandas</code> to write code that produces equivalent output to various SQL queries. The <a href="https://cran.r-project.org/web/packages/nycflights13/index.html">nycflights13</a> dataset is used for this exercise. The dataset gives information about all 336,776 flights that departed from three New York airports in 2013 to destinations in the United States, Puerto Rico, and the American Virgin Islands. Additionally, equivalent queries were also written using the polars library, and the execution time for the pandas and polars libraries was calculated and compared.</p>
+<section id="database-connection" class="level3">
+<h3 class="anchored" data-anchor-id="database-connection">Database connection</h3>
+<p>An SQLite3 database file is created on the local disk for use during these tasks.</p>
+<div id="66f5906e" class="cell" data-execution_count="2">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="co">#</span></span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a database file in a temporary location</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>dbfile <span class="op">=</span> os.path.join(tempfile.mkdtemp(), <span class="st">"nycflights.db"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(dbfile)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Connect to database</span></span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>conn <span class="op">=</span> sqlite3.<span class="ex">connect</span>(dbfile)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>C:\Users\darrin\AppData\Local\Temp\tmpll_hbexh\nycflights.db</code></pre>
+</div>
+</div>
+</section>
+<section id="load-data-files-and-export-to-database" class="level3">
+<h3 class="anchored" data-anchor-id="load-data-files-and-export-to-database">Load data files and export to database</h3>
+<p>Compressed csv files containing data about New York City flights, airlines, airports, planes and weather are loaded from the local disk into <code>pandas</code> dataframes. The <code>pandas</code> dataframes are exported as tables to the SQLite3 database file.</p>
+<p>Polars dataframes (having _pl suffix on the name) are also created from the pandas dataframes. These will be used for testing the <code>polars</code> library in the tasks below.</p>
+<div id="327276ce" class="cell" data-execution_count="3">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>flights <span class="op">=</span> pd.read_csv(<span class="st">"nycflights13_flights.csv.gz"</span>, comment<span class="op">=</span><span class="st">"#"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>flights_pl <span class="op">=</span> pl.from_pandas(flights)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="12f8bbbf" class="cell" data-execution_count="4">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>airlines <span class="op">=</span> pd.read_csv(<span class="st">"nycflights13_airlines.csv.gz"</span>, comment<span class="op">=</span><span class="st">"#"</span>)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>airlines_pl <span class="op">=</span> pl.from_pandas(airlines)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="327d6ae2" class="cell" data-execution_count="5">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>airports <span class="op">=</span> pd.read_csv(<span class="st">"nycflights13_airports.csv.gz"</span>, comment<span class="op">=</span><span class="st">"#"</span>)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>airports_pl <span class="op">=</span> pl.from_pandas(airports)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="0418aaa4" class="cell" data-execution_count="6">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>planes <span class="op">=</span> pd.read_csv(<span class="st">"nycflights13_planes.csv.gz"</span>, comment<span class="op">=</span><span class="st">"#"</span>)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>planes_pl <span class="op">=</span> pl.from_pandas(planes)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="fcd9cfc8" class="cell" data-execution_count="7">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>weather <span class="op">=</span> pd.read_csv(<span class="st">"nycflights13_weather.csv.gz"</span>, comment<span class="op">=</span><span class="st">"#"</span>)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>weather_pl <span class="op">=</span> pl.from_pandas(weather)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="b12d14f9" class="cell" data-execution_count="8">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Export dataframes to the database</span></span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a>flights.to_sql(<span class="st">"flights"</span>, conn, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>airlines.to_sql(<span class="st">"airlines"</span>, conn, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>airports.to_sql(<span class="st">"Badges"</span>, conn, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>planes.to_sql(<span class="st">"planes"</span>, conn, index<span class="op">=</span><span class="va">False</span>)</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>weather.to_sql(<span class="st">"weather"</span>, conn, index<span class="op">=</span><span class="va">False</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-display" data-execution_count="8">
+<pre><code>26130</code></pre>
+</div>
+</div>
+</section>
+</section>
+<section id="sql-queries-and-equivalent-pandas-and-polars-queries" class="level2">
+<h2 class="anchored" data-anchor-id="sql-queries-and-equivalent-pandas-and-polars-queries">SQL queries and equivalent Pandas and Polars queries</h2>
+<p>This section contains 17 different SQL queries and the pandas and polars code to give equivalent output.</p>
+<div id="33a1e8e6" class="cell" data-execution_count="9">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper function to testing equality between dataframes</span></span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> test_dataframe_equality(df1, df2, name<span class="op">=</span><span class="st">"SQL"</span>):</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Function to test if two dataframes are equal.</span></span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a><span class="co">    :param df1: First pandas dataframe.</span></span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a><span class="co">    :param df2: Second pandas dataframe.</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a><span class="co">    :param name: Name of the method used to generate the first pandas dataframe.</span></span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="co">    :return: None.</span></span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>    <span class="cf">try</span>:</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>        pd.testing.assert_frame_equal(df1, df2)</span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Outcome of comparison: </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> and Pandas results are equal"</span>)</span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>    <span class="cf">except</span> <span class="pp">AssertionError</span> <span class="im">as</span> e:</span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>        <span class="bu">print</span>(<span class="ss">f"Outcome of comparison: </span><span class="sc">{</span>name<span class="sc">}</span><span class="ss"> and Pandas results are not equal: </span><span class="sc">{</span>e<span class="sc">}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<div id="9bfd66b3" class="cell" data-execution_count="10">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Helper function to print execution times</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> print_execution_data(pd_dur, pl_dur):</span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>    <span class="co">"""</span></span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a><span class="co">    Function to print a table comparing Pandas to Polars execution time.</span></span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a><span class="co">    </span></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="co">    :param pd_dur: pandas execution duration.</span></span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="co">    :param pl_dur: polars execution duration.</span></span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a><span class="co">    :return: None.</span></span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a><span class="co">    """</span></span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>()</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="st">"Metric                Pandas    Polars"</span>)</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Execution time [s]:  </span><span class="sc">{</span>pd_dur<span class="sc">:.4g}</span><span class="ss">  </span><span class="sc">{</span>pl_dur<span class="sc">:.4g}</span><span class="ss">"</span>)</span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>    <span class="bu">print</span>(<span class="ss">f"Relative to Pandas:  </span><span class="sc">{</span><span class="dv">1</span><span class="sc">}</span><span class="ss">           </span><span class="sc">{</span>pl_dur<span class="op">/</span>pd_dur<span class="sc">:.3g}</span><span class="ss">"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="task-1" class="level3">
+<h3 class="anchored" data-anchor-id="task-1">Task 1</h3>
+<p>This SQL query selects the unique engines in the engines column from the planes table.</p>
+<p>My pandas command: - In the planes dataframe, drop the duplicate rows by considering the engines column. Then select only the engines column and reset the index.</p>
+<div id="e3de7068" class="cell" data-execution_count="11">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>task1_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT DISTINCT engine FROM planes"""</span>, conn)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-4"><a href="#cb13-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb13-5"><a href="#cb13-5" aria-hidden="true" tabindex="-1"></a>t1_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb13-6"><a href="#cb13-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-7"><a href="#cb13-7" aria-hidden="true" tabindex="-1"></a>task1_my <span class="op">=</span> planes.drop_duplicates(subset<span class="op">=</span><span class="st">"engine"</span>)[[<span class="st">"engine"</span>]].reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb13-8"><a href="#cb13-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-9"><a href="#cb13-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb13-10"><a href="#cb13-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task1_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb13-11"><a href="#cb13-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-12"><a href="#cb13-12" aria-hidden="true" tabindex="-1"></a>t1_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb13-13"><a href="#cb13-13" aria-hidden="true" tabindex="-1"></a>t1_dur <span class="op">=</span> t1_et <span class="op">-</span> t1_st</span>
+<span id="cb13-14"><a href="#cb13-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb13-15"><a href="#cb13-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb13-16"><a href="#cb13-16" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task1_sql, task1_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+          engine
+0      Turbo-fan
+1      Turbo-jet
+2  Reciprocating
+3        4 Cycle
+4    Turbo-shaft 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="a06bcb8e" class="cell" data-execution_count="12">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a>t1_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a>task1_pl <span class="op">=</span> planes_pl.unique(subset<span class="op">=</span>[<span class="st">"engine"</span>]).select([<span class="st">"engine"</span>])</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-6"><a href="#cb15-6" aria-hidden="true" tabindex="-1"></a>t1_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb15-7"><a href="#cb15-7" aria-hidden="true" tabindex="-1"></a>t1_dur_pl <span class="op">=</span> t1_et_pl <span class="op">-</span> t1_st_pl</span>
+<span id="cb15-8"><a href="#cb15-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-9"><a href="#cb15-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to covert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb15-10"><a href="#cb15-10" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb15-11"><a href="#cb15-11" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task1_my.sort_values(by<span class="op">=</span>[<span class="st">"engine"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb15-12"><a href="#cb15-12" aria-hidden="true" tabindex="-1"></a>                        task1_pl.to_pandas().sort_values(by<span class="op">=</span>[<span class="st">"engine"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb15-13"><a href="#cb15-13" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb15-14"><a href="#cb15-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb15-15"><a href="#cb15-15" aria-hidden="true" tabindex="-1"></a>print_execution_data(t1_dur, t1_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.002907  0.003202
+Relative to Pandas:  1           1.1</code></pre>
+</div>
+</div>
+</section>
+<section id="task-2" class="level3">
+<h3 class="anchored" data-anchor-id="task-2">Task 2</h3>
+<p>This SQL query selects rows with the unique combination of type and engines from the planes table.</p>
+<p>My pandas command: - In the planes dataframe, drop the duplicate rows by considering the type and engine columns. Then select only the type and engine columns and reset the index.</p>
+<div id="65b371d9" class="cell" data-execution_count="13">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a>task2_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT DISTINCT type, engine FROM planes"""</span>, conn)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a>t2_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a>task2_my <span class="op">=</span> planes.drop_duplicates(subset<span class="op">=</span>[<span class="st">"type"</span>, <span class="st">"engine"</span>])[[<span class="st">"type"</span>, <span class="st">"engine"</span>]].reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task2_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>t2_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>t2_dur <span class="op">=</span> t2_et <span class="op">-</span> t2_st</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task2_sql, task2_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+                       type         engine
+0   Fixed wing multi engine      Turbo-fan
+1   Fixed wing multi engine      Turbo-jet
+2  Fixed wing single engine  Reciprocating
+3   Fixed wing multi engine  Reciprocating
+4  Fixed wing single engine        4 Cycle 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="d1a85ca1" class="cell" data-execution_count="14">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a>t2_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a>task2_pl <span class="op">=</span> planes_pl.unique(subset<span class="op">=</span>[<span class="st">"type"</span>, <span class="st">"engine"</span>]).select([<span class="st">"type"</span>, <span class="st">"engine"</span>])</span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a>t2_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a>t2_dur_pl <span class="op">=</span> t2_et_pl <span class="op">-</span> t2_st_pl</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to covert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task2_my.sort_values(by<span class="op">=</span>[<span class="st">"type"</span>, <span class="st">"engine"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a>                        task2_pl.to_pandas().sort_values(by<span class="op">=</span>[<span class="st">"type"</span>, <span class="st">"engine"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a>print_execution_data(t2_dur, t2_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.001832  0.001769
+Relative to Pandas:  1           0.965</code></pre>
+</div>
+</div>
+</section>
+<section id="task-3" class="level3">
+<h3 class="anchored" data-anchor-id="task-3">Task 3</h3>
+<p>This SQL query counts how many planes there are in the planes table for each engine type and returns the count along with the engine type</p>
+<p>My pandas command: - In the planes dataframe, group the rows by the engine column and get the size of each group. Then reset the index and rename its column to COUNT(*). Select the columns in order to match the SQL query result.</p>
+<div id="b0fbe913" class="cell" data-execution_count="15">
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a>task3_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT COUNT(*), engine FROM planes GROUP BY engine"""</span>, conn)</span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>t3_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>task3_my <span class="op">=</span> planes.groupby(<span class="st">"engine"</span>).size().reset_index(name<span class="op">=</span><span class="st">"COUNT(*)"</span>)[[<span class="st">"COUNT(*)"</span>, <span class="st">"engine"</span>]]</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-9"><a href="#cb21-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb21-10"><a href="#cb21-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task3_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb21-11"><a href="#cb21-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-12"><a href="#cb21-12" aria-hidden="true" tabindex="-1"></a>t3_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb21-13"><a href="#cb21-13" aria-hidden="true" tabindex="-1"></a>t3_dur <span class="op">=</span> t3_et <span class="op">-</span> t3_st</span>
+<span id="cb21-14"><a href="#cb21-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb21-15"><a href="#cb21-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb21-16"><a href="#cb21-16" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task3_sql, task3_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+   COUNT(*)         engine
+0         2        4 Cycle
+1        28  Reciprocating
+2      2750      Turbo-fan
+3       535      Turbo-jet
+4         2     Turbo-prop 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="9d2bb415" class="cell" data-execution_count="16">
+<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb23-2"><a href="#cb23-2" aria-hidden="true" tabindex="-1"></a>t3_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb23-3"><a href="#cb23-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-4"><a href="#cb23-4" aria-hidden="true" tabindex="-1"></a>task3_pl <span class="op">=</span> planes_pl.group_by(<span class="st">"engine"</span>).agg(pl.<span class="bu">len</span>().alias(<span class="st">"COUNT(*)"</span>)).select([<span class="st">"COUNT(*)"</span>, <span class="st">"engine"</span>])</span>
+<span id="cb23-5"><a href="#cb23-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-6"><a href="#cb23-6" aria-hidden="true" tabindex="-1"></a>t3_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb23-7"><a href="#cb23-7" aria-hidden="true" tabindex="-1"></a>t3_dur_pl <span class="op">=</span> t3_et_pl <span class="op">-</span> t3_st_pl</span>
+<span id="cb23-8"><a href="#cb23-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-9"><a href="#cb23-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars returns uint32 for len(), so we need to cast to allow comparison with pandas.</span></span>
+<span id="cb23-10"><a href="#cb23-10" aria-hidden="true" tabindex="-1"></a>task3_pl <span class="op">=</span> task3_pl.with_columns(pl.col(<span class="st">"COUNT(*)"</span>).cast(pl.Int64))</span>
+<span id="cb23-11"><a href="#cb23-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-12"><a href="#cb23-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb23-13"><a href="#cb23-13" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb23-14"><a href="#cb23-14" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task3_my.sort_values(by<span class="op">=</span>[<span class="st">"engine"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb23-15"><a href="#cb23-15" aria-hidden="true" tabindex="-1"></a>                        task3_pl.to_pandas().sort_values(by<span class="op">=</span>[<span class="st">"engine"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb23-16"><a href="#cb23-16" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb23-17"><a href="#cb23-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb23-18"><a href="#cb23-18" aria-hidden="true" tabindex="-1"></a>print_execution_data(t3_dur, t3_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.001778  0.00439
+Relative to Pandas:  1           2.47</code></pre>
+</div>
+</div>
+</section>
+<section id="task-4" class="level3">
+<h3 class="anchored" data-anchor-id="task-4">Task 4</h3>
+<p>This SQL query counts the number of planes in the planes table for each engine and plane type group and returns the count along with the engine type and plane type.</p>
+<p>My pandas command - In the planes dataframe, group the rows by the engine and type columns and get the size of each group. Then reset the index and rename its column to COUNT(*). Then select the columns in order to match the SQL query result.</p>
+<div id="7272cf3e" class="cell" data-execution_count="17">
+<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb25-2"><a href="#cb25-2" aria-hidden="true" tabindex="-1"></a>task4_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT COUNT(*), engine, type FROM planes GROUP BY engine, type"""</span>, conn)</span>
+<span id="cb25-3"><a href="#cb25-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-4"><a href="#cb25-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb25-5"><a href="#cb25-5" aria-hidden="true" tabindex="-1"></a>t4_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb25-6"><a href="#cb25-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-7"><a href="#cb25-7" aria-hidden="true" tabindex="-1"></a>task4_my <span class="op">=</span> planes.groupby([<span class="st">"engine"</span>, <span class="st">"type"</span>]).size().reset_index(name<span class="op">=</span><span class="st">"COUNT(*)"</span>)[[<span class="st">"COUNT(*)"</span>, <span class="st">"engine"</span>, <span class="st">"type"</span>]]</span>
+<span id="cb25-8"><a href="#cb25-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-9"><a href="#cb25-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb25-10"><a href="#cb25-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task4_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb25-11"><a href="#cb25-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-12"><a href="#cb25-12" aria-hidden="true" tabindex="-1"></a>t4_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb25-13"><a href="#cb25-13" aria-hidden="true" tabindex="-1"></a>t4_dur <span class="op">=</span> t4_et <span class="op">-</span> t4_st</span>
+<span id="cb25-14"><a href="#cb25-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb25-15"><a href="#cb25-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb25-16"><a href="#cb25-16" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task4_sql, task4_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+   COUNT(*)         engine                      type
+0         2        4 Cycle  Fixed wing single engine
+1         5  Reciprocating   Fixed wing multi engine
+2        23  Reciprocating  Fixed wing single engine
+3      2750      Turbo-fan   Fixed wing multi engine
+4       535      Turbo-jet   Fixed wing multi engine 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="09e86b3e" class="cell" data-execution_count="18">
+<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb27-2"><a href="#cb27-2" aria-hidden="true" tabindex="-1"></a>t4_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb27-3"><a href="#cb27-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-4"><a href="#cb27-4" aria-hidden="true" tabindex="-1"></a>task4_pl <span class="op">=</span> planes_pl.group_by([<span class="st">"engine"</span>, <span class="st">"type"</span>]).agg(pl.<span class="bu">len</span>().alias(<span class="st">"COUNT(*)"</span>)).select([<span class="st">"COUNT(*)"</span>, <span class="st">"engine"</span>, <span class="st">"type"</span>])</span>
+<span id="cb27-5"><a href="#cb27-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-6"><a href="#cb27-6" aria-hidden="true" tabindex="-1"></a>t4_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb27-7"><a href="#cb27-7" aria-hidden="true" tabindex="-1"></a>t4_dur_pl <span class="op">=</span> t4_et_pl <span class="op">-</span> t4_st_pl</span>
+<span id="cb27-8"><a href="#cb27-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-9"><a href="#cb27-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars returns uint32 for len(), so we need to cast to allow comparison with pandas.</span></span>
+<span id="cb27-10"><a href="#cb27-10" aria-hidden="true" tabindex="-1"></a>task4_pl <span class="op">=</span> task4_pl.with_columns(pl.col(<span class="st">"COUNT(*)"</span>).cast(pl.Int64))</span>
+<span id="cb27-11"><a href="#cb27-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-12"><a href="#cb27-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb27-13"><a href="#cb27-13" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb27-14"><a href="#cb27-14" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task4_my.sort_values(by<span class="op">=</span>[<span class="st">"engine"</span>, <span class="st">"type"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb27-15"><a href="#cb27-15" aria-hidden="true" tabindex="-1"></a>                        task4_pl.to_pandas().sort_values(by<span class="op">=</span>[<span class="st">"engine"</span>, <span class="st">"type"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb27-16"><a href="#cb27-16" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb27-17"><a href="#cb27-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb27-18"><a href="#cb27-18" aria-hidden="true" tabindex="-1"></a>print_execution_data(t4_dur, t4_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.002324  0.002474
+Relative to Pandas:  1           1.06</code></pre>
+</div>
+</div>
+</section>
+<section id="task-5" class="level3">
+<h3 class="anchored" data-anchor-id="task-5">Task 5</h3>
+<p>This SQL query gives the minimum, average and maximum years for each unique combination of engine and manufacturer.</p>
+<p>My pandas command: - For the planes dataframe, group the rows by engine and manufacturer. Select the year column and perform aggregation for the minimum, mean and maximum values. Then reset the index and select the min, mean, max, engine and manufacture columns to return. Rename the aggregation columns to match the SQL result.</p>
+<div id="29bcc0f1" class="cell" data-execution_count="19">
+<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb29-2"><a href="#cb29-2" aria-hidden="true" tabindex="-1"></a>task5_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT MIN(year), AVG(year), MAX(year), engine, manufacturer</span></span>
+<span id="cb29-3"><a href="#cb29-3" aria-hidden="true" tabindex="-1"></a><span class="st">    FROM planes GROUP BY engine, manufacturer"""</span>, conn)</span>
+<span id="cb29-4"><a href="#cb29-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-5"><a href="#cb29-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb29-6"><a href="#cb29-6" aria-hidden="true" tabindex="-1"></a>t5_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb29-7"><a href="#cb29-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-8"><a href="#cb29-8" aria-hidden="true" tabindex="-1"></a>task5_my <span class="op">=</span> planes.groupby([<span class="st">"engine"</span>, <span class="st">"manufacturer"</span>]).year.agg(</span>
+<span id="cb29-9"><a href="#cb29-9" aria-hidden="true" tabindex="-1"></a>    [<span class="st">"min"</span>, <span class="st">"mean"</span>, <span class="st">"max"</span>]).reset_index()[[<span class="st">"min"</span>, <span class="st">"mean"</span>, <span class="st">"max"</span>, <span class="st">"engine"</span>, <span class="st">"manufacturer"</span>]].rename(</span>
+<span id="cb29-10"><a href="#cb29-10" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>{<span class="st">"min"</span>: <span class="st">"MIN(year)"</span>, <span class="st">"mean"</span>: <span class="st">"AVG(year)"</span>, <span class="st">"max"</span>: <span class="st">"MAX(year)"</span>})</span>
+<span id="cb29-11"><a href="#cb29-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-12"><a href="#cb29-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb29-13"><a href="#cb29-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task5_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb29-14"><a href="#cb29-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-15"><a href="#cb29-15" aria-hidden="true" tabindex="-1"></a>t5_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb29-16"><a href="#cb29-16" aria-hidden="true" tabindex="-1"></a>t5_dur <span class="op">=</span> t5_et <span class="op">-</span> t5_st</span>
+<span id="cb29-17"><a href="#cb29-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb29-18"><a href="#cb29-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb29-19"><a href="#cb29-19" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task5_sql, task5_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+   MIN(year)  AVG(year)  MAX(year)         engine           manufacturer
+0     1975.0     1975.0     1975.0        4 Cycle                 CESSNA
+1        NaN        NaN        NaN        4 Cycle            JOHN G HESS
+2        NaN        NaN        NaN  Reciprocating  AMERICAN AIRCRAFT INC
+3     2007.0     2007.0     2007.0  Reciprocating     AVIAT AIRCRAFT INC
+4        NaN        NaN        NaN  Reciprocating          BARKER JACK L 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="5e7763aa" class="cell" data-execution_count="20">
+<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb31-2"><a href="#cb31-2" aria-hidden="true" tabindex="-1"></a>t5_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb31-3"><a href="#cb31-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-4"><a href="#cb31-4" aria-hidden="true" tabindex="-1"></a>task5_pl <span class="op">=</span> planes_pl.group_by([<span class="st">"engine"</span>, <span class="st">"manufacturer"</span>]).agg(</span>
+<span id="cb31-5"><a href="#cb31-5" aria-hidden="true" tabindex="-1"></a>    [pl.col(<span class="st">"year"</span>).<span class="bu">min</span>().alias(<span class="st">"MIN(year)"</span>), pl.col(<span class="st">"year"</span>).mean().alias(<span class="st">"AVG(year)"</span>),</span>
+<span id="cb31-6"><a href="#cb31-6" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"year"</span>).<span class="bu">max</span>().alias(<span class="st">"MAX(year)"</span>)]).select([<span class="st">"MIN(year)"</span>, <span class="st">"AVG(year)"</span>, <span class="st">"MAX(year)"</span>, <span class="st">"engine"</span>, <span class="st">"manufacturer"</span>])</span>
+<span id="cb31-7"><a href="#cb31-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-8"><a href="#cb31-8" aria-hidden="true" tabindex="-1"></a>t5_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb31-9"><a href="#cb31-9" aria-hidden="true" tabindex="-1"></a>t5_dur_pl <span class="op">=</span> t5_et_pl <span class="op">-</span> t5_st_pl</span>
+<span id="cb31-10"><a href="#cb31-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-11"><a href="#cb31-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb31-12"><a href="#cb31-12" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb31-13"><a href="#cb31-13" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task5_my.sort_values(by<span class="op">=</span>[<span class="st">"engine"</span>, <span class="st">"manufacturer"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb31-14"><a href="#cb31-14" aria-hidden="true" tabindex="-1"></a>                        task5_pl.to_pandas().sort_values(by<span class="op">=</span>[<span class="st">"engine"</span>, <span class="st">"manufacturer"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb31-15"><a href="#cb31-15" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb31-16"><a href="#cb31-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb31-17"><a href="#cb31-17" aria-hidden="true" tabindex="-1"></a>print_execution_data(t5_dur, t5_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.003621  0.006494
+Relative to Pandas:  1           1.79</code></pre>
+</div>
+</div>
+</section>
+<section id="task-6" class="level3">
+<h3 class="anchored" data-anchor-id="task-6">Task 6</h3>
+<p>This SQL query selects rows from the planes table where the speed column does not have a null value.</p>
+<p>My pandas command: - Creates a logical vector for slicing by checking if the speed column in the planes dataframe is not Null. This slice is used with the planes dataframe to select those rows where the speed was not Null. Finally, the index is reset.</p>
+<div id="77fbcd1a" class="cell" data-execution_count="21">
+<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb33-2"><a href="#cb33-2" aria-hidden="true" tabindex="-1"></a>task6_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT * FROM planes WHERE speed IS NOT NULL"""</span>, conn)</span>
+<span id="cb33-3"><a href="#cb33-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-4"><a href="#cb33-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb33-5"><a href="#cb33-5" aria-hidden="true" tabindex="-1"></a>t6_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb33-6"><a href="#cb33-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-7"><a href="#cb33-7" aria-hidden="true" tabindex="-1"></a>task6_my <span class="op">=</span> planes[planes[<span class="st">"speed"</span>].notnull()].reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb33-8"><a href="#cb33-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-9"><a href="#cb33-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb33-10"><a href="#cb33-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task6_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb33-11"><a href="#cb33-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-12"><a href="#cb33-12" aria-hidden="true" tabindex="-1"></a>t6_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb33-13"><a href="#cb33-13" aria-hidden="true" tabindex="-1"></a>t6_dur <span class="op">=</span> t6_et <span class="op">-</span> t6_st</span>
+<span id="cb33-14"><a href="#cb33-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb33-15"><a href="#cb33-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb33-16"><a href="#cb33-16" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task6_sql, task6_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+  tailnum    year                      type manufacturer      model  engines  \
+0  N201AA  1959.0  Fixed wing single engine       CESSNA        150        1   
+1  N202AA  1980.0   Fixed wing multi engine       CESSNA       421C        2   
+2  N350AA  1980.0   Fixed wing multi engine        PIPER  PA-31-350        2   
+3  N364AA  1973.0   Fixed wing multi engine       CESSNA       310Q        2   
+4  N378AA  1963.0  Fixed wing single engine       CESSNA       172E        1   
+
+   seats  speed         engine  
+0      2   90.0  Reciprocating  
+1      8   90.0  Reciprocating  
+2      8  162.0  Reciprocating  
+3      6  167.0  Reciprocating  
+4      4  105.0  Reciprocating   
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="7054267b" class="cell" data-execution_count="22">
+<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a>t6_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a>task6_pl <span class="op">=</span> planes_pl.<span class="bu">filter</span>(pl.col(<span class="st">"speed"</span>).is_not_null()).sort(by<span class="op">=</span>[])</span>
+<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-6"><a href="#cb35-6" aria-hidden="true" tabindex="-1"></a>t6_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb35-7"><a href="#cb35-7" aria-hidden="true" tabindex="-1"></a>t6_dur_pl <span class="op">=</span> t6_et_pl <span class="op">-</span> t6_st_pl</span>
+<span id="cb35-8"><a href="#cb35-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-9"><a href="#cb35-9" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb35-10"><a href="#cb35-10" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb35-11"><a href="#cb35-11" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task6_my.sort_values(by<span class="op">=</span>[<span class="st">"speed"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb35-12"><a href="#cb35-12" aria-hidden="true" tabindex="-1"></a>                        task6_pl.to_pandas().sort_values(by<span class="op">=</span>[<span class="st">"speed"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb35-13"><a href="#cb35-13" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb35-14"><a href="#cb35-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb35-15"><a href="#cb35-15" aria-hidden="true" tabindex="-1"></a>print_execution_data(t6_dur, t6_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.001803  0.0008909
+Relative to Pandas:  1           0.494</code></pre>
+</div>
+</div>
+</section>
+<section id="task-7" class="level3">
+<h3 class="anchored" data-anchor-id="task-7">Task 7</h3>
+<p>This SQL query selects rows from the tailnum column in the planes table with a number of seats between 150 and 210 and a year greater than or equal to 2011.</p>
+<p>My pandas command - Create a logical vector for slicing by checking rows in the seats column in the planes dataframe where the value is between 150 and 210, and checking rows where the year column in the planes dataframe has a value equal to or greater than 2011. This logical vector is then used to slice the planes data frame. Then only the tailnum column is returned, and the index is reset.</p>
+<div id="459ef16d" class="cell" data-execution_count="23">
+<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a>task7_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT tailnum FROM planes WHERE seats BETWEEN 150 AND 210 AND year &gt;= 2011"""</span>, conn)</span>
+<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>t7_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a>task7_my <span class="op">=</span> planes[(planes[<span class="st">"seats"</span>].between(<span class="dv">150</span>,<span class="dv">210</span>) <span class="op">&amp;</span> (planes[<span class="st">"year"</span>] <span class="op">&gt;=</span> <span class="dv">2011</span>))][[<span class="st">"tailnum"</span>]].reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task7_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a>t7_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a>t7_dur <span class="op">=</span> t7_et <span class="op">-</span> t7_st</span>
+<span id="cb37-14"><a href="#cb37-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb37-15"><a href="#cb37-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb37-16"><a href="#cb37-16" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task7_sql, task7_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+  tailnum
+0  N150UW
+1  N151UW
+2  N152UW
+3  N153UW
+4  N154UW 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="78b8e9a9" class="cell" data-execution_count="24">
+<div class="sourceCode cell-code" id="cb39"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb39-1"><a href="#cb39-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb39-2"><a href="#cb39-2" aria-hidden="true" tabindex="-1"></a>t7_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb39-3"><a href="#cb39-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-4"><a href="#cb39-4" aria-hidden="true" tabindex="-1"></a>task7_pl <span class="op">=</span> planes_pl.<span class="bu">filter</span>((pl.col(<span class="st">"seats"</span>).is_between(<span class="dv">150</span>,<span class="dv">210</span>)) <span class="op">&amp;</span></span>
+<span id="cb39-5"><a href="#cb39-5" aria-hidden="true" tabindex="-1"></a>                            (pl.col(<span class="st">"year"</span>) <span class="op">&gt;=</span> <span class="dv">2011</span>)).select([<span class="st">"tailnum"</span>]).sort(by<span class="op">=</span>[])</span>
+<span id="cb39-6"><a href="#cb39-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-7"><a href="#cb39-7" aria-hidden="true" tabindex="-1"></a>t7_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb39-8"><a href="#cb39-8" aria-hidden="true" tabindex="-1"></a>t7_dur_pl <span class="op">=</span> t7_et_pl <span class="op">-</span> t7_st_pl</span>
+<span id="cb39-9"><a href="#cb39-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-10"><a href="#cb39-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb39-11"><a href="#cb39-11" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb39-12"><a href="#cb39-12" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task7_my.sort_values(by<span class="op">=</span>[<span class="st">"tailnum"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb39-13"><a href="#cb39-13" aria-hidden="true" tabindex="-1"></a>                        task7_pl.to_pandas().sort_values(by<span class="op">=</span>[<span class="st">"tailnum"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb39-14"><a href="#cb39-14" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb39-15"><a href="#cb39-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb39-16"><a href="#cb39-16" aria-hidden="true" tabindex="-1"></a>print_execution_data(t7_dur, t7_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.001393  0.001259
+Relative to Pandas:  1           0.904</code></pre>
+</div>
+</div>
+</section>
+<section id="task-8" class="level3">
+<h3 class="anchored" data-anchor-id="task-8">Task 8</h3>
+<p>This SQL query selects rows from the tailnum, manufacturer, and seats columns in the planes table where the manufacturer is one of ‘BOEING’, ‘AIRBUS’, or ‘EMBRAER’ and the number of seats is greater than 390.</p>
+<p>My pandas command: - Create a logical vector for slicing by checking rows in the manufacturer column in the planes dataframe where the value is one of ‘BOEING’, ‘AIRBUS’, ‘EMBRAER’ and checking rows in the seats column in the planes dataframe where the capacity is greater than 390. This logical vector is then used to slice the planes data frame. Then the tailnum, manufacturer and seats columns are returned, and the index is reset.</p>
+<div id="3b7745c9" class="cell" data-execution_count="25">
+<div class="sourceCode cell-code" id="cb41"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb41-1"><a href="#cb41-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb41-2"><a href="#cb41-2" aria-hidden="true" tabindex="-1"></a>task8_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT tailnum, manufacturer, seats FROM planes</span></span>
+<span id="cb41-3"><a href="#cb41-3" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE manufacturer IN ('BOEING', 'AIRBUS', 'EMBRAER') AND seats&gt;390"""</span>, conn)</span>
+<span id="cb41-4"><a href="#cb41-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-5"><a href="#cb41-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb41-6"><a href="#cb41-6" aria-hidden="true" tabindex="-1"></a>t8_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb41-7"><a href="#cb41-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-8"><a href="#cb41-8" aria-hidden="true" tabindex="-1"></a>task8_my <span class="op">=</span> planes[(planes[<span class="st">"manufacturer"</span>].isin([<span class="st">"BOEING"</span>, <span class="st">"AIRBUS"</span>, <span class="st">"EMBRAER"</span>])) <span class="op">&amp;</span> </span>
+<span id="cb41-9"><a href="#cb41-9" aria-hidden="true" tabindex="-1"></a>           (planes[<span class="st">"seats"</span>] <span class="op">&gt;</span> <span class="dv">390</span>)][[<span class="st">"tailnum"</span>, <span class="st">"manufacturer"</span>, <span class="st">"seats"</span>]].reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb41-10"><a href="#cb41-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-11"><a href="#cb41-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb41-12"><a href="#cb41-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task8_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb41-13"><a href="#cb41-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-14"><a href="#cb41-14" aria-hidden="true" tabindex="-1"></a>t8_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb41-15"><a href="#cb41-15" aria-hidden="true" tabindex="-1"></a>t8_dur <span class="op">=</span> t8_et <span class="op">-</span> t8_st</span>
+<span id="cb41-16"><a href="#cb41-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb41-17"><a href="#cb41-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb41-18"><a href="#cb41-18" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task8_sql, task8_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+  tailnum manufacturer  seats
+0  N206UA       BOEING    400
+1  N228UA       BOEING    400
+2  N272AT       BOEING    400
+3  N57016       BOEING    400
+4  N670US       BOEING    450 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="01c96108" class="cell" data-execution_count="26">
+<div class="sourceCode cell-code" id="cb43"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb43-1"><a href="#cb43-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb43-2"><a href="#cb43-2" aria-hidden="true" tabindex="-1"></a>t8_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb43-3"><a href="#cb43-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-4"><a href="#cb43-4" aria-hidden="true" tabindex="-1"></a>task8_pl <span class="op">=</span> planes_pl.<span class="bu">filter</span>((pl.col(<span class="st">"manufacturer"</span>).is_in([<span class="st">"BOEING"</span>, <span class="st">"AIRBUS"</span>, <span class="st">"EMBRAER"</span>])) <span class="op">&amp;</span></span>
+<span id="cb43-5"><a href="#cb43-5" aria-hidden="true" tabindex="-1"></a>                            (pl.col(<span class="st">"seats"</span>) <span class="op">&gt;</span> <span class="dv">390</span>)).select([<span class="st">"tailnum"</span>, <span class="st">"manufacturer"</span>, <span class="st">"seats"</span>]).sort(by<span class="op">=</span>[])</span>
+<span id="cb43-6"><a href="#cb43-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-7"><a href="#cb43-7" aria-hidden="true" tabindex="-1"></a>t8_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb43-8"><a href="#cb43-8" aria-hidden="true" tabindex="-1"></a>t8_dur_pl <span class="op">=</span> t8_et_pl <span class="op">-</span> t8_st_pl</span>
+<span id="cb43-9"><a href="#cb43-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-10"><a href="#cb43-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb43-11"><a href="#cb43-11" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb43-12"><a href="#cb43-12" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task8_my.reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb43-13"><a href="#cb43-13" aria-hidden="true" tabindex="-1"></a>                        task8_pl.to_pandas().reset_index(drop<span class="op">=</span><span class="va">True</span>), name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb43-14"><a href="#cb43-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb43-15"><a href="#cb43-15" aria-hidden="true" tabindex="-1"></a>print_execution_data(t8_dur, t8_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.001728  0.001018
+Relative to Pandas:  1           0.589</code></pre>
+</div>
+</div>
+</section>
+<section id="task-9" class="level3">
+<h3 class="anchored" data-anchor-id="task-9">Task 9</h3>
+<p>This SQL query selects unique rows from the year and seats columns in the planes table where the year is greater than or equal to 2012. The returned data is sorted in ascending order by year and descending order by seats.</p>
+<p>My pandas command: - Create a logical vector for slicing by checking rows in the year column in the planes dataframe where the value is greater than or equal to 2012. This logical vector is then used to slice the planes data frame. Drop duplicates corresponding to the year and seat columns in the resulting data frame. Then select the year and seats columns. Sort the dataframe by year in ascending order, followed by seats in descending order, and reset the index.</p>
+<div id="e95b37d8" class="cell" data-execution_count="27">
+<div class="sourceCode cell-code" id="cb45"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb45-1"><a href="#cb45-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb45-2"><a href="#cb45-2" aria-hidden="true" tabindex="-1"></a>task9_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT DISTINCT year, seats FROM planes </span></span>
+<span id="cb45-3"><a href="#cb45-3" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE year &gt;= 2012 ORDER BY year ASC, seats DESC"""</span>, conn)</span>
+<span id="cb45-4"><a href="#cb45-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-5"><a href="#cb45-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb45-6"><a href="#cb45-6" aria-hidden="true" tabindex="-1"></a>t9_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb45-7"><a href="#cb45-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-8"><a href="#cb45-8" aria-hidden="true" tabindex="-1"></a>task9_my <span class="op">=</span> planes[(planes[<span class="st">"year"</span>] <span class="op">&gt;=</span> <span class="dv">2012</span>)].drop_duplicates(</span>
+<span id="cb45-9"><a href="#cb45-9" aria-hidden="true" tabindex="-1"></a>    subset<span class="op">=</span>[<span class="st">"year"</span>, <span class="st">"seats"</span>])[[<span class="st">"year"</span>, <span class="st">"seats"</span>]].sort_values(</span>
+<span id="cb45-10"><a href="#cb45-10" aria-hidden="true" tabindex="-1"></a>    by<span class="op">=</span>[<span class="st">"year"</span>, <span class="st">"seats"</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">False</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb45-11"><a href="#cb45-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-12"><a href="#cb45-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb45-13"><a href="#cb45-13" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task9_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb45-14"><a href="#cb45-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-15"><a href="#cb45-15" aria-hidden="true" tabindex="-1"></a>t9_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb45-16"><a href="#cb45-16" aria-hidden="true" tabindex="-1"></a>t9_dur <span class="op">=</span> t9_et <span class="op">-</span> t9_st</span>
+<span id="cb45-17"><a href="#cb45-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb45-18"><a href="#cb45-18" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb45-19"><a href="#cb45-19" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task9_sql, task9_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+     year  seats
+0  2012.0    379
+1  2012.0    377
+2  2012.0    260
+3  2012.0    222
+4  2012.0    200 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="84a591bb" class="cell" data-execution_count="28">
+<div class="sourceCode cell-code" id="cb47"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb47-1"><a href="#cb47-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb47-2"><a href="#cb47-2" aria-hidden="true" tabindex="-1"></a>t9_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb47-3"><a href="#cb47-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-4"><a href="#cb47-4" aria-hidden="true" tabindex="-1"></a>task9_pl <span class="op">=</span> planes_pl.<span class="bu">filter</span>(pl.col(<span class="st">"year"</span>) <span class="op">&gt;=</span> <span class="dv">2012</span>).unique(</span>
+<span id="cb47-5"><a href="#cb47-5" aria-hidden="true" tabindex="-1"></a>    subset<span class="op">=</span>[<span class="st">"year"</span>, <span class="st">"seats"</span>]).select([<span class="st">"year"</span>, <span class="st">"seats"</span>]).sort(by<span class="op">=</span>[<span class="st">"year"</span>,<span class="st">"seats"</span>], descending<span class="op">=</span>[<span class="va">False</span>, <span class="va">True</span>])</span>
+<span id="cb47-6"><a href="#cb47-6" aria-hidden="true" tabindex="-1"></a>t9_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb47-7"><a href="#cb47-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-8"><a href="#cb47-8" aria-hidden="true" tabindex="-1"></a>t9_dur_pl <span class="op">=</span> t9_et_pl <span class="op">-</span> t9_st_pl</span>
+<span id="cb47-9"><a href="#cb47-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-10"><a href="#cb47-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb47-11"><a href="#cb47-11" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb47-12"><a href="#cb47-12" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task9_my.reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb47-13"><a href="#cb47-13" aria-hidden="true" tabindex="-1"></a>                        task9_pl.to_pandas().reset_index(drop<span class="op">=</span><span class="va">True</span>), name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb47-14"><a href="#cb47-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb47-15"><a href="#cb47-15" aria-hidden="true" tabindex="-1"></a>print_execution_data(t9_dur, t9_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.002258  0.003938
+Relative to Pandas:  1           1.74</code></pre>
+</div>
+</div>
+</section>
+<section id="task-10" class="level3">
+<h3 class="anchored" data-anchor-id="task-10">Task 10</h3>
+<p>This SQL query selects unique rows from the year and seats columns in the planes table where the year is greater than or equal to 2012. The returned data is sorted in descending order by seats, then ascending order by year.</p>
+<p>My pandas command: - Create a logical vector for slicing by checking rows in the year column in the planes dataframe where the value is greater than or equal to 2012. This logical vector is then used to slice the planes dataframe. In the resulting dataframe, drop duplicates corresponding to the year and seats columns. Then select the year and seats columns. Then sort the dataframe by seats in descending order, followed by year in ascending order, and reset the index.</p>
+<div id="63e77152" class="cell" data-execution_count="29">
+<div class="sourceCode cell-code" id="cb49"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb49-1"><a href="#cb49-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb49-2"><a href="#cb49-2" aria-hidden="true" tabindex="-1"></a>task10_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT DISTINCT year, seats FROM planes WHERE year &gt;= 2012 ORDER BY seats DESC, year ASC"""</span>, conn)</span>
+<span id="cb49-3"><a href="#cb49-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-4"><a href="#cb49-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb49-5"><a href="#cb49-5" aria-hidden="true" tabindex="-1"></a>t10_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb49-6"><a href="#cb49-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-7"><a href="#cb49-7" aria-hidden="true" tabindex="-1"></a>task10_my <span class="op">=</span> planes[(planes[<span class="st">'year'</span>] <span class="op">&gt;=</span> <span class="dv">2012</span>)].drop_duplicates(</span>
+<span id="cb49-8"><a href="#cb49-8" aria-hidden="true" tabindex="-1"></a>    subset<span class="op">=</span>[<span class="st">"year"</span>, <span class="st">"seats"</span>])[[<span class="st">"year"</span>, <span class="st">"seats"</span>]].sort_values(</span>
+<span id="cb49-9"><a href="#cb49-9" aria-hidden="true" tabindex="-1"></a>    by<span class="op">=</span>[<span class="st">"seats"</span>, <span class="st">"year"</span>], ascending<span class="op">=</span> [<span class="va">False</span>,<span class="va">True</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb49-10"><a href="#cb49-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-11"><a href="#cb49-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb49-12"><a href="#cb49-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task10_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb49-13"><a href="#cb49-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-14"><a href="#cb49-14" aria-hidden="true" tabindex="-1"></a>t10_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb49-15"><a href="#cb49-15" aria-hidden="true" tabindex="-1"></a>t10_dur <span class="op">=</span> t10_et <span class="op">-</span> t10_st</span>
+<span id="cb49-16"><a href="#cb49-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb49-17"><a href="#cb49-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb49-18"><a href="#cb49-18" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task10_sql, task10_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+     year  seats
+0  2012.0    379
+1  2013.0    379
+2  2012.0    377
+3  2013.0    377
+4  2012.0    260 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="8f6559f4" class="cell" data-execution_count="30">
+<div class="sourceCode cell-code" id="cb51"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb51-1"><a href="#cb51-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb51-2"><a href="#cb51-2" aria-hidden="true" tabindex="-1"></a>t10_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb51-3"><a href="#cb51-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-4"><a href="#cb51-4" aria-hidden="true" tabindex="-1"></a>task10_pl <span class="op">=</span> planes_pl.<span class="bu">filter</span>(pl.col(<span class="st">"year"</span>) <span class="op">&gt;=</span> <span class="dv">2012</span>).unique(</span>
+<span id="cb51-5"><a href="#cb51-5" aria-hidden="true" tabindex="-1"></a>    subset<span class="op">=</span>[<span class="st">"year"</span>, <span class="st">"seats"</span>]).select([<span class="st">"year"</span>, <span class="st">"seats"</span>]).sort(by<span class="op">=</span>[<span class="st">"seats"</span>, <span class="st">"year"</span>], descending<span class="op">=</span>[<span class="va">True</span>, <span class="va">False</span>])</span>
+<span id="cb51-6"><a href="#cb51-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-7"><a href="#cb51-7" aria-hidden="true" tabindex="-1"></a>t10_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb51-8"><a href="#cb51-8" aria-hidden="true" tabindex="-1"></a>t10_dur_pl <span class="op">=</span> t10_et_pl <span class="op">-</span> t10_st_pl</span>
+<span id="cb51-9"><a href="#cb51-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-10"><a href="#cb51-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb51-11"><a href="#cb51-11" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb51-12"><a href="#cb51-12" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task10_my.reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb51-13"><a href="#cb51-13" aria-hidden="true" tabindex="-1"></a>                        task10_pl.to_pandas().reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb51-14"><a href="#cb51-14" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb51-15"><a href="#cb51-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb51-16"><a href="#cb51-16" aria-hidden="true" tabindex="-1"></a>print_execution_data(t10_dur, t10_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.002203  0.003303
+Relative to Pandas:  1           1.5</code></pre>
+</div>
+</div>
+</section>
+<section id="task-11" class="level3">
+<h3 class="anchored" data-anchor-id="task-11">Task 11</h3>
+<p>This SQL query counts the number of planes with the number of seats above 200 and groups them by manufacturer. Showing how many planes each manufacturer has where the seats are greater than 200.</p>
+<p>My pandas command - Create a logical vector for slicing by checking rows in the seats column in the planes dataframe where the value is greater than 200. This logical vector is then used to slice the planes dataframe. The resulting dataframe is then grouped by the manufacturer, and the size of each group is evaluated. I reset the index at the same time as renaming the count column to COUNT(*).</p>
+<div id="9a47b23d" class="cell" data-execution_count="31">
+<div class="sourceCode cell-code" id="cb53"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb53-1"><a href="#cb53-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb53-2"><a href="#cb53-2" aria-hidden="true" tabindex="-1"></a>task11_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT manufacturer, COUNT(*) FROM planes </span></span>
+<span id="cb53-3"><a href="#cb53-3" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE seats &gt; 200 GROUP BY manufacturer"""</span>, conn)</span>
+<span id="cb53-4"><a href="#cb53-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-5"><a href="#cb53-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb53-6"><a href="#cb53-6" aria-hidden="true" tabindex="-1"></a>t11_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb53-7"><a href="#cb53-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-8"><a href="#cb53-8" aria-hidden="true" tabindex="-1"></a>task11_my <span class="op">=</span> planes[(planes[<span class="st">"seats"</span>] <span class="op">&gt;</span> <span class="dv">200</span>)].groupby(<span class="st">"manufacturer"</span>).size().reset_index(name<span class="op">=</span><span class="st">"COUNT(*)"</span>)</span>
+<span id="cb53-9"><a href="#cb53-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-10"><a href="#cb53-10" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb53-11"><a href="#cb53-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task11_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb53-12"><a href="#cb53-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-13"><a href="#cb53-13" aria-hidden="true" tabindex="-1"></a>t11_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb53-14"><a href="#cb53-14" aria-hidden="true" tabindex="-1"></a>t11_dur <span class="op">=</span> t11_et <span class="op">-</span> t11_st</span>
+<span id="cb53-15"><a href="#cb53-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb53-16"><a href="#cb53-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb53-17"><a href="#cb53-17" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task11_sql, task11_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+       manufacturer  COUNT(*)
+0            AIRBUS        66
+1  AIRBUS INDUSTRIE         4
+2            BOEING       225 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="81cfbb1a" class="cell" data-execution_count="32">
+<div class="sourceCode cell-code" id="cb55"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb55-1"><a href="#cb55-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb55-2"><a href="#cb55-2" aria-hidden="true" tabindex="-1"></a>t11_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb55-3"><a href="#cb55-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-4"><a href="#cb55-4" aria-hidden="true" tabindex="-1"></a>task11_pl <span class="op">=</span> planes_pl.<span class="bu">filter</span>(pl.col(<span class="st">"seats"</span>) <span class="op">&gt;</span> <span class="dv">200</span>).group_by(<span class="st">"manufacturer"</span>).agg(</span>
+<span id="cb55-5"><a href="#cb55-5" aria-hidden="true" tabindex="-1"></a>    pl.<span class="bu">len</span>().alias(<span class="st">"COUNT(*)"</span>))</span>
+<span id="cb55-6"><a href="#cb55-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-7"><a href="#cb55-7" aria-hidden="true" tabindex="-1"></a>t11_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb55-8"><a href="#cb55-8" aria-hidden="true" tabindex="-1"></a>t11_dur_pl <span class="op">=</span> t11_et_pl <span class="op">-</span> t11_st_pl</span>
+<span id="cb55-9"><a href="#cb55-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-10"><a href="#cb55-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars returns uint32 for len(), so we need to cast to allow comparison with pandas.</span></span>
+<span id="cb55-11"><a href="#cb55-11" aria-hidden="true" tabindex="-1"></a>task11_pl <span class="op">=</span> task11_pl.with_columns(pl.col(<span class="st">"COUNT(*)"</span>).cast(pl.Int64))</span>
+<span id="cb55-12"><a href="#cb55-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-13"><a href="#cb55-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb55-14"><a href="#cb55-14" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb55-15"><a href="#cb55-15" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task11_my.sort_values(by<span class="op">=</span>[<span class="st">"manufacturer"</span>, <span class="st">"COUNT(*)"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb55-16"><a href="#cb55-16" aria-hidden="true" tabindex="-1"></a>                        task11_pl.to_pandas().sort_values(by<span class="op">=</span>[<span class="st">"manufacturer"</span>, <span class="st">"COUNT(*)"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb55-17"><a href="#cb55-17" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb55-18"><a href="#cb55-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb55-19"><a href="#cb55-19" aria-hidden="true" tabindex="-1"></a>print_execution_data(t11_dur, t11_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.001559  0.001686
+Relative to Pandas:  1           1.08</code></pre>
+</div>
+</div>
+</section>
+<section id="task-12" class="level3">
+<h3 class="anchored" data-anchor-id="task-12">Task 12</h3>
+<p>This SQL query counts the number of planes for each manufacturer and selects those manufacturers with more than 10 planes. The manufacture and count are returned.</p>
+<p>My pandas command: - Group the rows of the planes dataframe by the manufacturer and retrieve the size of each group. Reset the index and rename the index column to count. Use the query function to return only those rows where the count is greater than 10. Rename the count column to COUNT(*) and reset the index.</p>
+<div id="cfa9db29" class="cell" data-execution_count="33">
+<div class="sourceCode cell-code" id="cb57"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb57-1"><a href="#cb57-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb57-2"><a href="#cb57-2" aria-hidden="true" tabindex="-1"></a>task12_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT manufacturer, COUNT(*) FROM planes </span></span>
+<span id="cb57-3"><a href="#cb57-3" aria-hidden="true" tabindex="-1"></a><span class="st">GROUP BY manufacturer HAVING COUNT(*) &gt; 10"""</span>, conn)</span>
+<span id="cb57-4"><a href="#cb57-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-5"><a href="#cb57-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb57-6"><a href="#cb57-6" aria-hidden="true" tabindex="-1"></a>t12_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb57-7"><a href="#cb57-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-8"><a href="#cb57-8" aria-hidden="true" tabindex="-1"></a>task12_my <span class="op">=</span> planes.groupby(<span class="st">"manufacturer"</span>).size().reset_index(name<span class="op">=</span><span class="st">"count"</span>).query(</span>
+<span id="cb57-9"><a href="#cb57-9" aria-hidden="true" tabindex="-1"></a>    <span class="st">"count &gt; 10"</span>).rename(columns<span class="op">=</span>{<span class="st">"count"</span>: <span class="st">"COUNT(*)"</span>}).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb57-10"><a href="#cb57-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-11"><a href="#cb57-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb57-12"><a href="#cb57-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task12_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb57-13"><a href="#cb57-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-14"><a href="#cb57-14" aria-hidden="true" tabindex="-1"></a>t12_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb57-15"><a href="#cb57-15" aria-hidden="true" tabindex="-1"></a>t12_dur <span class="op">=</span> t12_et <span class="op">-</span> t12_st</span>
+<span id="cb57-16"><a href="#cb57-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb57-17"><a href="#cb57-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb57-18"><a href="#cb57-18" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task12_sql, task12_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+       manufacturer  COUNT(*)
+0            AIRBUS       336
+1  AIRBUS INDUSTRIE       400
+2            BOEING      1630
+3    BOMBARDIER INC       368
+4           EMBRAER       299 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="55e691b0" class="cell" data-execution_count="34">
+<div class="sourceCode cell-code" id="cb59"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb59-1"><a href="#cb59-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb59-2"><a href="#cb59-2" aria-hidden="true" tabindex="-1"></a>t12_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb59-3"><a href="#cb59-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-4"><a href="#cb59-4" aria-hidden="true" tabindex="-1"></a>task12_pl <span class="op">=</span> planes_pl.group_by(<span class="st">"manufacturer"</span>).agg(pl.<span class="bu">len</span>().alias(<span class="st">"COUNT(*)"</span>)).<span class="bu">filter</span>(</span>
+<span id="cb59-5"><a href="#cb59-5" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"COUNT(*)"</span>) <span class="op">&gt;</span> <span class="dv">10</span>)</span>
+<span id="cb59-6"><a href="#cb59-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-7"><a href="#cb59-7" aria-hidden="true" tabindex="-1"></a>t12_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb59-8"><a href="#cb59-8" aria-hidden="true" tabindex="-1"></a>t12_dur_pl <span class="op">=</span> t12_et_pl <span class="op">-</span> t12_st_pl</span>
+<span id="cb59-9"><a href="#cb59-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-10"><a href="#cb59-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars returns uint32 for len(), so we need to cast to allow comparison with pandas.</span></span>
+<span id="cb59-11"><a href="#cb59-11" aria-hidden="true" tabindex="-1"></a>task12_pl <span class="op">=</span> task12_pl.with_columns(pl.col(<span class="st">"COUNT(*)"</span>).cast(pl.Int64))</span>
+<span id="cb59-12"><a href="#cb59-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-13"><a href="#cb59-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb59-14"><a href="#cb59-14" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb59-15"><a href="#cb59-15" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task12_my.sort_values(by<span class="op">=</span>[<span class="st">"manufacturer"</span>, <span class="st">"COUNT(*)"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb59-16"><a href="#cb59-16" aria-hidden="true" tabindex="-1"></a>                        task12_pl.to_pandas().sort_values(by<span class="op">=</span>[<span class="st">"manufacturer"</span>, <span class="st">"COUNT(*)"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb59-17"><a href="#cb59-17" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb59-18"><a href="#cb59-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb59-19"><a href="#cb59-19" aria-hidden="true" tabindex="-1"></a>print_execution_data(t12_dur, t12_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.002903  0.004606
+Relative to Pandas:  1           1.59</code></pre>
+</div>
+</div>
+</section>
+<section id="task-13" class="level3">
+<h3 class="anchored" data-anchor-id="task-13">Task 13</h3>
+<p>This SQL query will show the number of manufacturers that have more than 10 planes with a seat capacity greater than 200.</p>
+<p>My pandas command: - Create a logical vector for slicing by checking rows in the seats column in the planes dataframe where the value is greater than 200. Slice the planes dataframe using this logical vector, then group the rows by the manufacturer column. Retrieve the size of each group. Reset the index and rename the index column to count. Use the query function to return only those rows where the count is greater than 10. Rename the count column to COUNT(*) and reset the index</p>
+<div id="64a2d968" class="cell" data-execution_count="35">
+<div class="sourceCode cell-code" id="cb61"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb61-1"><a href="#cb61-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb61-2"><a href="#cb61-2" aria-hidden="true" tabindex="-1"></a>task13_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT manufacturer, COUNT(*) FROM planes </span></span>
+<span id="cb61-3"><a href="#cb61-3" aria-hidden="true" tabindex="-1"></a><span class="st">    WHERE seats &gt; 200 GROUP BY manufacturer HAVING COUNT(*) &gt; 10"""</span>, conn)</span>
+<span id="cb61-4"><a href="#cb61-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-5"><a href="#cb61-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb61-6"><a href="#cb61-6" aria-hidden="true" tabindex="-1"></a>t13_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb61-7"><a href="#cb61-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-8"><a href="#cb61-8" aria-hidden="true" tabindex="-1"></a>task13_my <span class="op">=</span> planes[planes[<span class="st">"seats"</span>] <span class="op">&gt;</span> <span class="dv">200</span>].groupby(<span class="st">"manufacturer"</span>).size().reset_index(</span>
+<span id="cb61-9"><a href="#cb61-9" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"count"</span>).query(<span class="st">"count &gt;10"</span>).rename(columns<span class="op">=</span>{<span class="st">"count"</span>: <span class="st">"COUNT(*)"</span>}).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb61-10"><a href="#cb61-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-11"><a href="#cb61-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb61-12"><a href="#cb61-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task13_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb61-13"><a href="#cb61-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-14"><a href="#cb61-14" aria-hidden="true" tabindex="-1"></a>t13_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb61-15"><a href="#cb61-15" aria-hidden="true" tabindex="-1"></a>t13_dur <span class="op">=</span> t13_et <span class="op">-</span> t13_st</span>
+<span id="cb61-16"><a href="#cb61-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb61-17"><a href="#cb61-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb61-18"><a href="#cb61-18" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task13_sql, task13_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+  manufacturer  COUNT(*)
+0       AIRBUS        66
+1       BOEING       225 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="b1262fde" class="cell" data-execution_count="36">
+<div class="sourceCode cell-code" id="cb63"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb63-1"><a href="#cb63-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb63-2"><a href="#cb63-2" aria-hidden="true" tabindex="-1"></a>t13_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb63-3"><a href="#cb63-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-4"><a href="#cb63-4" aria-hidden="true" tabindex="-1"></a>task13_pl <span class="op">=</span> planes_pl.<span class="bu">filter</span>(pl.col(<span class="st">"seats"</span>) <span class="op">&gt;</span> <span class="dv">200</span>).group_by(<span class="st">"manufacturer"</span>).agg(pl.<span class="bu">len</span>().alias(<span class="st">"COUNT(*)"</span>)).<span class="bu">filter</span>(</span>
+<span id="cb63-5"><a href="#cb63-5" aria-hidden="true" tabindex="-1"></a>    pl.col(<span class="st">"COUNT(*)"</span>) <span class="op">&gt;</span> <span class="dv">10</span>)</span>
+<span id="cb63-6"><a href="#cb63-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-7"><a href="#cb63-7" aria-hidden="true" tabindex="-1"></a>t13_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb63-8"><a href="#cb63-8" aria-hidden="true" tabindex="-1"></a>t13_dur_pl <span class="op">=</span> t13_et_pl <span class="op">-</span> t13_st_pl</span>
+<span id="cb63-9"><a href="#cb63-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-10"><a href="#cb63-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars returns uint32 for len(), so we need to cast to allow comparison with pandas.</span></span>
+<span id="cb63-11"><a href="#cb63-11" aria-hidden="true" tabindex="-1"></a>task13_pl <span class="op">=</span> task13_pl.with_columns(pl.col(<span class="st">"COUNT(*)"</span>).cast(pl.Int64))</span>
+<span id="cb63-12"><a href="#cb63-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-13"><a href="#cb63-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb63-14"><a href="#cb63-14" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb63-15"><a href="#cb63-15" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task13_my.sort_values(by<span class="op">=</span>[<span class="st">"manufacturer"</span>, <span class="st">"COUNT(*)"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb63-16"><a href="#cb63-16" aria-hidden="true" tabindex="-1"></a>                        task13_pl.to_pandas().sort_values(by<span class="op">=</span>[<span class="st">"manufacturer"</span>, <span class="st">"COUNT(*)"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb63-17"><a href="#cb63-17" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb63-18"><a href="#cb63-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb63-19"><a href="#cb63-19" aria-hidden="true" tabindex="-1"></a>print_execution_data(t13_dur, t13_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.002486  0.00208
+Relative to Pandas:  1           0.837</code></pre>
+</div>
+</div>
+</section>
+<section id="task-14" class="level3">
+<h3 class="anchored" data-anchor-id="task-14">Task 14</h3>
+<p>This SQL query shows the top 10 manufacturers by the number of planes they have in the planes table.</p>
+<p>My pandas command: - Group the rows in the planes dataframe by the manufacturer column. Retrieve the size of each group. Reset the index and rename the index column to howmany. Sort the dataframe by the howmany column in descending order. Reset the index and display the first 10 rows.</p>
+<div id="da6d7a0c" class="cell" data-execution_count="37">
+<div class="sourceCode cell-code" id="cb65"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb65-1"><a href="#cb65-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb65-2"><a href="#cb65-2" aria-hidden="true" tabindex="-1"></a>task14_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT manufacturer, COUNT(*) AS howmany FROM planes</span></span>
+<span id="cb65-3"><a href="#cb65-3" aria-hidden="true" tabindex="-1"></a><span class="st">    GROUP BY manufacturer ORDER BY howmany DESC LIMIT 10"""</span>, conn)</span>
+<span id="cb65-4"><a href="#cb65-4" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-5"><a href="#cb65-5" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb65-6"><a href="#cb65-6" aria-hidden="true" tabindex="-1"></a>t14_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb65-7"><a href="#cb65-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-8"><a href="#cb65-8" aria-hidden="true" tabindex="-1"></a>task14_my <span class="op">=</span> planes.groupby(<span class="st">"manufacturer"</span>).size().reset_index(</span>
+<span id="cb65-9"><a href="#cb65-9" aria-hidden="true" tabindex="-1"></a>    name<span class="op">=</span><span class="st">"howmany"</span>).sort_values(by<span class="op">=</span><span class="st">"howmany"</span>, ascending<span class="op">=</span><span class="va">False</span>).reset_index(drop<span class="op">=</span><span class="va">True</span>).head(<span class="dv">10</span>)</span>
+<span id="cb65-10"><a href="#cb65-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-11"><a href="#cb65-11" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb65-12"><a href="#cb65-12" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task14_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb65-13"><a href="#cb65-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-14"><a href="#cb65-14" aria-hidden="true" tabindex="-1"></a>t14_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb65-15"><a href="#cb65-15" aria-hidden="true" tabindex="-1"></a>t14_dur <span class="op">=</span> t14_et <span class="op">-</span> t14_st</span>
+<span id="cb65-16"><a href="#cb65-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb65-17"><a href="#cb65-17" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb65-18"><a href="#cb65-18" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task14_sql, task14_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+       manufacturer  howmany
+0            BOEING     1630
+1  AIRBUS INDUSTRIE      400
+2    BOMBARDIER INC      368
+3            AIRBUS      336
+4           EMBRAER      299 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="152bb75e" class="cell" data-execution_count="38">
+<div class="sourceCode cell-code" id="cb67"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb67-1"><a href="#cb67-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb67-2"><a href="#cb67-2" aria-hidden="true" tabindex="-1"></a>t14_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb67-3"><a href="#cb67-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-4"><a href="#cb67-4" aria-hidden="true" tabindex="-1"></a>task14_pl <span class="op">=</span> planes_pl.group_by(<span class="st">"manufacturer"</span>).agg(pl.<span class="bu">len</span>().alias(<span class="st">"howmany"</span>)).sort(</span>
+<span id="cb67-5"><a href="#cb67-5" aria-hidden="true" tabindex="-1"></a>    <span class="st">"howmany"</span>, descending<span class="op">=</span><span class="va">True</span>).limit(<span class="dv">10</span>)</span>
+<span id="cb67-6"><a href="#cb67-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-7"><a href="#cb67-7" aria-hidden="true" tabindex="-1"></a>t14_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb67-8"><a href="#cb67-8" aria-hidden="true" tabindex="-1"></a>t14_dur_pl <span class="op">=</span> t14_et_pl <span class="op">-</span> t14_st_pl</span>
+<span id="cb67-9"><a href="#cb67-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-10"><a href="#cb67-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars returns uint32 for len(), so we need to cast to allow comparison with pandas.</span></span>
+<span id="cb67-11"><a href="#cb67-11" aria-hidden="true" tabindex="-1"></a>task14_pl <span class="op">=</span> task14_pl.with_columns(pl.col(<span class="st">"howmany"</span>).cast(pl.Int64))</span>
+<span id="cb67-12"><a href="#cb67-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-13"><a href="#cb67-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb67-14"><a href="#cb67-14" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb67-15"><a href="#cb67-15" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task14_my.sort_values(by<span class="op">=</span>[<span class="st">"manufacturer"</span>, <span class="st">"howmany"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb67-16"><a href="#cb67-16" aria-hidden="true" tabindex="-1"></a>                        task14_pl.to_pandas().sort_values(by<span class="op">=</span>[<span class="st">"manufacturer"</span>, <span class="st">"howmany"</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb67-17"><a href="#cb67-17" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb67-18"><a href="#cb67-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb67-19"><a href="#cb67-19" aria-hidden="true" tabindex="-1"></a>print_execution_data(t14_dur, t14_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.001631  0.006682
+Relative to Pandas:  1           4.1</code></pre>
+</div>
+</div>
+</section>
+<section id="task-15" class="level3">
+<h3 class="anchored" data-anchor-id="task-15">Task 15</h3>
+<p>This SQL query returns all rows and columns from the flights table and columns year, speed, and seats from the planes as plane_year, plane_speed, and plane_seat. Any row where the tailnum from flights matches the tailnum in planes the value from the year, speed and seats columns from planes will be added to those columns for that row in the output. If no matching tailnum is found in the planes table, then NULL is returned for the plane_year, plane_speed, and plane_seat for that row.</p>
+<p>My pandas command: - Select the tailnum, year, speed, and seats columns from planes and assign them to temp15. - Perform a left merge of the flights and temp15 dataframes using tailnum column. Disable suffixes for flights and set to _p for the planes columns. This will prevent columns in both flights and planes from being renamed in flights with a suffix. The planes column will be added with the suffix _p.&nbsp;Finally, rename the year, speed, and seats columns with plane_ prefix.</p>
+<div id="67cff78e" class="cell" data-execution_count="39">
+<div class="sourceCode cell-code" id="cb69"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb69-1"><a href="#cb69-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb69-2"><a href="#cb69-2" aria-hidden="true" tabindex="-1"></a>task15_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT flights.*, planes.year AS plane_year, </span></span>
+<span id="cb69-3"><a href="#cb69-3" aria-hidden="true" tabindex="-1"></a><span class="st">    planes.speed AS plane_speed, planes.seats AS plane_seats FROM flights</span></span>
+<span id="cb69-4"><a href="#cb69-4" aria-hidden="true" tabindex="-1"></a><span class="st">    LEFT JOIN planes ON flights.tailnum=planes.tailnum"""</span>, conn)</span>
+<span id="cb69-5"><a href="#cb69-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-6"><a href="#cb69-6" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb69-7"><a href="#cb69-7" aria-hidden="true" tabindex="-1"></a>t15_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb69-8"><a href="#cb69-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-9"><a href="#cb69-9" aria-hidden="true" tabindex="-1"></a><span class="co"># The following two lines could be done as one without using a temporary variable. However, it is easier to read this way.</span></span>
+<span id="cb69-10"><a href="#cb69-10" aria-hidden="true" tabindex="-1"></a>temp15 <span class="op">=</span> planes[[<span class="st">"tailnum"</span>, <span class="st">"year"</span>, <span class="st">"speed"</span>, <span class="st">"seats"</span>]]</span>
+<span id="cb69-11"><a href="#cb69-11" aria-hidden="true" tabindex="-1"></a>task15_my <span class="op">=</span> pd.merge(flights, temp15,</span>
+<span id="cb69-12"><a href="#cb69-12" aria-hidden="true" tabindex="-1"></a>    on<span class="op">=</span><span class="st">"tailnum"</span>, how<span class="op">=</span><span class="st">"left"</span>, suffixes<span class="op">=</span>(<span class="va">None</span>, <span class="st">"_p"</span>)).rename(</span>
+<span id="cb69-13"><a href="#cb69-13" aria-hidden="true" tabindex="-1"></a>    columns<span class="op">=</span>{<span class="st">"year_p"</span>:<span class="st">"plane_year"</span>,<span class="st">"speed"</span>:<span class="st">"plane_speed"</span>, <span class="st">"seats"</span>:<span class="st">"plane_seats"</span>})</span>
+<span id="cb69-14"><a href="#cb69-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-15"><a href="#cb69-15" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb69-16"><a href="#cb69-16" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task15_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb69-17"><a href="#cb69-17" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-18"><a href="#cb69-18" aria-hidden="true" tabindex="-1"></a>t15_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb69-19"><a href="#cb69-19" aria-hidden="true" tabindex="-1"></a>t15_dur <span class="op">=</span> t15_et <span class="op">-</span> t15_st</span>
+<span id="cb69-20"><a href="#cb69-20" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-21"><a href="#cb69-21" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb69-22"><a href="#cb69-22" aria-hidden="true" tabindex="-1"></a><span class="co"># This command will generate a future warning as seen below.</span></span>
+<span id="cb69-23"><a href="#cb69-23" aria-hidden="true" tabindex="-1"></a><span class="co"># This can be resoled by ensuring all Null type (None, NA, NAN) are replaced with np.nan </span></span>
+<span id="cb69-24"><a href="#cb69-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"This feature warning can be and has been disable in subsequent tasks by making the null like values consistent in the dataframes being compared."</span>)</span>
+<span id="cb69-25"><a href="#cb69-25" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task15_sql, task15_my)</span>
+<span id="cb69-26"><a href="#cb69-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-27"><a href="#cb69-27" aria-hidden="true" tabindex="-1"></a><span class="co"># Make null type values consistent</span></span>
+<span id="cb69-28"><a href="#cb69-28" aria-hidden="true" tabindex="-1"></a>task15_sql.fillna(value<span class="op">=</span>np.nan, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb69-29"><a href="#cb69-29" aria-hidden="true" tabindex="-1"></a>task15_my.fillna(value<span class="op">=</span>np.nan, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb69-30"><a href="#cb69-30" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb69-31"><a href="#cb69-31" aria-hidden="true" tabindex="-1"></a><span class="co"># Assert after making null type values consistent</span></span>
+<span id="cb69-32"><a href="#cb69-32" aria-hidden="true" tabindex="-1"></a>pd.testing.assert_frame_equal(task15_sql, task15_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+   year  month  day  dep_time  sched_dep_time  dep_delay  arr_time  \
+0  2013      1    1     517.0             515        2.0     830.0   
+1  2013      1    1     533.0             529        4.0     850.0   
+2  2013      1    1     542.0             540        2.0     923.0   
+3  2013      1    1     544.0             545       -1.0    1004.0   
+4  2013      1    1     554.0             600       -6.0     812.0   
+
+   sched_arr_time  arr_delay carrier  ...  origin dest air_time distance  \
+0             819       11.0      UA  ...     EWR  IAH    227.0     1400   
+1             830       20.0      UA  ...     LGA  IAH    227.0     1416   
+2             850       33.0      AA  ...     JFK  MIA    160.0     1089   
+3            1022      -18.0      B6  ...     JFK  BQN    183.0     1576   
+4             837      -25.0      DL  ...     LGA  ATL    116.0      762   
+
+   hour  minute            time_hour  plane_year plane_speed  plane_seats  
+0     5      15  2013-01-01 05:00:00      1999.0         NaN        149.0  
+1     5      29  2013-01-01 05:00:00      1998.0         NaN        149.0  
+2     5      40  2013-01-01 05:00:00      1990.0         NaN        178.0  
+3     5      45  2013-01-01 05:00:00      2012.0         NaN        200.0  
+4     6       0  2013-01-01 06:00:00      1991.0         NaN        178.0  
+
+[5 rows x 22 columns] 
+
+This feature warning can be and has been disable in subsequent tasks by making the null like values consistent in the dataframes being compared.</code></pre>
+</div>
+<div class="cell-output cell-output-stderr">
+<pre><code>C:\Users\darrin\AppData\Local\Temp\ipykernel_21080\4104427652.py:12: FutureWarning:
+
+Mismatched null-like values None and nan found. In a future version, pandas equality-testing functions (e.g. assert_frame_equal) will consider these not-matching and raise.
+</code></pre>
+</div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="14a57770" class="cell" data-execution_count="40">
+<div class="sourceCode cell-code" id="cb73"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb73-1"><a href="#cb73-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb73-2"><a href="#cb73-2" aria-hidden="true" tabindex="-1"></a>t15_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb73-3"><a href="#cb73-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-4"><a href="#cb73-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The following two lines could be done as one without using a temporary variable. However, it is easier to read this way.</span></span>
+<span id="cb73-5"><a href="#cb73-5" aria-hidden="true" tabindex="-1"></a>temp15_pl <span class="op">=</span> planes_pl.select([<span class="st">"tailnum"</span>, <span class="st">"year"</span>, <span class="st">"speed"</span>, <span class="st">"seats"</span>])</span>
+<span id="cb73-6"><a href="#cb73-6" aria-hidden="true" tabindex="-1"></a>task15_pl <span class="op">=</span> flights_pl.join(temp15_pl, on<span class="op">=</span>[<span class="st">"tailnum"</span>], how<span class="op">=</span><span class="st">"left"</span>).rename({<span class="st">"year_right"</span>:<span class="st">"plane_year"</span>,<span class="st">"speed"</span>:<span class="st">"plane_speed"</span>, <span class="st">"seats"</span>:<span class="st">"plane_seats"</span>})</span>
+<span id="cb73-7"><a href="#cb73-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-8"><a href="#cb73-8" aria-hidden="true" tabindex="-1"></a>t15_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb73-9"><a href="#cb73-9" aria-hidden="true" tabindex="-1"></a>t15_dur_pl <span class="op">=</span> t15_et_pl <span class="op">-</span> t15_st_pl</span>
+<span id="cb73-10"><a href="#cb73-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-11"><a href="#cb73-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb73-12"><a href="#cb73-12" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb73-13"><a href="#cb73-13" aria-hidden="true" tabindex="-1"></a><span class="co"># Make null types consistent</span></span>
+<span id="cb73-14"><a href="#cb73-14" aria-hidden="true" tabindex="-1"></a>task15_pl_pd <span class="op">=</span> task15_pl.to_pandas()</span>
+<span id="cb73-15"><a href="#cb73-15" aria-hidden="true" tabindex="-1"></a>task15_pl_pd.fillna(value<span class="op">=</span>np.nan, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb73-16"><a href="#cb73-16" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task15_my.reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb73-17"><a href="#cb73-17" aria-hidden="true" tabindex="-1"></a>                        task15_pl_pd.reset_index(drop<span class="op">=</span><span class="va">True</span>), name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb73-18"><a href="#cb73-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb73-19"><a href="#cb73-19" aria-hidden="true" tabindex="-1"></a>print_execution_data(t15_dur, t15_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.239  0.01319
+Relative to Pandas:  1           0.0552</code></pre>
+</div>
+</div>
+</section>
+<section id="task-16" class="level3">
+<h3 class="anchored" data-anchor-id="task-16">Task 16</h3>
+<p>This SQL query returns a dataframe that includes all the columns from both planes and airlines, with only the unique carrier and tailnum combinations that exist in the flight dataframe.</p>
+<p>My pandas command: - From the flights dataframe select the carrier and tailnum columns and drop duplicate rows. Join the result of the previous step with the planes dataframe on the tailnum column using an inner join and assign to temp16. Then join temp16 with the airlines dataframe on the carrier column using an inner join.</p>
+<div id="ce023081" class="cell" data-execution_count="41">
+<div class="sourceCode cell-code" id="cb75"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb75-1"><a href="#cb75-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL result</span></span>
+<span id="cb75-2"><a href="#cb75-2" aria-hidden="true" tabindex="-1"></a>task16_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT planes.*, airlines.* </span></span>
+<span id="cb75-3"><a href="#cb75-3" aria-hidden="true" tabindex="-1"></a><span class="st">FROM (SELECT DISTINCT carrier, tailnum FROM flights) AS cartail</span></span>
+<span id="cb75-4"><a href="#cb75-4" aria-hidden="true" tabindex="-1"></a><span class="st">INNER JOIN planes ON cartail.tailnum=planes.tailnum</span></span>
+<span id="cb75-5"><a href="#cb75-5" aria-hidden="true" tabindex="-1"></a><span class="st">INNER JOIN airlines ON cartail.carrier=airlines.carrier"""</span>, conn)</span>
+<span id="cb75-6"><a href="#cb75-6" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-7"><a href="#cb75-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Sort needed for comparison with pandas result</span></span>
+<span id="cb75-8"><a href="#cb75-8" aria-hidden="true" tabindex="-1"></a>task16_sql <span class="op">=</span> task16_sql.sort_values(by<span class="op">=</span>[<span class="st">"tailnum"</span>, <span class="st">"carrier"</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">True</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb75-9"><a href="#cb75-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-10"><a href="#cb75-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb75-11"><a href="#cb75-11" aria-hidden="true" tabindex="-1"></a>t16_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb75-12"><a href="#cb75-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-13"><a href="#cb75-13" aria-hidden="true" tabindex="-1"></a><span class="co"># The following two lines could be done as one without using a temporary variable. However, it is easier to read this way.</span></span>
+<span id="cb75-14"><a href="#cb75-14" aria-hidden="true" tabindex="-1"></a>temp16 <span class="op">=</span> pd.merge(flights[[<span class="st">"carrier"</span>, <span class="st">"tailnum"</span>]].drop_duplicates(), planes, on<span class="op">=</span><span class="st">"tailnum"</span>, how<span class="op">=</span><span class="st">"inner"</span>)</span>
+<span id="cb75-15"><a href="#cb75-15" aria-hidden="true" tabindex="-1"></a>task16_my <span class="op">=</span> pd.merge(temp16, airlines, on<span class="op">=</span><span class="st">"carrier"</span>, how<span class="op">=</span><span class="st">"inner"</span>)</span>
+<span id="cb75-16"><a href="#cb75-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-17"><a href="#cb75-17" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb75-18"><a href="#cb75-18" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task16_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb75-19"><a href="#cb75-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-20"><a href="#cb75-20" aria-hidden="true" tabindex="-1"></a>t16_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb75-21"><a href="#cb75-21" aria-hidden="true" tabindex="-1"></a>t16_dur <span class="op">=</span> t16_et <span class="op">-</span> t16_st</span>
+<span id="cb75-22"><a href="#cb75-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-23"><a href="#cb75-23" aria-hidden="true" tabindex="-1"></a><span class="co"># Create a copy to use with polars comparison</span></span>
+<span id="cb75-24"><a href="#cb75-24" aria-hidden="true" tabindex="-1"></a>task16_pd<span class="op">=</span> task16_my.copy()</span>
+<span id="cb75-25"><a href="#cb75-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-26"><a href="#cb75-26" aria-hidden="true" tabindex="-1"></a><span class="co"># Move the carrier column and sort for comparison with SQL result </span></span>
+<span id="cb75-27"><a href="#cb75-27" aria-hidden="true" tabindex="-1"></a>task16_my.insert(<span class="dv">9</span>, <span class="st">"carrier"</span>, task16_my.pop(<span class="st">"carrier"</span>))</span>
+<span id="cb75-28"><a href="#cb75-28" aria-hidden="true" tabindex="-1"></a>task16_my<span class="op">=</span>task16_my.sort_values(by<span class="op">=</span>[<span class="st">"tailnum"</span>,<span class="st">"carrier"</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">True</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb75-29"><a href="#cb75-29" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb75-30"><a href="#cb75-30" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb75-31"><a href="#cb75-31" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task16_sql, task16_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+  carrier tailnum    year                     type manufacturer     model  \
+0      UA  N14228  1999.0  Fixed wing multi engine       BOEING   737-824   
+1      UA  N24211  1998.0  Fixed wing multi engine       BOEING   737-824   
+2      AA  N619AA  1990.0  Fixed wing multi engine       BOEING   757-223   
+3      B6  N804JB  2012.0  Fixed wing multi engine       AIRBUS  A320-232   
+4      DL  N668DN  1991.0  Fixed wing multi engine       BOEING   757-232   
+
+   engines  seats  speed     engine                    name  
+0        2    149    NaN  Turbo-fan   United Air Lines Inc.  
+1        2    149    NaN  Turbo-fan   United Air Lines Inc.  
+2        2    178    NaN  Turbo-fan  American Airlines Inc.  
+3        2    200    NaN  Turbo-fan         JetBlue Airways  
+4        2    178    NaN  Turbo-fan    Delta Air Lines Inc.   
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="cf3fb2d1" class="cell" data-execution_count="42">
+<div class="sourceCode cell-code" id="cb77"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb77-1"><a href="#cb77-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb77-2"><a href="#cb77-2" aria-hidden="true" tabindex="-1"></a>t16_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb77-3"><a href="#cb77-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-4"><a href="#cb77-4" aria-hidden="true" tabindex="-1"></a><span class="co"># The following two lines could be done as one without using a temporary variable. However, it is easier to read this way.</span></span>
+<span id="cb77-5"><a href="#cb77-5" aria-hidden="true" tabindex="-1"></a>temp16_pl <span class="op">=</span> flights_pl.select([<span class="st">"carrier"</span>, <span class="st">"tailnum"</span>]).unique().join(planes_pl, on<span class="op">=</span>[<span class="st">"tailnum"</span>], how<span class="op">=</span><span class="st">"inner"</span>)</span>
+<span id="cb77-6"><a href="#cb77-6" aria-hidden="true" tabindex="-1"></a>task16_pl <span class="op">=</span> temp16_pl.join(airlines_pl, on<span class="op">=</span>[<span class="st">"carrier"</span>], how<span class="op">=</span><span class="st">"inner"</span>)</span>
+<span id="cb77-7"><a href="#cb77-7" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-8"><a href="#cb77-8" aria-hidden="true" tabindex="-1"></a>t16_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb77-9"><a href="#cb77-9" aria-hidden="true" tabindex="-1"></a>t16_dur_pl <span class="op">=</span> t16_et_pl <span class="op">-</span> t16_st_pl</span>
+<span id="cb77-10"><a href="#cb77-10" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-11"><a href="#cb77-11" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb77-12"><a href="#cb77-12" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb77-13"><a href="#cb77-13" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task16_pd.sort_values(by<span class="op">=</span>[<span class="st">"tailnum"</span>,<span class="st">"carrier"</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">True</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb77-14"><a href="#cb77-14" aria-hidden="true" tabindex="-1"></a>                        task16_pl.to_pandas().sort_values(by<span class="op">=</span>[<span class="st">"tailnum"</span>,<span class="st">"carrier"</span>], ascending<span class="op">=</span>[<span class="va">True</span>, <span class="va">True</span>]).reset_index(drop<span class="op">=</span><span class="va">True</span>),</span>
+<span id="cb77-15"><a href="#cb77-15" aria-hidden="true" tabindex="-1"></a>                        name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb77-16"><a href="#cb77-16" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb77-17"><a href="#cb77-17" aria-hidden="true" tabindex="-1"></a>print_execution_data(t16_dur, t16_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.1513  0.02181
+Relative to Pandas:  1           0.144</code></pre>
+</div>
+</div>
+</section>
+<section id="task-17" class="level3">
+<h3 class="anchored" data-anchor-id="task-17">Task 17</h3>
+<p>This SQL query retrieves flight data originating from EWR and joins it with averaged daily weather from the same location.</p>
+<p>My pandas command: - From the flights dataframe only select rows where the origin column equals ‘EWR’ and assign the result to flights2 - From the weather dataframe, select only rows where the origin column equal ‘EWR’. Then group rows by the year, month, and day. Perform averaging on the temp and humidity columns. In the resulting dataframe, rename the temp and humidity columns to atemp and ahumid. Reset the dataframe index and assign the result to weather2. - Merge the weather2 into the flights2 dataframe from the left on the year, month and days columns. A left merge will result in all the rows of flights2 being copied into the result. If there is no matching atemp or ahumid for any rows in flights2, then Nan will be inserted into these columns for the rows.</p>
+<div id="3b8a5b48" class="cell" data-execution_count="43">
+<div class="sourceCode cell-code" id="cb79"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb79-1"><a href="#cb79-1" aria-hidden="true" tabindex="-1"></a><span class="co"># SQL query</span></span>
+<span id="cb79-2"><a href="#cb79-2" aria-hidden="true" tabindex="-1"></a>task17_sql <span class="op">=</span> pd.read_sql_query(<span class="st">"""SELECT flights2.*, atemp, ahumid FROM ( SELECT * FROM flights WHERE origin='EWR') AS flights2</span></span>
+<span id="cb79-3"><a href="#cb79-3" aria-hidden="true" tabindex="-1"></a><span class="st">LEFT JOIN (</span></span>
+<span id="cb79-4"><a href="#cb79-4" aria-hidden="true" tabindex="-1"></a><span class="st">SELECT year, month, day, AVG(temp) AS atemp, AVG(humid) AS ahumid FROM weather WHERE origin='EWR' GROUP BY year, month, day</span></span>
+<span id="cb79-5"><a href="#cb79-5" aria-hidden="true" tabindex="-1"></a><span class="st">) AS weather2</span></span>
+<span id="cb79-6"><a href="#cb79-6" aria-hidden="true" tabindex="-1"></a><span class="st">ON flights2.year=weather2.year</span></span>
+<span id="cb79-7"><a href="#cb79-7" aria-hidden="true" tabindex="-1"></a><span class="st">AND flights2.month=weather2.month</span></span>
+<span id="cb79-8"><a href="#cb79-8" aria-hidden="true" tabindex="-1"></a><span class="st">AND flights2.day=weather2.day"""</span>, conn)</span>
+<span id="cb79-9"><a href="#cb79-9" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-10"><a href="#cb79-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Pandas result with timing</span></span>
+<span id="cb79-11"><a href="#cb79-11" aria-hidden="true" tabindex="-1"></a>t17_st <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb79-12"><a href="#cb79-12" aria-hidden="true" tabindex="-1"></a><span class="co"># From the flights dataframe, select only rows where the origin column equals EWR and assign the result to flights2 </span></span>
+<span id="cb79-13"><a href="#cb79-13" aria-hidden="true" tabindex="-1"></a>flights2 <span class="op">=</span> flights[(flights.origin<span class="op">==</span><span class="st">'EWR'</span>)]</span>
+<span id="cb79-14"><a href="#cb79-14" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-15"><a href="#cb79-15" aria-hidden="true" tabindex="-1"></a><span class="co"># From the weather dataframe, select only rows where the origin column equals EWR. Then group rows by year, month and day. Perform averaging on the temp and humidity columns.</span></span>
+<span id="cb79-16"><a href="#cb79-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Rename the temp and humidity columns in the resulting data frame as atemp and ahumid. Reset the dataframe index and assign the result to weather2.</span></span>
+<span id="cb79-17"><a href="#cb79-17" aria-hidden="true" tabindex="-1"></a>weather2 <span class="op">=</span> weather[weather.origin<span class="op">==</span><span class="st">"EWR"</span>].groupby([<span class="st">"year"</span>,<span class="st">"month"</span>,<span class="st">"day"</span>])[[<span class="st">"temp"</span>,<span class="st">"humid"</span>]].mean(numeric_only<span class="op">=</span><span class="va">True</span>).rename(columns<span class="op">=</span>{<span class="st">'temp'</span>:<span class="st">'atemp'</span>,<span class="st">'humid'</span>:<span class="st">'ahumid'</span>}).reset_index()</span>
+<span id="cb79-18"><a href="#cb79-18" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-19"><a href="#cb79-19" aria-hidden="true" tabindex="-1"></a><span class="co"># Merge the weather2 dataframe into the flights2 dataframe from the left on the year, month and days columns. Left merge will result in all the rows of flights2 will be in the result.</span></span>
+<span id="cb79-20"><a href="#cb79-20" aria-hidden="true" tabindex="-1"></a><span class="co"># If there is no matching atemp or ahumid for any rows in flights2, then a NaN will be inserted into the columns for those rows.</span></span>
+<span id="cb79-21"><a href="#cb79-21" aria-hidden="true" tabindex="-1"></a>task17_my <span class="op">=</span> pd.merge(flights2, weather2, on<span class="op">=</span>[<span class="st">'year'</span>, <span class="st">'month'</span>, <span class="st">'day'</span>], how<span class="op">=</span><span class="st">'left'</span>)</span>
+<span id="cb79-22"><a href="#cb79-22" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-23"><a href="#cb79-23" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(<span class="st">"Head of the Pandas data frame resulting from the query:"</span>)</span>
+<span id="cb79-24"><a href="#cb79-24" aria-hidden="true" tabindex="-1"></a><span class="bu">print</span>(task17_my.head(), <span class="st">"</span><span class="ch">\n</span><span class="st">"</span>)</span>
+<span id="cb79-25"><a href="#cb79-25" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-26"><a href="#cb79-26" aria-hidden="true" tabindex="-1"></a>t17_et <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb79-27"><a href="#cb79-27" aria-hidden="true" tabindex="-1"></a>t17_dur <span class="op">=</span> t17_et <span class="op">-</span> t17_st</span>
+<span id="cb79-28"><a href="#cb79-28" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-29"><a href="#cb79-29" aria-hidden="true" tabindex="-1"></a><span class="co"># Make null type values consistent - see Task 15 for description</span></span>
+<span id="cb79-30"><a href="#cb79-30" aria-hidden="true" tabindex="-1"></a>task17_sql.fillna(value<span class="op">=</span>np.nan, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb79-31"><a href="#cb79-31" aria-hidden="true" tabindex="-1"></a>task17_my.fillna(value<span class="op">=</span>np.nan, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb79-32"><a href="#cb79-32" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb79-33"><a href="#cb79-33" aria-hidden="true" tabindex="-1"></a><span class="co"># Comparing the result from SQL and Pandas</span></span>
+<span id="cb79-34"><a href="#cb79-34" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task17_sql, task17_my)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Head of the Pandas data frame resulting from the query:
+   year  month  day  dep_time  sched_dep_time  dep_delay  arr_time  \
+0  2013      1    1     517.0             515        2.0     830.0   
+1  2013      1    1     554.0             558       -4.0     740.0   
+2  2013      1    1     555.0             600       -5.0     913.0   
+3  2013      1    1     558.0             600       -2.0     923.0   
+4  2013      1    1     559.0             600       -1.0     854.0   
+
+   sched_arr_time  arr_delay carrier  ...  tailnum origin dest air_time  \
+0             819       11.0      UA  ...   N14228    EWR  IAH    227.0   
+1             728       12.0      UA  ...   N39463    EWR  ORD    150.0   
+2             854       19.0      B6  ...   N516JB    EWR  FLL    158.0   
+3             937      -14.0      UA  ...   N53441    EWR  SFO    361.0   
+4             902       -8.0      UA  ...   N76515    EWR  LAS    337.0   
+
+   distance  hour  minute            time_hour  atemp     ahumid  
+0      1400     5      15  2013-01-01 05:00:00  38.48  58.386087  
+1       719     5      58  2013-01-01 05:00:00  38.48  58.386087  
+2      1065     6       0  2013-01-01 06:00:00  38.48  58.386087  
+3      2565     6       0  2013-01-01 06:00:00  38.48  58.386087  
+4      2227     6       0  2013-01-01 06:00:00  38.48  58.386087  
+
+[5 rows x 21 columns] 
+
+Outcome of comparison: SQL and Pandas results are equal</code></pre>
+</div>
+</div>
+<div id="ef15e230" class="cell" data-execution_count="44">
+<div class="sourceCode cell-code" id="cb81"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb81-1"><a href="#cb81-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Polars result with timing</span></span>
+<span id="cb81-2"><a href="#cb81-2" aria-hidden="true" tabindex="-1"></a>t17_st_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb81-3"><a href="#cb81-3" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-4"><a href="#cb81-4" aria-hidden="true" tabindex="-1"></a>flights2_pl <span class="op">=</span> flights_pl.<span class="bu">filter</span>(pl.col(<span class="st">"origin"</span>) <span class="op">==</span> <span class="st">"EWR"</span>)</span>
+<span id="cb81-5"><a href="#cb81-5" aria-hidden="true" tabindex="-1"></a>weather2_pl <span class="op">=</span> (weather_pl.<span class="bu">filter</span>(pl.col(<span class="st">"origin"</span>) <span class="op">==</span> <span class="st">"EWR"</span>).group_by([<span class="st">"year"</span>, <span class="st">"month"</span>, <span class="st">"day"</span>]).agg([pl.col(<span class="st">"temp"</span>).mean().alias(<span class="st">"atemp"</span>),</span>
+<span id="cb81-6"><a href="#cb81-6" aria-hidden="true" tabindex="-1"></a>                pl.col(<span class="st">"humid"</span>).mean().alias(<span class="st">"ahumid"</span>)]))</span>
+<span id="cb81-7"><a href="#cb81-7" aria-hidden="true" tabindex="-1"></a>task17_pl<span class="op">=</span>flights2_pl.join(weather2_pl, on<span class="op">=</span>[<span class="st">"year"</span>, <span class="st">"month"</span>, <span class="st">"day"</span>], how<span class="op">=</span><span class="st">"left"</span>)</span>
+<span id="cb81-8"><a href="#cb81-8" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-9"><a href="#cb81-9" aria-hidden="true" tabindex="-1"></a>t17_et_pl <span class="op">=</span> timeit.default_timer()</span>
+<span id="cb81-10"><a href="#cb81-10" aria-hidden="true" tabindex="-1"></a>t17_dur_pl <span class="op">=</span> t17_et_pl <span class="op">-</span> t17_st_pl</span>
+<span id="cb81-11"><a href="#cb81-11" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-12"><a href="#cb81-12" aria-hidden="true" tabindex="-1"></a><span class="co"># Make null type values consistent - see Task 15 for description</span></span>
+<span id="cb81-13"><a href="#cb81-13" aria-hidden="true" tabindex="-1"></a>task17_pl_pd <span class="op">=</span> task17_pl.to_pandas()</span>
+<span id="cb81-14"><a href="#cb81-14" aria-hidden="true" tabindex="-1"></a>task17_pl_pd.fillna(value<span class="op">=</span>np.nan, inplace<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb81-15"><a href="#cb81-15" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-16"><a href="#cb81-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Checking the Pandas result == Polars result. We need to convert the polars dataframe to a pandas dataframe,</span></span>
+<span id="cb81-17"><a href="#cb81-17" aria-hidden="true" tabindex="-1"></a><span class="co"># sort and reset the index for the comparison</span></span>
+<span id="cb81-18"><a href="#cb81-18" aria-hidden="true" tabindex="-1"></a>test_dataframe_equality(task17_my, task17_pl_pd, name<span class="op">=</span><span class="st">"Polars"</span>)</span>
+<span id="cb81-19"><a href="#cb81-19" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb81-20"><a href="#cb81-20" aria-hidden="true" tabindex="-1"></a>print_execution_data(t17_dur, t17_dur_pl)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>Outcome of comparison: Polars and Pandas results are equal
+
+Metric                Pandas    Polars
+Execution time [s]:  0.1417  0.01958
+Relative to Pandas:  1           0.138</code></pre>
+</div>
+</div>
+<div id="35962471" class="cell" data-execution_count="45">
+<div class="sourceCode cell-code" id="cb83"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb83-1"><a href="#cb83-1" aria-hidden="true" tabindex="-1"></a><span class="co"># Close database connection</span></span>
+<span id="cb83-2"><a href="#cb83-2" aria-hidden="true" tabindex="-1"></a>conn.close()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section>
+</section>
+<section id="summary" class="level2">
+<h2 class="anchored" data-anchor-id="summary">Summary</h2>
+<p>This Jupyter Notebook demonstrates the use of <code>pandas</code> and <code>polars</code> for performing equivalent SQL queries. For cases where the queries were simple, the pandas queries were faster (up to 2x) than polars. However, for cases where the queries were complex, such as the joins, polars was faster (up tp 11x) than pandas.</p>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../portfolio/dw/Task4/Task_4P.html" class="pagination-link" aria-label="Working with pandas Data Frames (Heterogeneous Data)">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Working with pandas Data Frames (Heterogeneous Data)</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../portfolio/dw/Task7/Task_7HD.html" class="pagination-link" aria-label="Data Mining">
+        <span class="nav-page-text">Data Mining</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>   
+    <div class="nav-footer-center">
+<p>© <span id="current-year"></span> Darrin William Stephens.</p>
+</div>
+    <div class="nav-footer-right">
+<p>License: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY NC SA 4.0</a>.</p>
+</div>
+  </div>
+</footer>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  const currentYear = new Date().getFullYear();
+  document.getElementById('current-year').textContent = currentYear;
+});
+</script>
+
+
+
+
+</body></html>
