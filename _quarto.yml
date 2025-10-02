@@ -2,20 +2,90 @@ project:
   type: website
   output-dir: docs
 website:
-  title: "darrin_website"
+  title: "DWS"
+  description: "A data science and engineering and portfolio by Darrin William Stephens"
+  page-navigation: true
+  back-to-top-navigation: true
+  page-footer:
+    border: true
+    left: |
+      Powered by [Quarto](https://quarto.org).
+    center: |
+      &copy; []{#current-year} Darrin William Stephens.
+    right: |
+      License: [CC BY NC SA 4.0](https://creativecommons.org/licenses/by-nc-sa/4.0).
   navbar:
-    left:
-      - href: index.qmd
-        text: Home
-      - about.qmd
+    title: "DWS"
+    search: true
+    background: dark
+    logo: assets/images/logo.png
+    logo-alt: "Darrin Stephens logo"
+    right:
+      - text: About
+        href: index.qmd
+      - text: Portfolio
+        href: portfolio.qmd        
+      - text: Publications
+        href: publications.qmd
+      - text: '{{< iconify fa7-brands:linkedin title="LinkedIn" label="LinkedIn" >}}'
+        href: 'https://www.linkedin.com/in/darrin-stephens'
+      - text: '{{< iconify octicon:mark-github-16 title="GitHub" label="GitHub" >}}'
+        href: "https://github.com/dwstephens"
+
+  sidebar:
+    - id: portfolio
+      title: "Portfolio"
+      style: "docked"
+      search: true
+      background: light
+      collapse-level: 2
+      contents: 
+        - text: "Introduction"
+          href: portfolio.qmd
+        - section: "Data Wrangling"
+          href: data_wrangling.qmd
+          contents:
+            - portfolio/dw/Task1/Task_1P.qmd
+            - portfolio/dw/Task2/Task_2P.qmd
+            - portfolio/dw/Task3/Task_3P.qmd
+            - portfolio/dw/Task4/Task_4P.qmd
+            - portfolio/dw/Task6/Task_6D.qmd
+            - portfolio/dw/Task7/Task_7HD.qmd
+            - portfolio/dw/Task8/Task_8HD.qmd
+        - section: "Machine Learning"
+          contents:
+            - portfolio/ml/empty.qmd
 
 format:
   html:
     theme:
-      - cosmo
-      - brand
-    css: styles.css
-    toc: true
+      light:
+        - cosmo
+        - assets/stylesheets/theme-light.scss
+        - assets/stylesheets/styles.scss
+      dark:
+        - cosmo
+        - assets/stylesheets/theme-dark.scss
+        - assets/stylesheets/styles.scss
+    lang: en-GB
+    date-format: 'dddd[, the] Do [of] MMMM, YYYY'
+    highlight-style: github
+    code-copy: true
+    code-link: true
+    code-overflow: wrap
+    anchor-sections: true
+    email-obfuscation: javascript
+    link-external-newwindow: true
+    fig-align: center
+    code-tools:
+      source: false
+      toggle: false
+      caption: none
+    include-after-body:
+      - file: assets/scripts/current-year.html
 
+lightbox: auto
 
+execute:
+  freeze: true
 

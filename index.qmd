@@ -1,7 +1,66 @@
 ---
-title: "darrin_website"
+title: "Darrin William Stephens"
+subtitle: |
+  Engineer, Data Scientist.
+image: /assets/images/Darrin-2-crop.png
+format:
+  html:
+    grid:
+      body-width: 800px
+about:
+  id: edu-exp
+  template: solana
+  image-width: 9em
+  image-shape: round
+  links:
+    - text: '{{< iconify fa7-solid:envelope title="Envelope logo for email" label="Envelope logo for email" >}}'
+      href: "mailto:dwstephens75@gmail.com"
+      aria-label: "Envelope logo for email"
+    - text: '{{< iconify fa7-brands:linkedin title="LinkedIn logo linking to darrin-stephens account" label="LinkedIn logo linking to darrin-stephens account" >}}'
+      href: "https://www.linkedin.com/in/darrin-stephens"
+      aria-label: "LinkedIn logo linking to darrin-stephens account"
+    - text: '{{< iconify octicon:mark-github-16 title="GitHub logo linking to dwstephens account" label="GitHub logo linking to dwstephens account" >}}'
+      href: "https://github.com/dwstephens"
+      aria-label: "GitHub logo linking to dstephens account"
 ---
 
-This is a Quarto website.
+::: {#edu-exp}
+:::
 
-To learn more about Quarto websites visit <https://quarto.org/docs/websites>.
+WIP
+
+
+:::: {.grid}
+
+::: {.g-col-12 .g-col-md-8 style="text-align: left;"}
+## Education
+
+<!-- - **_Master_ of Data Science**, **2026**  
+  *Deakin University, Melbourne, Victoria, Australia*
+-->
+- **_Graduate Certificate_ of Cyber Security**, **2023**  
+  *Charles Sturt University, Albury, New South Wales, Australia*
+
+- **_Graduate Certificate_ of Business Law**, **2019**  
+  *Southern Cross University, Lismore, New South Wales, Australia*
+
+- **_Ph.D._ in Mechanical Engineering**, **2001**  
+  *James Cook University, Townsville, Queensland, Australia*
+
+- **_B.E._ in Mechanical Engineering** (*1st Class Honours*), **1996**  
+  *James Cook University, Townsville, Queensland, Australia*
+:::
+
+::: {.g-col-12 .g-col-md-4 style="text-align: left;"}
+## Interests
+
+- CFD
+- Machine Learning
+- Data Science
+- Knowledge Sharing
+- Learning New Skills
+- Jigsaw Puzzles
+- Star Wars
+:::
+
+::::

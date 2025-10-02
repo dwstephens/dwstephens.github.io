@@ -1,0 +1,7 @@
+---
+title: "Data Wrangling"
+---
+
+These are the works produced for SIT731 Data Wrangling unit.
+
+The aim of this unit was to learn various data wrangling methodologies and programming techniques to perform them. This included programming in Python for performing various data wrangling tasks, learning data extraction methods from different sources, working with different types of data, storing and retrieving them, applying sampling techniques and inspecting them, cleaning them by identifying outliers/anomalies, handling missing data, transforming, selecting and extracting features, performing exploratory analysis, visualisation using various tools, summarising data appropriately, performing basic statistical analysis and modelling using basic machine learning. Further, techniques for maintaining data privacy and exercising ethics in data manipulation were be covered in the unit.
