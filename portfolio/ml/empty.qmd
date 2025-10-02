@@ -1,0 +1,5 @@
+---
+title: "Empty"
+---
+
+This is a placeholder file.
