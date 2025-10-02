@@ -2,6 +2,16 @@
 title: "Data Wrangling"
 ---
 
-These are the works produced for SIT731 Data Wrangling unit.
+These are the works produced for SIT731 Data Wrangling unit. This unit focuses on the essential process of data wrangling, a foundational skill in both Data Science (DS) and Artificial Intelligence (AI). With the rise of large-scale data collection from diverse sources, preparing data correctly is critical for accurate analysis and modelling. Throughout the unit, I learned to:
 
-The aim of this unit was to learn various data wrangling methodologies and programming techniques to perform them. This included programming in Python for performing various data wrangling tasks, learning data extraction methods from different sources, working with different types of data, storing and retrieving them, applying sampling techniques and inspecting them, cleaning them by identifying outliers/anomalies, handling missing data, transforming, selecting and extracting features, performing exploratory analysis, visualisation using various tools, summarising data appropriately, performing basic statistical analysis and modelling using basic machine learning. Further, techniques for maintaining data privacy and exercising ethics in data manipulation were be covered in the unit.
+- Program in Python to perform a wide range of data wrangling tasks
+- Extract data from various sources and formats
+- Handle different data types, store and retrieve data efficiently
+- Apply sampling techniques and inspect data distributions
+- Clean data by identifying and managing outliers, anomalies, and missing values
+- Transform, select, and extract features for modelling
+- Conduct exploratory data analysis and create visualisations
+- Summarise data and perform basic statistical analysis
+- Build simple machine learning models for initial insights
+
+The unit also covered ethical considerations and data privacy techniques, ensuring responsible data handling practices.

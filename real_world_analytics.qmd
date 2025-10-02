@@ -1,0 +1,15 @@
+---
+title: "Real World Analytics"
+---
+
+These are the works produced for SIT718 Real World Analytics. This unit explores two core analytical concepts used in real-world decision-making: optimisation and multivariate data aggregation. It focuses on how mathematical modelling can be applied to solve practical problems across industries, businesses, and public services. Through hands-on learning, I gained experience in solving optimisation problems such as:
+
+- Production planning
+- Timetabling and scheduling
+- Workforce rostering
+- Sports program coordination
+- Vehicle routing and robotics
+- Network design and resource allocation
+
+The unit also covered aggregation techniques, where I learned to apply multivariate functions to summarise and interpret datasets with multiple interrelated variables. This helped me develop the ability to analyse complex data and understand the influence of different parameters on decision outcomes.
+Overall, SIT718 equipped me with the mathematical tools and analytical thinking needed to make better, data-driven decisions in diverse real-world contexts.

@@ -1,0 +1,1641 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+<title>Red Wine – DWS</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../data_wrangling.html" rel="next">
+<link href="../../../real_world_analytics.html" rel="prev">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-4a990d8dcb58f517c7c86712b8f2ac7c.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-46f4cc9626f044588a66931b604fc9c8.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-4a990d8dcb58f517c7c86712b8f2ac7c.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-21f8cd6094585e260519947556241a12.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-145fe0d1efd24aec0418ad41d9eec7c6.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-21f8cd6094585e260519947556241a12.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script>
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet"><script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script><script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script><script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script><script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+</head>
+<body class="nav-sidebar docked nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top"><nav class="navbar navbar-expand-lg " data-bs-theme="dark"><div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../assets/images/logo.png" alt="Darrin Stephens logo" class="navbar-logo"></a>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">DWS</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+<li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../../portfolio.html" aria-current="page"> 
+<span class="menu-text">Portfolio</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.linkedin.com/in/darrin-stephens"> 
+<span class="menu-text"><iconify-icon role="img" inline="" icon="fa7-brands:linkedin" aria-label="LinkedIn" title="LinkedIn"></iconify-icon></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/dwstephens"> 
+<span class="menu-text"><iconify-icon role="img" inline="" icon="octicon:mark-github-16" aria-label="GitHub" title="GitHub"></iconify-icon></span></a>
+  </li>  
+</ul>
+</div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav><nav class="quarto-secondary-nav"><div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../real_world_analytics.html">Real World Analytics</a></li><li class="breadcrumb-item"><a href="../../../portfolio/ra/a2/sit718_a2.html">Red Wine</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav></header><!-- content --><div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto"><div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../real_world_analytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Real World Analytics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ra/a2/sit718_a2.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Red Wine</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../data_wrangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Wrangling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task1/Task_1P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task2/Task_2P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with numpy vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task3/Task_3P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with numpy Matrices (Multidimensional Data)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task4/Task_4P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with pandas Data Frames (Heterogeneous Data)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task6/Task_6D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pandas/Polars versus SQL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task7/Task_7HD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Mining</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task8/Task_8HD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Cleaning and Text Analysis</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a class="sidebar-item-text sidebar-link text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true">
+ <span class="menu-text">Machine Learning</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">
+<li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ml/empty.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Empty</span></a>
+  </div>
+</li>
+      </ul>
+</li>
+    </ul>
+</div>
+</nav><div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content"><header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../real_world_analytics.html">Real World Analytics</a></li><li class="breadcrumb-item"><a href="../../../portfolio/ra/a2/sit718_a2.html">Red Wine</a></li></ol></nav><div class="quarto-title">
+<h1 class="title">Red Wine</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header><section id="using-aggregation-function-for-data-analysis" class="level1"><h1>Using Aggregation Function for Data Analysis</h1>
+<p>Dataset: Red Portuguese “Vinho Verde” wine (Cortez et al., 2009)</p>
+<section id="the-data" class="level2"><h2 class="anchored" data-anchor-id="the-data">The Data</h2>
+<ul>
+<li>Dataset: Red Portuguese “Vinho Verde” wine (Cortez et al., 2009)</li>
+<li>Five input variables: citric acid, chlorides, total sulfur dioxide, pH, alcohol</li>
+<li>One output variable: quality</li>
+</ul></section></section><section id="data-exploration" class="level1"><h1>Data Exploration</h1>
+<p>This section uses scatter plots to explore the relationship between wine quality and the independent variables citric acid, chlorides, total sulfur dioxide, and alcohol. Histogram plots of the dependent and independent variables are used to explore the distribution of each variable.</p>
+<div class="cell">
+<div class="sourceCode" id="cb1"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co">#(i) and (ii)</span></span>
+<span><span class="va">data.raw</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"RedWine.txt"</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/Random.html">set.seed</a></span><span class="op">(</span><span class="fl">225259172</span><span class="op">)</span> <span class="co"># the seed is my student ID number</span></span>
+<span></span>
+<span><span class="co">#(iii)</span></span>
+<span><span class="va">subset.num_samples</span> <span class="op">=</span> <span class="fl">460</span></span>
+<span><span class="va">data.subset</span> <span class="op">=</span> <span class="va">data.raw</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/sample.html">sample</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">1599</span>, <span class="va">subset.num_samples</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span><span class="op">:</span><span class="fl">6</span><span class="op">)</span><span class="op">]</span></span>
+<span></span>
+<span><span class="va">data.variable.names</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"citric acid"</span>, <span class="st">"chlorides"</span>, <span class="st">"total sulfur dioxide"</span>, <span class="st">"pH"</span>, <span class="st">"alcohol"</span><span class="op">)</span></span>
+<span><span class="va">y.name</span> <span class="op">=</span> <span class="st">'quality'</span></span>
+<span></span>
+<span><span class="co">#(iv)</span></span>
+<span><span class="co"># Create 5 scatterplots function (for each X variable against the variable of interest Y)"</span></span>
+<span><span class="va">colours</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="st">"#9E9E9E"</span>,<span class="st">"#61D04F"</span>,<span class="st">"#2297E6"</span>,<span class="st">"#CD0BBC"</span>,<span class="st">"#F5C710"</span>,<span class="st">"#DF536B"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="va">name</span> <span class="op">=</span> <span class="va">data.variable.names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/plot.default.html">plot</a></span><span class="op">(</span>x <span class="op">=</span> <span class="va">data.subset</span><span class="op">[</span>,<span class="va">i</span><span class="op">]</span>, y <span class="op">=</span> <span class="va">data.subset</span><span class="op">[</span>,<span class="fl">6</span><span class="op">]</span>, col <span class="op">=</span> <span class="va">colours</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, pch<span class="op">=</span><span class="fl">20</span>, cex<span class="op">=</span> <span class="fl">3</span>, xlab<span class="op">=</span> <span class="va">name</span>, ylab<span class="op">=</span><span class="va">y.name</span>,</span>
+<span>       main<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Scatter plot of %s versus %s (n=%s)"</span>, <span class="va">y.name</span>, <span class="va">name</span>, <span class="va">subset.num_samples</span><span class="op">)</span></span>
+<span>       <span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-1-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1"><img src="sit718_a2_files/figure-html/unnamed-chunk-1-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-1-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2"><img src="sit718_a2_files/figure-html/unnamed-chunk-1-2.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-1-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3"><img src="sit718_a2_files/figure-html/unnamed-chunk-1-3.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-1-4.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4"><img src="sit718_a2_files/figure-html/unnamed-chunk-1-4.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-1-5.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5"><img src="sit718_a2_files/figure-html/unnamed-chunk-1-5.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+<section id="scatter-plot-citric-acid" class="level2"><h2 class="anchored" data-anchor-id="scatter-plot-citric-acid">Scatter Plot: Citric Acid</h2>
+<p>Wine quality increases with increasing citric acid value. The correlation coefficient is r = 0.244.</p>
+</section><section id="scatter-plot-chlorides" class="level2"><h2 class="anchored" data-anchor-id="scatter-plot-chlorides">Scatter Plot: Chlorides</h2>
+<p>Wine quality decreases with increasing chlorides value. The correlation coefficient is r = -0.122. A potential outlier is observed at 0.61 chlorides value. A negation function will be required.</p>
+</section><section id="scatter-plot-total-sulfur-dioxide" class="level2"><h2 class="anchored" data-anchor-id="scatter-plot-total-sulfur-dioxide">Scatter Plot: Total Sulfur Dioxide</h2>
+<p>Wine quality decreases with the increasing value of total sulphur dioxide. The correlation coefficient is r = -0.206. A possible outlier at a value of 289 for total sulfur dioxide. A negation function will be required.</p>
+</section><section id="scatter-plot-ph" class="level2"><h2 class="anchored" data-anchor-id="scatter-plot-ph">Scatter Plot: pH</h2>
+<p>Wine quality does not appear to have a linear relationship with pH. The correlation coefficient is r = -0.072. Potential outlier at pH value of 4.0.</p>
+</section><section id="scatter-plot-alcohol" class="level2"><h2 class="anchored" data-anchor-id="scatter-plot-alcohol">Scatter Plot: Alcohol</h2>
+<p>Wine quality increases with alcohol content. The correlation coefficient is r = 0.442.</p>
+<div class="cell">
+<div class="sourceCode" id="cb2"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Number of bins for histograms</span></span>
+<span><span class="va">bins</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">16</span>,<span class="fl">30</span>,<span class="fl">48</span>,<span class="fl">11</span>,<span class="fl">24</span>,<span class="fl">8</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Create 6 histograms for each X variable and Y</span></span>
+<span><span class="kw">for</span> <span class="op">(</span><span class="va">i</span> <span class="kw">in</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">4</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="va">i</span> <span class="op">==</span> <span class="fl">6</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="va">name</span> <span class="op">=</span> <span class="va">y.name</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="kw">else</span><span class="op">{</span></span>
+<span>  <span class="va">name</span> <span class="op">=</span> <span class="va">data.variable.names</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">data.subset</span><span class="op">[</span>,<span class="va">i</span><span class="op">]</span>, breaks<span class="op">=</span><span class="va">bins</span><span class="op">[</span><span class="va">i</span><span class="op">]</span>, xlab<span class="op">=</span><span class="va">name</span>, main<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Histogram of %s (n=%s)"</span>, <span class="va">name</span>, <span class="va">subset.num_samples</span><span class="op">)</span>,</span>
+<span>       col<span class="op">=</span><span class="va">colours</span><span class="op">[</span><span class="va">i</span><span class="op">]</span></span>
+<span>  <span class="op">)</span></span>
+<span><span class="op">}</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-2-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6"><img src="sit718_a2_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-2-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7"><img src="sit718_a2_files/figure-html/unnamed-chunk-2-2.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-2-3.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8"><img src="sit718_a2_files/figure-html/unnamed-chunk-2-3.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-2-4.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9"><img src="sit718_a2_files/figure-html/unnamed-chunk-2-4.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-2-5.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10"><img src="sit718_a2_files/figure-html/unnamed-chunk-2-5.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-2-6.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11"><img src="sit718_a2_files/figure-html/unnamed-chunk-2-6.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="histogram-citric-acid" class="level2"><h2 class="anchored" data-anchor-id="histogram-citric-acid">Histogram: Citric Acid</h2>
+<p>The distribution of citric acid is uniform for the middle values. However, many observations show a peak near-zero value. At the higher citric acid values, fewer observations give the distribution a right (positive) skew. The distribution range is from 0.000 to 0.790, with a median value of 0.260 and a mean of 0.284.</p>
+</section><section id="histogram-chlorides" class="level2"><h2 class="anchored" data-anchor-id="histogram-chlorides">Histogram: Chlorides</h2>
+<p>The distribution of chlorides is unimodal with significant right (positive) skew. Most of the chlorides observations are between 0.04 and 0.15. Values above 0.15 have very few counts and are potential outliers. The distribution range is from 0.038 to 0.611, with a median value of 0.080 and a mean of 0.0912.</p>
+</section><section id="histogram-total-sulfur-dioxide" class="level2"><h2 class="anchored" data-anchor-id="histogram-total-sulfur-dioxide">Histogram: Total Sulfur Dioxide</h2>
+<p>The distribution of total sulfur dioxide is unimodal with right (positive) skew and reassembles a log-normal shape. The value of 289 appears to be an outlier. The distribution range is from 6.0 to 289.0, with a median value of 38.5 and a mean of 47.12.</p>
+</section><section id="histogram-ph" class="level2"><h2 class="anchored" data-anchor-id="histogram-ph">Histogram: pH</h2>
+<p>The distribution of pH is unimodal with minimal skew and a potential outlier at 4.01 and has a normal distribution shape. The distribution range is from 2.89 to 4.01, with a median value of 3.30 and a mean of 3.31.</p>
+</section><section id="histogram-alcohol" class="level2"><h2 class="anchored" data-anchor-id="histogram-alcohol">Histogram: Alcohol</h2>
+<p>The distribution of alcohol is unimodal with right (positive) skew and reassembles a log-normal shape. It ranges from 8.7 to 14.9, with a median value of 10.1 and a mean of 10.4.</p>
+</section><section id="histogram-quality" class="level2"><h2 class="anchored" data-anchor-id="histogram-quality">Histogram: Quality</h2>
+<p>The quality distribution is unimodal, with some right (positive) skew having a normal distribution shape. The data contains only integer values, which leads to gaps in the histogram unless a small number of bins are used. The distribution range is from 3 to 8, with a median value of 6 and a mean of 5.6.</p>
+<div class="cell">
+<div class="sourceCode" id="cb3"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Generate a summary of the data</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/base/summary.html">summary</a></span><span class="op">(</span><span class="va">data.subset</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>       V1               V2                V3               V4       
+ Min.   :0.0000   Min.   :0.03800   Min.   :  6.00   Min.   :2.890  
+ 1st Qu.:0.1000   1st Qu.:0.07100   1st Qu.: 23.00   1st Qu.:3.200  
+ Median :0.2600   Median :0.08000   Median : 38.50   Median :3.300  
+ Mean   :0.2837   Mean   :0.09117   Mean   : 47.12   Mean   :3.308  
+ 3rd Qu.:0.4400   3rd Qu.:0.09400   3rd Qu.: 64.25   3rd Qu.:3.410  
+ Max.   :0.7900   Max.   :0.61100   Max.   :289.00   Max.   :4.010  
+       V5              V6       
+ Min.   : 8.70   Min.   :3.000  
+ 1st Qu.: 9.50   1st Qu.:5.000  
+ Median :10.10   Median :6.000  
+ Mean   :10.41   Mean   :5.633  
+ 3rd Qu.:11.00   3rd Qu.:6.000  
+ Max.   :14.90   Max.   :8.000  </code></pre>
+</div>
+<div class="sourceCode" id="cb5"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Calculate Pearson correlation coefficients</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/stats/cor.html">cor</a></span><span class="op">(</span><span class="va">data.subset</span>, <span class="va">data.subset</span><span class="op">[</span>,<span class="fl">6</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>          [,1]
+V1  0.24381427
+V2 -0.12184464
+V3 -0.20584651
+V4 -0.07241671
+V5  0.44197926
+V6  1.00000000</code></pre>
+</div>
+</div>
+</section></section><section id="transform-the-data" class="level1"><h1>Transform the Data</h1>
+<p>The independent variables citric acid, chlorides, total sulfur dioxide, and alcohol were chosen for the aggregation function fitting. These variables had the strongest association with wine quality. Treatment of outliers was considered, and it was decided not to apply any treatment.</p>
+<div class="cell">
+<div class="sourceCode" id="cb7"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va">e1071</span><span class="op">)</span> <span class="co"># Required for Skewness function</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://CRAN.R-project.org/package=rcompanion">rcompanion</a></span><span class="op">)</span> <span class="co"># Provides plotting of normal PDF on histogram</span></span>
+<span><span class="kw"><a href="https://rdrr.io/r/base/library.html">library</a></span><span class="op">(</span><span class="va"><a href="https://www.stefanom.io/latex2exp/">latex2exp</a></span><span class="op">)</span> <span class="co"># Provides the ability to use latex in plot titles/labels </span></span>
+<span></span>
+<span><span class="co"># min-max normalisation</span></span>
+<span><span class="co"># Allows optional arguements to set the min and max for the scaling</span></span>
+<span><span class="va">minmax</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span>, <span class="va">x_min</span><span class="op">=</span><span class="cn">NULL</span>, <span class="va">x_max</span><span class="op">=</span><span class="cn">NULL</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">x_min</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="va">x_min</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="kw">if</span> <span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/NULL.html">is.null</a></span><span class="op">(</span><span class="va">x_max</span><span class="op">)</span><span class="op">)</span><span class="op">{</span></span>
+<span>    <span class="va">x_max</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span></span>
+<span>  <span class="op">}</span></span>
+<span>  <span class="op">(</span><span class="va">x</span> <span class="op">-</span> <span class="va">x_min</span><span class="op">)</span><span class="op">/</span><span class="op">(</span><span class="va">x_max</span><span class="op">-</span><span class="va">x_min</span><span class="op">)</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># z-score standardisation and scaling to unit interval</span></span>
+<span><span class="va">unit.z</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span>  <span class="fl">0.15</span><span class="op">*</span><span class="op">(</span><span class="op">(</span><span class="va">x</span><span class="op">-</span><span class="fu"><a href="https://rdrr.io/r/base/mean.html">mean</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span><span class="op">/</span><span class="fu"><a href="https://rdrr.io/r/stats/sd.html">sd</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">+</span> <span class="fl">0.5</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Negation function for normalised data</span></span>
+<span><span class="va">negation</span> <span class="op">=</span> <span class="kw">function</span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">{</span></span>
+<span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span> <span class="op">+</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">x</span><span class="op">)</span><span class="op">)</span> <span class="op">-</span> <span class="va">x</span></span>
+<span><span class="op">}</span></span>
+<span></span>
+<span><span class="co"># Vector with indices of chosen variables</span></span>
+<span><span class="va">I</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">5</span>,<span class="fl">6</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Matrix containing the variables to transform</span></span>
+<span><span class="va">variables_for_transform</span> <span class="op">=</span> <span class="va">data.subset</span><span class="op">[</span>,<span class="va">I</span><span class="op">]</span></span>
+<span><span class="va">data.transformed</span> <span class="op">=</span> <span class="va">variables_for_transform</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="citric-acid" class="level1"><h1>Citric acid</h1>
+<p>This distribution has some right skew with a skewness value of 0.326. Since the data is right-skewed, a power or log transformation is suitable. Through trial and error, the final transformation applied was <span class="math display">\[x_{new} = x^{0.75}\]</span></p>
+<p>This transformed the distribution closer to a normal distribution with a skewness of -0.04. The variable was then scaled between 0 and 1 using a min-max function. This variable already had a positive association with quality, so no negation was required.</p>
+<div class="cell">
+<div class="sourceCode" id="cb8"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Transform</span></span>
+<span><span class="va">p</span><span class="op">=</span><span class="fl">0.75</span> <span class="co"># final value after trying p=0.5 first</span></span>
+<span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">=</span> <span class="va">variables_for_transform</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="va">p</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/skewness.html">skewness</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.0399249</code></pre>
+</div>
+<div class="sourceCode" id="cb10"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">name1</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(%s $^{%s}$)"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">title1</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(Histogram of %s $^{%s}$ (n=%s))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">p</span>, <span class="va">subset.num_samples</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>,xlab<span class="op">=</span><span class="va">name1</span>, breaks<span class="op">=</span><span class="va">bins</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main<span class="op">=</span><span class="va">title1</span>, col<span class="op">=</span><span class="va">colours</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-5-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12"><img src="sit718_a2_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode" id="cb11"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">min_1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">max_1</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Normalise between 0 - 1</span></span>
+<span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span> <span class="op">=</span> <span class="fu">minmax</span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">name1s</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(normalised (%s $^{%s}$))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">title1s</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(Histogram of normalised (%s $^{%s}$) (n=%s))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, <span class="va">p</span>, <span class="va">subset.num_samples</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/rcompanion/man/plotNormalHistogram.html">plotNormalHistogram</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">1</span><span class="op">]</span>, xlab<span class="op">=</span><span class="va">name1s</span>, breaks<span class="op">=</span><span class="va">bins</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>, main<span class="op">=</span><span class="va">title1s</span>, col<span class="op">=</span><span class="va">colours</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">]</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-5-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13"><img src="sit718_a2_files/figure-html/unnamed-chunk-5-2.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="chlorides" class="level1"><h1>Chlorides</h1>
+<p>This distribution has a significant right skew, with a skewness value of 5.0. Since the data is right-skewed, a suitable transformation is a power or log transformation. A more substantial transformation than the log was required. Through trial and error, the final transformation applied was <span class="math display">\[ x_{new} = -\frac{1}{x}\]</span> Giving a skewness of -0.259.The variable was then scaled between 0 and 1 using a min-max function. This variable had a negative association with quality, so a negation function was applied.</p>
+<div class="cell">
+<div class="sourceCode" id="cb12"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Transform</span></span>
+<span><span class="va">p</span><span class="op">=</span><span class="op">-</span><span class="fl">1</span> <span class="co"># final value after trying log transform first</span></span>
+<span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">=</span> <span class="op">-</span><span class="va">variables_for_transform</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="va">p</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/skewness.html">skewness</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.2587889</code></pre>
+</div>
+<div class="sourceCode" id="cb14"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">name2</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"((-%s $^{%s}$))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">title2</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(Histogram of (-%s $^{%s}$) (n=%s))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">p</span>, <span class="va">subset.num_samples</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>,xlab<span class="op">=</span><span class="va">name2</span>, breaks<span class="op">=</span><span class="va">bins</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, main<span class="op">=</span><span class="va">title2</span>, col<span class="op">=</span><span class="va">colours</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-6-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14"><img src="sit718_a2_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode" id="cb15"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">min_2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">max_2</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Normalise between 0 - 1</span></span>
+<span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">=</span> <span class="fu">minmax</span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">name2s</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(negated normalised (-%s $^{%s}$))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">title2s</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(Histogram of negated normalised (-%s $^{%s}$) (n=%s))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, <span class="va">p</span>, <span class="va">subset.num_samples</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="co">#plotNormalHistogram(data.transformed[,2], xlab=name2s, breaks=bins[I[2]], main=title2s, col=colours[I[2]],xlim=c(0,1))</span></span>
+<span></span>
+<span><span class="co"># Negate</span></span>
+<span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span> <span class="op">=</span> <span class="fu">negation</span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/rcompanion/man/plotNormalHistogram.html">plotNormalHistogram</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">2</span><span class="op">]</span>, xlab<span class="op">=</span><span class="va">name2s</span>, breaks<span class="op">=</span><span class="va">bins</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>, main<span class="op">=</span><span class="va">title2s</span>, col<span class="op">=</span><span class="va">colours</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">]</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-6-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15"><img src="sit718_a2_files/figure-html/unnamed-chunk-6-2.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="total-sulfur-dioxide" class="level1"><h1>Total Sulfur Dioxide</h1>
+<p>This distribution has a strong right skew, with a skewness value 1.72. Since the data is right-skewed, a suitable transformation is a power or log transformation. The distribution looks log-normal, the transformation applied was <span class="math display">\[x_{new} = \log(x)\]</span> This pushed the distribution closer to normal and reduced the skewness to -0.17. The variable was then scaled between 0 and 1 using a min-max function. This variable had a negative association with quality, so a negation function was applied.</p>
+<div class="cell">
+<div class="sourceCode" id="cb16"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Transform</span></span>
+<span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">variables_for_transform</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/skewness.html">skewness</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] -0.1698297</code></pre>
+</div>
+<div class="sourceCode" id="cb18"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">name3</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(log(%s))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">title3</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(Histogram of log(%s) (n=%s))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, <span class="va">subset.num_samples</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span>,xlab<span class="op">=</span><span class="va">name3</span>, breaks<span class="op">=</span><span class="fl">24</span>, main<span class="op">=</span><span class="va">title3</span>, col<span class="op">=</span><span class="va">colours</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-7-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16"><img src="sit718_a2_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode" id="cb19"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">min_3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">max_3</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Normalize between 0 - 1</span></span>
+<span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span> <span class="op">=</span> <span class="fu">minmax</span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Negate</span></span>
+<span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span> <span class="op">=</span> <span class="fu">negation</span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">name3s</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(negated normalised log(%s))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">title3s</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(Histogram of negated normalised log(%s) (n=%s))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>, <span class="va">subset.num_samples</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/rcompanion/man/plotNormalHistogram.html">plotNormalHistogram</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">3</span><span class="op">]</span>, xlab<span class="op">=</span><span class="va">name3s</span>, breaks<span class="op">=</span><span class="fl">24</span>, main<span class="op">=</span><span class="va">title3s</span>, col<span class="op">=</span><span class="va">colours</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">]</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-7-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17"><img src="sit718_a2_files/figure-html/unnamed-chunk-7-2.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="alcohol" class="level1"><h1>Alcohol</h1>
+<p>This distribution has a strong right skew, with a skewness value of 1.06. Since the data is right-skewed, a suitable transformation is a power or log transformation. The distribution looks log-normal, so a log transform was first tried. Through trial and error, the final transformation applied was <span class="math display">\[x_{new} = -\frac{1}{x^2} \]</span> Giving a skewness of -0.44. The variable was then scaled between 0 and 1 using a min-max function. This variable had a positive association with quality, so no negation was required.</p>
+<div class="cell">
+<div class="sourceCode" id="cb20"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Transform</span></span>
+<span><span class="va">p</span><span class="op">=</span><span class="op">-</span><span class="fl">2</span> <span class="co"># final value</span></span>
+<span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">-</span><span class="op">(</span><span class="va">variables_for_transform</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span><span class="op">^</span><span class="va">p</span><span class="op">)</span></span>
+<span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/skewness.html">skewness</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.4390636</code></pre>
+</div>
+<div class="sourceCode" id="cb22"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">name4</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"((-%s $^{%s}$))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>,<span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">title4</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(Histogram of -(%s $^{%s}$) (n=%s))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, <span class="va">p</span>, <span class="va">subset.num_samples</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span>,xlab<span class="op">=</span><span class="va">name4</span>, breaks<span class="op">=</span><span class="fl">12</span>, main<span class="op">=</span><span class="va">title4</span>, col<span class="op">=</span><span class="va">colours</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-8-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-18"><img src="sit718_a2_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode" id="cb23"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">min_4</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">max_4</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Normalize between 0 - 1</span></span>
+<span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span> <span class="op">=</span> <span class="fu">minmax</span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span><span class="op">)</span></span>
+<span><span class="va">name4s</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(normalised (-%s $^{%s}$))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>,<span class="va">p</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="va">title4s</span> <span class="op">=</span> <span class="fu"><a href="https://www.stefanom.io/latex2exp/reference/TeX.html">TeX</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">r"(Histogram of normalised (-%s $^{%s}$) (n=%s))"</span>, <span class="va">data.variable.names</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>, <span class="va">p</span>, <span class="va">subset.num_samples</span><span class="op">)</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/rcompanion/man/plotNormalHistogram.html">plotNormalHistogram</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">4</span><span class="op">]</span>, xlab<span class="op">=</span><span class="va">name4s</span>, breaks<span class="op">=</span><span class="fl">12</span>, main<span class="op">=</span><span class="va">title4s</span>, col<span class="op">=</span><span class="va">colours</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">]</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-8-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-19"><img src="sit718_a2_files/figure-html/unnamed-chunk-8-2.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+</div>
+</section><section id="quality" class="level1"><h1>Quality</h1>
+<p>This distribution has some right skew, with a low skewness value of 0.28. Since the distribution already looks normal no data transformation was applied. The variable was then scaled between 0 and 1 using a min-max function. Using the range of possible values 0-10. This variable is the dependent variable, so no negation was required.</p>
+<div class="cell">
+<div class="sourceCode" id="cb24"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Transform - no transformation applied to this variable</span></span>
+<span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">5</span><span class="op">]</span> <span class="op">=</span> <span class="va">variables_for_transform</span><span class="op">[</span>,<span class="fl">5</span><span class="op">]</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/e1071/man/skewness.html">skewness</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">5</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output cell-output-stdout">
+<pre><code>[1] 0.2796584</code></pre>
+</div>
+<div class="sourceCode" id="cb26"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">name5</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"%s"</span>, <span class="va">y.name</span><span class="op">)</span></span>
+<span><span class="va">title5</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"(Histogram of %s (n=%s))"</span>, <span class="va">y.name</span>, <span class="va">subset.num_samples</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/graphics/hist.html">hist</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">5</span><span class="op">]</span>,xlab<span class="op">=</span><span class="va">name5</span>, breaks<span class="op">=</span><span class="fl">8</span>, main<span class="op">=</span><span class="va">title5</span>, col<span class="op">=</span><span class="va">colours</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-9-1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-20"><img src="sit718_a2_files/figure-html/unnamed-chunk-9-1.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode" id="cb27"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># We know the quality could range between 0 and 10, so use those values here.</span></span>
+<span><span class="va">min_y</span> <span class="op">=</span> <span class="fl">0</span></span>
+<span><span class="va">max_y</span> <span class="op">=</span> <span class="fl">10</span></span>
+<span></span>
+<span><span class="co"># Normalise between 0 - 1</span></span>
+<span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">5</span><span class="op">]</span> <span class="op">=</span> <span class="fu">minmax</span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">5</span><span class="op">]</span>, <span class="va">min_y</span>, <span class="va">max_y</span><span class="op">)</span></span>
+<span><span class="va">name5s</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"normalised %s"</span>, <span class="va">y.name</span><span class="op">)</span></span>
+<span><span class="va">title5s</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/sprintf.html">sprintf</a></span><span class="op">(</span><span class="st">"Histogram of normalised %s (n=%s)"</span>, <span class="va">y.name</span>, <span class="va">subset.num_samples</span><span class="op">)</span></span>
+<span><span class="fu"><a href="https://rdrr.io/pkg/rcompanion/man/plotNormalHistogram.html">plotNormalHistogram</a></span><span class="op">(</span><span class="va">data.transformed</span><span class="op">[</span>,<span class="fl">5</span><span class="op">]</span>, xlab<span class="op">=</span><span class="va">name5s</span>, breaks<span class="op">=</span><span class="fl">8</span>, main<span class="op">=</span><span class="va">title5s</span>, col<span class="op">=</span><span class="va">colours</span><span class="op">[</span><span class="va">I</span><span class="op">[</span><span class="fl">5</span><span class="op">]</span><span class="op">]</span>,xlim<span class="op">=</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0</span>,<span class="fl">1</span><span class="op">)</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<div>
+<figure class="figure"><p><a href="sit718_a2_files/figure-html/unnamed-chunk-9-2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-21"><img src="sit718_a2_files/figure-html/unnamed-chunk-9-2.png" class="img-fluid figure-img" width="672"></a></p>
+</figure>
+</div>
+</div>
+<div class="sourceCode" id="cb28"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="co"># Save this transformed data to a text file</span></span>
+<span><span class="fu"><a href="https://rdrr.io/r/utils/write.table.html">write.table</a></span><span class="op">(</span><span class="va">data.transformed</span>, <span class="st">"stephens-transformed.txt"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+</section><section id="build-models-and-investigate" class="level1"><h1>Build models and investigate</h1>
+<p>A Weighted Arithmetic Mean (WAM), Weighted Power Mean (WPM) and Ordered Weighted Average (OWA) aggregation functions are fitted to the data for analysis and prediction using the AggWAfit R library of James (2016)</p>
+<div class="cell">
+<div class="sourceCode" id="cb29"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="kw"><a href="https://rdrr.io/r/base/source.html">source</a></span><span class="op">(</span><span class="st">"AggWaFit718.R"</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Replace previous matrix with the one loaded from disk</span></span>
+<span><span class="va">data.transformed</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/matrix.html">as.matrix</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/utils/read.table.html">read.table</a></span><span class="op">(</span><span class="st">"stephens-transformed.txt"</span><span class="op">)</span><span class="op">)</span>  <span class="co"># import saved data</span></span>
+<span></span>
+<span><span class="co"># Get weights for Weighted Arithmetic Mean with fit.QAM() </span></span>
+<span><span class="fu">fit.QAM</span><span class="op">(</span><span class="va">data.transformed</span>,output.1<span class="op">=</span><span class="st">"output_QAM_AM.txt"</span>,stats.1<span class="op">=</span><span class="st">"stats_QAM_AM.txt"</span>,g<span class="op">=</span><span class="va">AM</span>,g.inv<span class="op">=</span><span class="va">invAM</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get weights for Power Mean p=0.5 with fit.QAM()</span></span>
+<span><span class="fu">fit.QAM</span><span class="op">(</span><span class="va">data.transformed</span>,output.1<span class="op">=</span><span class="st">"output_QAM_PM05.txt"</span>,stats.1<span class="op">=</span><span class="st">"stats_QAM_PM05.txt"</span>,g<span class="op">=</span><span class="va">PM05</span>,g.inv<span class="op">=</span><span class="va">invPM05</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get weights for Power Mean p=2 with fit.QAM()</span></span>
+<span><span class="fu">fit.QAM</span><span class="op">(</span><span class="va">data.transformed</span>,output.1<span class="op">=</span><span class="st">"output_QAM_QM.txt"</span>,stats.1<span class="op">=</span><span class="st">"stats_QAM_QM.txt"</span>,g<span class="op">=</span><span class="va">QM</span>,g.inv<span class="op">=</span><span class="va">invQM</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Get weights for Ordered Weighted Average with fit.OWA()</span></span>
+<span><span class="co"># Note that in AddWaFit the weights don't correspond to the variables but their relative sizes.</span></span>
+<span><span class="fu">fit.OWA</span><span class="op">(</span><span class="va">data.transformed</span>,output.1<span class="op">=</span><span class="st">"output_OWA.txt"</span>,stats.1<span class="op">=</span><span class="st">"stats_OWA.txt"</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="model-results" class="level2"><h2 class="anchored" data-anchor-id="model-results">Model Results</h2>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Metric</th>
+<th>WAM</th>
+<th>WPM (0.5)</th>
+<th>WPM (2)</th>
+<th>OWA</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>RMSE</td>
+<td>0.1403</td>
+<td>0.1525</td>
+<td>0.1279</td>
+<td>0.1204</td>
+</tr>
+<tr class="even">
+<td>Avg Abs Error</td>
+<td>0.1187</td>
+<td>0.1258</td>
+<td>0.1070</td>
+<td>0.0985</td>
+</tr>
+<tr class="odd">
+<td>Pearson</td>
+<td>0.3373</td>
+<td>0.2823</td>
+<td>0.3857</td>
+<td>0.4130</td>
+</tr>
+<tr class="even">
+<td>Spearman</td>
+<td>0.3602</td>
+<td>0.3179</td>
+<td>0.3973</td>
+<td>0.4217</td>
+</tr>
+</tbody>
+</table></section><section id="model-weights" class="level2"><h2 class="anchored" data-anchor-id="model-weights">Model Weights</h2>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Weight</th>
+<th>WAM</th>
+<th>WPM (0.5)</th>
+<th>WPM (2)</th>
+<th>OWA (orness=0.72)</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>w1</td>
+<td>0.1589</td>
+<td>0.0290</td>
+<td>0.2346</td>
+<td>0.0590</td>
+</tr>
+<tr class="even">
+<td>w2</td>
+<td>0.3413</td>
+<td>0.3772</td>
+<td>0.3241</td>
+<td>0.2098</td>
+</tr>
+<tr class="odd">
+<td>w3</td>
+<td>0.4750</td>
+<td>0.5632</td>
+<td>0.3233</td>
+<td>0.2537</td>
+</tr>
+<tr class="even">
+<td>w4</td>
+<td>0.0247</td>
+<td>0.0306</td>
+<td>0.1179</td>
+<td>0.4775</td>
+</tr>
+</tbody>
+</table></section><section id="model-insights" class="level2"><h2 class="anchored" data-anchor-id="model-insights">Model Insights</h2>
+<ul>
+<li>
+<p>Importance of each variable</p>
+<ul>
+<li>
+<p>From the WAM and WPM models</p>
+<ul>
+<li>The chlorides (32-37%) and total sulfur content (32-56%) are the most important variables. A majority of the models weight citric acid (3-23%) as more important than alcohol (2.5 to 11%).</li>
+</ul>
+</li>
+<li><p>OWA weights correspond with each input’s relative size, not the input’s source. The orness value of 0.72 suggests more weight is allocated to the higher inputs. The last weight indicates approximately 48% of the weight is allocated to the largest input.</p></li>
+</ul>
+</li>
+<li><p>The OWA model best fits the selected data, giving the lowest RMSE and highest correlation coefficients. On average, the prediction is out by ~ 10%</p></li>
+</ul></section></section><section id="use-model-for-prediction" class="level1"><h1>Use Model for Prediction</h1>
+<div class="cell">
+<div class="sourceCode" id="cb30"><pre class="downlit sourceCode r code-with-copy"><code class="sourceCode R"><span><span class="va">new_input</span> <span class="op">&lt;-</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.8</span>, <span class="fl">0.63</span>, <span class="fl">37</span>, <span class="fl">2.51</span>, <span class="fl">7.0</span><span class="op">)</span> </span>
+<span><span class="va">new_input_for_transform</span> <span class="op">&lt;-</span> <span class="va">new_input</span><span class="op">[</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">1</span>,<span class="fl">2</span>,<span class="fl">3</span>,<span class="fl">5</span><span class="op">)</span><span class="op">]</span> <span class="co"># choose the same four X variables as in Q2 </span></span>
+<span></span>
+<span><span class="co"># Note: some of these values are outside the min/max that were used when transforming the data before fitting.</span></span>
+<span><span class="co"># It was recommended to just use a new min/max for these variables here incorporating the values from new_input.</span></span>
+<span></span>
+<span><span class="co"># Transforming the four variables in the same way as in question 2</span></span>
+<span></span>
+<span><span class="va">new_input_transformed</span> <span class="op">=</span> <span class="va">new_input_for_transform</span></span>
+<span></span>
+<span><span class="co">#############</span></span>
+<span><span class="co"># citric acid</span></span>
+<span><span class="co">#############</span></span>
+<span></span>
+<span><span class="co"># Transform</span></span>
+<span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">=</span> <span class="va">new_input_for_transform</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">^</span><span class="fl">0.75</span></span>
+<span></span>
+<span><span class="co"># Normalise between 0 - 1</span></span>
+<span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span> <span class="op">=</span> <span class="fu">minmax</span><span class="op">(</span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">min_1</span>,<span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">max_1</span>,<span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">1</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">###########</span></span>
+<span><span class="co"># chlorides</span></span>
+<span><span class="co">###########</span></span>
+<span></span>
+<span><span class="co"># Transform</span></span>
+<span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">=</span> <span class="op">-</span><span class="va">new_input_for_transform</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">^</span><span class="op">-</span><span class="fl">1</span></span>
+<span></span>
+<span><span class="co"># Normalise between 0 - 1</span></span>
+<span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">=</span> <span class="fu">minmax</span><span class="op">(</span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">min_2</span>,<span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">max_2</span>,<span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Negate</span></span>
+<span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span> <span class="op">=</span> <span class="fu">negation</span><span class="op">(</span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">2</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">######################</span></span>
+<span><span class="co"># total sulfur dioxide</span></span>
+<span><span class="co">######################</span></span>
+<span></span>
+<span><span class="co"># Transform</span></span>
+<span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Log.html">log</a></span><span class="op">(</span><span class="va">new_input_for_transform</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Normalize between 0 - 1</span></span>
+<span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">=</span> <span class="fu">minmax</span><span class="op">(</span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">min_3</span>,<span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">max_3</span>,<span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Negate</span></span>
+<span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span> <span class="op">=</span> <span class="fu">negation</span><span class="op">(</span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">3</span><span class="op">]</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co">######################</span></span>
+<span><span class="co"># alcohol</span></span>
+<span><span class="co">######################</span></span>
+<span></span>
+<span><span class="co"># Transform</span></span>
+<span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">=</span> <span class="op">-</span><span class="va">new_input_for_transform</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">^</span><span class="op">-</span><span class="fl">2</span></span>
+<span></span>
+<span><span class="co"># Normalize between 0 - 1</span></span>
+<span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span> <span class="op">=</span> <span class="fu">minmax</span><span class="op">(</span><span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">min</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">min_4</span>,<span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span>, <span class="fu"><a href="https://rdrr.io/r/base/Extremes.html">max</a></span><span class="op">(</span><span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="va">max_4</span>,<span class="va">new_input_transformed</span><span class="op">[</span><span class="fl">4</span><span class="op">]</span><span class="op">)</span><span class="op">)</span><span class="op">)</span></span>
+<span></span>
+<span><span class="co"># Applying the transformed variables to the best model selected from Q3 for Y prediction</span></span>
+<span></span>
+<span><span class="co"># Weights from best fitting model (OWA)</span></span>
+<span><span class="va">Xweights</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/c.html">c</a></span><span class="op">(</span><span class="fl">0.0590</span>,<span class="fl">0.2098</span>,<span class="fl">0.2537</span>,<span class="fl">0.4775</span><span class="op">)</span></span>
+<span><span class="va">y_pred</span><span class="op">=</span> <span class="fu">OWA</span><span class="op">(</span><span class="va">new_input_transformed</span>, <span class="va">Xweights</span><span class="op">)</span> </span>
+<span></span>
+<span><span class="co"># Reverse the transformation to convert back the predicted Y to the original scale and then round it to integer</span></span>
+<span></span>
+<span><span class="co">######################</span></span>
+<span><span class="co"># quality</span></span>
+<span><span class="co">######################</span></span>
+<span><span class="co"># Normalise between 0 - 1</span></span>
+<span><span class="va">predicated_quality</span> <span class="op">=</span> <span class="fu"><a href="https://rdrr.io/r/base/Round.html">round</a></span><span class="op">(</span><span class="va">y_pred</span><span class="op">*</span><span class="op">(</span><span class="va">max_y</span><span class="op">-</span><span class="va">min_y</span><span class="op">)</span> <span class="op">+</span> <span class="va">min_y</span><span class="op">)</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<section id="prediction-example" class="level2"><h2 class="anchored" data-anchor-id="prediction-example">Prediction Example</h2>
+<table class="caption-top table">
+<thead><tr class="header">
+<th>Variable</th>
+<th>Raw</th>
+<th>Transformed</th>
+</tr></thead>
+<tbody>
+<tr class="odd">
+<td>Citric Acid</td>
+<td>0.8</td>
+<td>1</td>
+</tr>
+<tr class="even">
+<td>Chlorides</td>
+<td>0.63</td>
+<td>1</td>
+</tr>
+<tr class="odd">
+<td>Total Sulfur Dioxide</td>
+<td>37</td>
+<td>0.47</td>
+</tr>
+<tr class="even">
+<td>Alcohol</td>
+<td>7.0</td>
+<td>0</td>
+</tr>
+</tbody>
+</table>
+<p><strong>Predicted Quality</strong>: 8 (too high) - The quality prediction is too high and, therefore, unreasonable - High orness means only a few high inputs would give a high output (quality)</p>
+</section><section id="best-conditions-for-higher-quality-wine" class="level2"><h2 class="anchored" data-anchor-id="best-conditions-for-higher-quality-wine">Best conditions for higher-quality wine</h2>
+<ul>
+<li>Higher values for the inputs: citric acid, negation(chlorides), negation (total sulfur dioxide), alcohol</li>
+<li>Higher – citric acid and alcohol</li>
+<li>Lower – chlorides and total sulfur dioxide</li>
+</ul></section></section><section id="limitations-ethics-privacy" class="level1"><h1>Limitations, Ethics &amp; Privacy</h1>
+<ul>
+<li>
+<p>Limitations of the fitting model</p>
+<ul>
+<li>Correlation coefficients are weak</li>
+<li>OWA doesn’t tell you the importance of the variables</li>
+<li>The model is only as good as the training data</li>
+<li>The predicated value was beyond the training data set for 3 of the 4 variables</li>
+</ul>
+</li>
+<li><p>The data does not raise privacy concerns as it does not contain information about grape types, wine brands, wine prices, etc. Only de-identified data is used.</p></li>
+<li>
+<p>Professional ethics</p>
+<ul>
+<li>Transparent about the methods used to analyse the data</li>
+<li>R script provided that documents all assumptions and steps</li>
+<li>Raw and transformed data is available</li>
+</ul>
+</li>
+</ul></section><section id="references" class="level1"><h1>References</h1>
+<p>Cortez P, Cerdeira A, Almeida F, Matos T and Reis J (2009) ‘Modeling wine preferences by data mining from physicochemical properties’. Decision Support Systems, 47(4):547-553.</p>
+<p>Csárdi G, Berkelaar M (2024) lpSolve: Interface to ‘Lp_solve’ v. 5.5 to Solve Linear/Integer Programs [R package], v5.6.23, accessed 3 April 2025. https://github.com/gaborcsardi/lpSolve</p>
+<p>Mangiafico S S (2025) rcompanion: Functions to Support Extension Education Program Evaluation [R package], v2.5.0, Rutgers Cooperative Extension, accessed 3 April 2025. https://CRAN.R-project.org/package=rcompanion/</p>
+<p>Meschiari S (2024). latex2exp: Use LaTeX Expressions in Plots [R package], v0.9.8, accessed 3 April 2025. https://www.stefanom.io/latex2exp/.</p>
+<p>Meyer D, Dimitriadou E, Hornik K, Weingessel A and Leisch F (2024) e1071: Misc Functions of the Department of Statistics, Probability Theory Group (Formerly: E1071), TU Wien [R package]. v1.7-16, accessed 3 April 2025. https://CRAN.R-project.org/package=e1071.</p>
+<p>James, S (2016). AggWAfit R library. 10.13140/RG.2.1.1906.9688.</p>
+
+
+</section><a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main><!-- /main --><script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script><nav class="page-navigation"><div class="nav-page nav-page-previous">
+      <a href="../../../real_world_analytics.html" class="pagination-link" aria-label="Real World Analytics">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Real World Analytics</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../data_wrangling.html" class="pagination-link" aria-label="Data Wrangling">
+        <span class="nav-page-text">Data Wrangling</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer"><div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>   
+    <div class="nav-footer-center">
+<p>© <span id="current-year"></span> Darrin William Stephens.</p>
+</div>
+    <div class="nav-footer-right">
+<p>License: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY NC SA 4.0</a>.</p>
+</div>
+  </div>
+</footer><script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  const currentYear = new Date().getFullYear();
+  document.getElementById('current-year').textContent = currentYear;
+});
+</script><script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+</body></html>

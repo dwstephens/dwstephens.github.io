@@ -42,6 +42,10 @@ website:
       contents: 
         - text: "Introduction"
           href: portfolio.qmd
+        - section: "Real World Analytics"
+          href: real_world_analytics.qmd
+          contents:
+            - portfolio/ra/a2/sit718_a2.qmd          
         - section: "Data Wrangling"
           href: data_wrangling.qmd
           contents:

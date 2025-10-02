@@ -1,10 +1,25 @@
 [
   {
-    "objectID": "publications.html",
-    "href": "publications.html",
-    "title": "Publications",
+    "objectID": "real_world_analytics.html",
+    "href": "real_world_analytics.html",
+    "title": "Real World Analytics",
     "section": "",
-    "text": "ToDo\n\n\n\n Back to top"
+    "text": "These are the works produced for SIT718 Real World Analytics. This unit explores two core analytical concepts used in real-world decision-making: optimisation and multivariate data aggregation. It focuses on how mathematical modelling can be applied to solve practical problems across industries, businesses, and public services. Through hands-on learning, I gained experience in solving optimisation problems such as:\n\nProduction planning\nTimetabling and scheduling\nWorkforce rostering\nSports program coordination\nVehicle routing and robotics\nNetwork design and resource allocation\n\nThe unit also covered aggregation techniques, where I learned to apply multivariate functions to summarise and interpret datasets with multiple interrelated variables. This helped me develop the ability to analyse complex data and understand the influence of different parameters on decision outcomes. Overall, SIT718 equipped me with the mathematical tools and analytical thinking needed to make better, data-driven decisions in diverse real-world contexts.\n\n\n\n Back to top",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics"
+    ]
+  },
+  {
+    "objectID": "portfolio.html",
+    "href": "portfolio.html",
+    "title": "Portfolio",
+    "section": "",
+    "text": "This section highlights some of the projects completed during my Masters of Data Science at Deakin University.\n\n\n\n Back to top",
+    "crumbs": [
+      "Portfolio",
+      "Introduction"
+    ]
   },
   {
     "objectID": "portfolio/ml/empty.html",
@@ -404,7 +419,7 @@
     "href": "data_wrangling.html",
     "title": "Data Wrangling",
     "section": "",
-    "text": "These are the works produced for SIT731 Data Wrangling unit.\nThe aim of this unit was to learn various data wrangling methodologies and programming techniques to perform them. This included programming in Python for performing various data wrangling tasks, learning data extraction methods from different sources, working with different types of data, storing and retrieving them, applying sampling techniques and inspecting them, cleaning them by identifying outliers/anomalies, handling missing data, transforming, selecting and extracting features, performing exploratory analysis, visualisation using various tools, summarising data appropriately, performing basic statistical analysis and modelling using basic machine learning. Further, techniques for maintaining data privacy and exercising ethics in data manipulation were be covered in the unit.\n\n\n\n Back to top",
+    "text": "These are the works produced for SIT731 Data Wrangling unit. This unit focuses on the essential process of data wrangling, a foundational skill in both Data Science (DS) and Artificial Intelligence (AI). With the rise of large-scale data collection from diverse sources, preparing data correctly is critical for accurate analysis and modelling. Throughout the unit, I learned to:\n\nProgram in Python to perform a wide range of data wrangling tasks\nExtract data from various sources and formats\nHandle different data types, store and retrieve data efficiently\nApply sampling techniques and inspect data distributions\nClean data by identifying and managing outliers, anomalies, and missing values\nTransform, select, and extract features for modelling\nConduct exploratory data analysis and create visualisations\nSummarise data and perform basic statistical analysis\nBuild simple machine learning models for initial insights\n\nThe unit also covered ethical considerations and data privacy techniques, ensuring responsible data handling practices.\n\n\n\n Back to top",
     "crumbs": [
       "Portfolio",
       "Data Wrangling"
@@ -795,14 +810,226 @@
     ]
   },
   {
-    "objectID": "portfolio.html",
-    "href": "portfolio.html",
-    "title": "Portfolio",
+    "objectID": "portfolio/ra/a2/sit718_a2.html",
+    "href": "portfolio/ra/a2/sit718_a2.html",
+    "title": "Red Wine",
     "section": "",
-    "text": "This section highlights some of the projects completed during my Masters of Data Science at Deakin University.\n\n\n\n Back to top",
+    "text": "Dataset: Red Portuguese “Vinho Verde” wine (Cortez et al., 2009)\n\n\nDataset: Red Portuguese “Vinho Verde” wine (Cortez et al., 2009)\nFive input variables: citric acid, chlorides, total sulfur dioxide, pH, alcohol\nOne output variable: quality",
     "crumbs": [
       "Portfolio",
-      "Introduction"
+      "Real World Analytics",
+      "Red Wine"
     ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#the-data",
+    "href": "portfolio/ra/a2/sit718_a2.html#the-data",
+    "title": "Red Wine",
+    "section": "",
+    "text": "Dataset: Red Portuguese “Vinho Verde” wine (Cortez et al., 2009)\nFive input variables: citric acid, chlorides, total sulfur dioxide, pH, alcohol\nOne output variable: quality",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#scatter-plot-citric-acid",
+    "href": "portfolio/ra/a2/sit718_a2.html#scatter-plot-citric-acid",
+    "title": "Red Wine",
+    "section": "Scatter Plot: Citric Acid",
+    "text": "Scatter Plot: Citric Acid\nWine quality increases with increasing citric acid value. The correlation coefficient is r = 0.244.",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#scatter-plot-chlorides",
+    "href": "portfolio/ra/a2/sit718_a2.html#scatter-plot-chlorides",
+    "title": "Red Wine",
+    "section": "Scatter Plot: Chlorides",
+    "text": "Scatter Plot: Chlorides\nWine quality decreases with increasing chlorides value. The correlation coefficient is r = -0.122. A potential outlier is observed at 0.61 chlorides value. A negation function will be required.",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#scatter-plot-total-sulfur-dioxide",
+    "href": "portfolio/ra/a2/sit718_a2.html#scatter-plot-total-sulfur-dioxide",
+    "title": "Red Wine",
+    "section": "Scatter Plot: Total Sulfur Dioxide",
+    "text": "Scatter Plot: Total Sulfur Dioxide\nWine quality decreases with the increasing value of total sulphur dioxide. The correlation coefficient is r = -0.206. A possible outlier at a value of 289 for total sulfur dioxide. A negation function will be required.",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#scatter-plot-ph",
+    "href": "portfolio/ra/a2/sit718_a2.html#scatter-plot-ph",
+    "title": "Red Wine",
+    "section": "Scatter Plot: pH",
+    "text": "Scatter Plot: pH\nWine quality does not appear to have a linear relationship with pH. The correlation coefficient is r = -0.072. Potential outlier at pH value of 4.0.",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#scatter-plot-alcohol",
+    "href": "portfolio/ra/a2/sit718_a2.html#scatter-plot-alcohol",
+    "title": "Red Wine",
+    "section": "Scatter Plot: Alcohol",
+    "text": "Scatter Plot: Alcohol\nWine quality increases with alcohol content. The correlation coefficient is r = 0.442.\n\n# Number of bins for histograms\nbins = c(16,30,48,11,24,8)\n\n# Create 6 histograms for each X variable and Y\nfor (i in c(1,2,3,4,5,6)){\n  if (i == 6){\n    name = y.name\n  }\n  else{\n  name = data.variable.names[i]\n  }\n  hist(data.subset[,i], breaks=bins[i], xlab=name, main=sprintf(\"Histogram of %s (n=%s)\", name, subset.num_samples),\n       col=colours[i]\n  )\n}",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#histogram-citric-acid",
+    "href": "portfolio/ra/a2/sit718_a2.html#histogram-citric-acid",
+    "title": "Red Wine",
+    "section": "Histogram: Citric Acid",
+    "text": "Histogram: Citric Acid\nThe distribution of citric acid is uniform for the middle values. However, many observations show a peak near-zero value. At the higher citric acid values, fewer observations give the distribution a right (positive) skew. The distribution range is from 0.000 to 0.790, with a median value of 0.260 and a mean of 0.284.",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#histogram-chlorides",
+    "href": "portfolio/ra/a2/sit718_a2.html#histogram-chlorides",
+    "title": "Red Wine",
+    "section": "Histogram: Chlorides",
+    "text": "Histogram: Chlorides\nThe distribution of chlorides is unimodal with significant right (positive) skew. Most of the chlorides observations are between 0.04 and 0.15. Values above 0.15 have very few counts and are potential outliers. The distribution range is from 0.038 to 0.611, with a median value of 0.080 and a mean of 0.0912.",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#histogram-total-sulfur-dioxide",
+    "href": "portfolio/ra/a2/sit718_a2.html#histogram-total-sulfur-dioxide",
+    "title": "Red Wine",
+    "section": "Histogram: Total Sulfur Dioxide",
+    "text": "Histogram: Total Sulfur Dioxide\nThe distribution of total sulfur dioxide is unimodal with right (positive) skew and reassembles a log-normal shape. The value of 289 appears to be an outlier. The distribution range is from 6.0 to 289.0, with a median value of 38.5 and a mean of 47.12.",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#histogram-ph",
+    "href": "portfolio/ra/a2/sit718_a2.html#histogram-ph",
+    "title": "Red Wine",
+    "section": "Histogram: pH",
+    "text": "Histogram: pH\nThe distribution of pH is unimodal with minimal skew and a potential outlier at 4.01 and has a normal distribution shape. The distribution range is from 2.89 to 4.01, with a median value of 3.30 and a mean of 3.31.",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#histogram-alcohol",
+    "href": "portfolio/ra/a2/sit718_a2.html#histogram-alcohol",
+    "title": "Red Wine",
+    "section": "Histogram: Alcohol",
+    "text": "Histogram: Alcohol\nThe distribution of alcohol is unimodal with right (positive) skew and reassembles a log-normal shape. It ranges from 8.7 to 14.9, with a median value of 10.1 and a mean of 10.4.",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#histogram-quality",
+    "href": "portfolio/ra/a2/sit718_a2.html#histogram-quality",
+    "title": "Red Wine",
+    "section": "Histogram: Quality",
+    "text": "Histogram: Quality\nThe quality distribution is unimodal, with some right (positive) skew having a normal distribution shape. The data contains only integer values, which leads to gaps in the histogram unless a small number of bins are used. The distribution range is from 3 to 8, with a median value of 6 and a mean of 5.6.\n\n# Generate a summary of the data\nsummary(data.subset)\n\n       V1               V2                V3               V4       \n Min.   :0.0000   Min.   :0.03800   Min.   :  6.00   Min.   :2.890  \n 1st Qu.:0.1000   1st Qu.:0.07100   1st Qu.: 23.00   1st Qu.:3.200  \n Median :0.2600   Median :0.08000   Median : 38.50   Median :3.300  \n Mean   :0.2837   Mean   :0.09117   Mean   : 47.12   Mean   :3.308  \n 3rd Qu.:0.4400   3rd Qu.:0.09400   3rd Qu.: 64.25   3rd Qu.:3.410  \n Max.   :0.7900   Max.   :0.61100   Max.   :289.00   Max.   :4.010  \n       V5              V6       \n Min.   : 8.70   Min.   :3.000  \n 1st Qu.: 9.50   1st Qu.:5.000  \n Median :10.10   Median :6.000  \n Mean   :10.41   Mean   :5.633  \n 3rd Qu.:11.00   3rd Qu.:6.000  \n Max.   :14.90   Max.   :8.000  \n\n# Calculate Pearson correlation coefficients\ncor(data.subset, data.subset[,6])\n\n          [,1]\nV1  0.24381427\nV2 -0.12184464\nV3 -0.20584651\nV4 -0.07241671\nV5  0.44197926\nV6  1.00000000",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#model-results",
+    "href": "portfolio/ra/a2/sit718_a2.html#model-results",
+    "title": "Red Wine",
+    "section": "Model Results",
+    "text": "Model Results\n\n\nMetric\nWAM\nWPM (0.5)\nWPM (2)\nOWA\n\n\n\nRMSE\n0.1403\n0.1525\n0.1279\n0.1204\n\n\nAvg Abs Error\n0.1187\n0.1258\n0.1070\n0.0985\n\n\nPearson\n0.3373\n0.2823\n0.3857\n0.4130\n\n\nSpearman\n0.3602\n0.3179\n0.3973\n0.4217",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#model-weights",
+    "href": "portfolio/ra/a2/sit718_a2.html#model-weights",
+    "title": "Red Wine",
+    "section": "Model Weights",
+    "text": "Model Weights\n\n\nWeight\nWAM\nWPM (0.5)\nWPM (2)\nOWA (orness=0.72)\n\n\n\nw1\n0.1589\n0.0290\n0.2346\n0.0590\n\n\nw2\n0.3413\n0.3772\n0.3241\n0.2098\n\n\nw3\n0.4750\n0.5632\n0.3233\n0.2537\n\n\nw4\n0.0247\n0.0306\n0.1179\n0.4775",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#model-insights",
+    "href": "portfolio/ra/a2/sit718_a2.html#model-insights",
+    "title": "Red Wine",
+    "section": "Model Insights",
+    "text": "Model Insights\n\n\nImportance of each variable\n\n\nFrom the WAM and WPM models\n\nThe chlorides (32-37%) and total sulfur content (32-56%) are the most important variables. A majority of the models weight citric acid (3-23%) as more important than alcohol (2.5 to 11%).\n\n\nOWA weights correspond with each input’s relative size, not the input’s source. The orness value of 0.72 suggests more weight is allocated to the higher inputs. The last weight indicates approximately 48% of the weight is allocated to the largest input.\n\n\nThe OWA model best fits the selected data, giving the lowest RMSE and highest correlation coefficients. On average, the prediction is out by ~ 10%",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#prediction-example",
+    "href": "portfolio/ra/a2/sit718_a2.html#prediction-example",
+    "title": "Red Wine",
+    "section": "Prediction Example",
+    "text": "Prediction Example\n\n\nVariable\nRaw\nTransformed\n\n\n\nCitric Acid\n0.8\n1\n\n\nChlorides\n0.63\n1\n\n\nTotal Sulfur Dioxide\n37\n0.47\n\n\nAlcohol\n7.0\n0\n\n\n\nPredicted Quality: 8 (too high) - The quality prediction is too high and, therefore, unreasonable - High orness means only a few high inputs would give a high output (quality)",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "portfolio/ra/a2/sit718_a2.html#best-conditions-for-higher-quality-wine",
+    "href": "portfolio/ra/a2/sit718_a2.html#best-conditions-for-higher-quality-wine",
+    "title": "Red Wine",
+    "section": "Best conditions for higher-quality wine",
+    "text": "Best conditions for higher-quality wine\n\nHigher values for the inputs: citric acid, negation(chlorides), negation (total sulfur dioxide), alcohol\nHigher – citric acid and alcohol\nLower – chlorides and total sulfur dioxide",
+    "crumbs": [
+      "Portfolio",
+      "Real World Analytics",
+      "Red Wine"
+    ]
+  },
+  {
+    "objectID": "publications.html",
+    "href": "publications.html",
+    "title": "Publications",
+    "section": "",
+    "text": "ToDo\n\n\n\n Back to top"
   }
 ]
