@@ -1,0 +1,10 @@
+/*-- scss:defaults --*/
+$body-bg: #333333;
+$body-color: #fafafa;
+
+// Custom variables needed by _brand.yml
+$background: $body-bg;
+$foreground: $body-color;
+
+// Set the link color
+$link-color: $foreground;
