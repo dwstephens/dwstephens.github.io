@@ -1,0 +1,945 @@
+- author:
+  - family: Stephens
+    given: Darrin W.
+  - family: Harris
+    given: Jonathan A.
+  id: stephens_1998_numerical
+  issued: 1998-12
+  page: 1005-1008
+  publisher: Thirteenth Australasian Fluid Mechanics Conference
+  title: Numerical modelling of two-phase flow a benchmark solution
+  type: conference
+  url: "https://www.afms.org.au/proceedings/13/Stephens_and_Harris_1998.pdf"
+  type-title: '*Thirteenth Australasian Fluid Mechanics Conference*'
+  date: 1998-12
+  path: "https://www.afms.org.au/proceedings/13/Stephens_and_Harris_1998.pdf"
+  position: '1/2'
+- author:
+  - family: Stephens
+    given: Darrin W.
+  - family: Harris
+    given: Jonathan A.
+  id: stephens_1999_modelling
+  issued: 1999-12
+  publisher: 2nd International Conference on CFD in the Minerals and
+    Process Industries
+  title: Modelling convective boiling of molasses
+  type: conference
+  url: "https://www.cfd.com.au/cfd_conf99/Conf99_Papers/038STEP.PDF"
+  type-title: '*2nd International Conference on CFD in the Minerals and*'
+  date: 1999-12
+  path: "https://www.cfd.com.au/cfd_conf99/Conf99_Papers/038STEP.PDF"
+  position: '1/2'
+- author:
+  - family: Atkinson
+    given: Bruce J.
+  - family: Stephens
+    given: Darrin W.
+  - family: Harris
+    given: Jonathan A.
+  - family: Schneide
+    given: Phil A.
+  id: atkinson_2000_the
+  issued: 2000-05
+  publisher: The Australian Society of Sugar Cane Technologists
+  title: The net pressure driving force due to boiling in calandria
+    tubes
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.1998.5762"
+  type-title: '*The Australian Society of Sugar Cane Technologists*'
+  date: 2000-05
+  path: "https://doi.org/10.13140/RG.2.1.1998.5762"
+  position: '2/4'
+- author:
+  - family: McBain
+    given: Geordie D.
+  - family: Stephens
+    given: Darrin W.
+  id: mcbain_2000_low
+  issued: 2000-07
+  publisher: Proc. of the 7th Australasian Heat and Mass Transfer
+    Conference
+  title: Low grashof number convective heat transfer across a spherical
+    cavity
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.4194.0324"
+  type-title: '*Proc. of the 7th Australasian Heat and Mass Transfer*'
+  date: 2000-07
+  path: "https://doi.org/10.13140/RG.2.1.4194.0324"
+  position: '2/2'
+- author:
+  - family: Stephens
+    given: Darrin W.
+  genre: PhD thesis
+  id: stephens_2001_studies
+  issued: 2001-03
+  title: Studies on modelling natural circulation in batch vacuum pans
+  type: thesis
+  url: "https://doi.org/10.13140/RG.2.1.4325.1048"
+  date: 2001-03
+  path: "https://doi.org/10.13140/RG.2.1.4325.1048"
+  position: '1/1'
+- author:
+  - family: Rackemann
+    given: Darryn W.
+  - family: Stephens
+    given: Darrin W.
+  id: rackemann_2002_determining
+  issued: 2002-05
+  page: 452-548
+  publisher: Proceedings of the Australian Society of Sugar Cane
+    Technologists
+  title: Determining circulation velocities in vacuum pans
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.2785.0087"
+  type-title: '*Proceedings of the Australian Society of Sugar Cane*'
+  date: 2002-05
+  path: "https://doi.org/10.13140/RG.2.1.2785.0087"
+  position: '2/2'
+- author:
+  - family: Stephens
+    given: Darrin W.
+  - family: Harris
+    given: Jonathan A.
+  id: stephens_2002_prediction
+  issued: 2002-05
+  page: 431-436
+  publisher: Proceedings of the Australian Society of Sugar Cane
+    Technologists
+  title: Prediction of evaporation, pressure driving force, and heat
+    transfer in calandria tubes
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.3571.4403"
+  type-title: '*Proceedings of the Australian Society of Sugar Cane*'
+  date: 2002-05
+  path: "https://doi.org/10.13140/RG.2.1.3571.4403"
+  position: '1/2'
+- author:
+  - family: Moller
+    given: David
+  - family: Wagner
+    given: Shane
+  - family: Broadfoot
+    given: Ross
+  - family: Stephens
+    given: Darrin W.
+  id: moller_2003_modification
+  issued: 2003-05
+  publisher: Proceedings of the Australian Society of Sugar Cane
+    Technologists
+  title: Modification to the evaporator station in preparation for a
+    co-generation factory at broadwater mill
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.2260.7208"
+  volume: 25
+  type-title: '*Proceedings of the Australian Society of Sugar Cane*'
+  date: 2003-05
+  path: "https://doi.org/10.13140/RG.2.1.2260.7208"
+  position: '4/4'
+- author:
+  - family: Rackemann
+    given: Darryn W.
+  - family: Broadfoot
+    given: Ross
+  - family: Stephens
+    given: Darrin W.
+  id: rackemann_2006_improved
+  issued: 2006-05
+  publisher: Proceedings of the Australian Society of Sugar Cane
+    Technologists
+  title: Improved CFD modelling of natural circulation vacuum pans
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.1867.5046"
+  volume: 28
+  type-title: '*Proceedings of the Australian Society of Sugar Cane*'
+  date: 2006-05
+  path: "https://doi.org/10.13140/RG.2.1.1867.5046"
+  position: '3/3'
+- author:
+  - family: Rackemann
+    given: Darryn W.
+  - family: Plaza
+    given: Floren
+  - family: Stephens
+    given: Darrin W.
+  id: rackemann_2006_steam
+  issued: 2006-05
+  publisher: Proceedings of the Australian Society of Sugar Cane
+    Technologists
+  title: Steam side calandria modelling of vacuum pans and evaporators
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.2916.0801"
+  volume: 28
+  type-title: '*Proceedings of the Australian Society of Sugar Cane*'
+  date: 2006-05
+  path: "https://doi.org/10.13140/RG.2.1.2916.0801"
+  position: '3/3'
+- author:
+  - family: Trang
+    given: Simon C. T.
+  - family: Stephens
+    given: Darrin W.
+  id: trang_2006_modelling
+  issued: 2006-12
+  publisher: Proceeding of the Fifth International Conference on CFD in
+    the Process Industries; CSIRO
+  title: Modelling heat transfer in the dripper zone of a heap leaching
+    operation
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.1343.2167"
+  type-title: '*Proceeding of the Fifth International Conference on CFD in*'
+  date: 2006-12
+  path: "https://doi.org/10.13140/RG.2.1.1343.2167"
+  position: '2/2'
+- author:
+  - family: Morgans
+    given: Rick C
+  - family: Doolan
+    given: Con J.
+  - family: Stephens
+    given: Darrin W.
+  id: morgans_2007_derivative
+  issued: 2007-12
+  publisher: Proceedings of the 16th Australasian Fluid Mechanics
+    Conference
+  title: Derivative free global optimisation of CFD simulations
+  type: conference
+  url: "chttps://www.afms.org.au/proceedings/16/Morgans_et_al_2007.pdf"
+  type-title: '*Proceedings of the 16th Australasian Fluid Mechanics*'
+  date: 2007-12
+  path: "chttps://www.afms.org.au/proceedings/16/Morgans_et_al_2007.pdf"
+  position: '3/3'
+- author:
+  - family: Fawell
+    given: Philip D.
+  - family: Farrow
+    given: John B.
+  - family: Heath
+    given: Alex R.
+  - family: Nguyen
+    given: Tuan V.
+  - family: Owen
+    given: Andrew T.
+  - family: Paterson
+    given: David
+  - family: Rudman
+    given: Murray
+  - family: Scales
+    given: Peter J.
+  - family: Simic
+    given: Kosta
+  - family: Stephens
+    given: Darrin W.
+  - family: Swift
+    given: Jean D.
+  - family: User
+    given: Shane P.
+  id: fawell_2009_20
+  issued: 2009-04
+  page: 59-69
+  publisher: Proceedings of the 12th International Seminar on Paste and
+    Thickened Tailings; Aust. Centre Geomech.
+  title: 20 years of AMIRA P266 'improving thickener technology' - how
+    has it changed the understanding of thickener performance?
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.2457.3286"
+  type-title: '*Proceedings of the 12th International Seminar on Paste and*'
+  date: 2009-04
+  path: "https://doi.org/10.13140/RG.2.1.2457.3286"
+  position: '10/12'
+- author:
+  - family: Stephens
+    given: Darrin W.
+  - family: Mohanarangam
+    given: Krishna
+  id: stephens_2009_turbulence
+  issued: 2009-12
+  publisher: Proceedings of the 7th International Conference on CFD in
+    the Minerals and Process Industries; CSIRO
+  title: Turbulence model analysis of flow inside a hydrocyclone
+  type: conference
+  url: "https://www.cfd.com.au/cfd_conf09/PDFs/156STE.pdf"
+  type-title: '*Proceedings of the 7th International Conference on CFD in*'
+  date: 2009-12
+  path: "https://www.cfd.com.au/cfd_conf09/PDFs/156STE.pdf"
+  position: '1/2'
+- author:
+  - family: Stephens
+    given: Darrin W.
+  - family: Gorissen
+    given: Dirk
+  - family: Dhaene
+    given: Tom
+  id: stephens_2009_surrogate
+  issued: 2009-12
+  publisher: Proceedings of the 7th International Conference on CFD in
+    the Minerals and Process Industries; CSIRO
+  title: Surrogate based sensitivity analysis of process equipment
+  type: conference
+  url: "https://www.cfd.com.au/cfd_conf09/PDFs/157STE.pdf"
+  type-title: '*Proceedings of the 7th International Conference on CFD in*'
+  date: 2009-12
+  path: "https://www.cfd.com.au/cfd_conf09/PDFs/157STE.pdf"
+  position: '1/3'
+- author:
+  - family: Mohanarangam
+    given: Krishna
+  - family: Stephens
+    given: Darrin W.
+  id: mohanarangam_2009_cfd
+  issued: 2009-12
+  publisher: Proceedings of the 7th International Conference on CFD in
+    the Minerals and Process Industries; CSIRO
+  title: CFD modelling of floating and settling phases in settling tanks
+  type: conference
+  url: "https://www.cfd.com.au/cfd_conf09/PDFs/214MOH.pdf"
+  type-title: '*Proceedings of the 7th International Conference on CFD in*'
+  date: 2009-12
+  path: "https://www.cfd.com.au/cfd_conf09/PDFs/214MOH.pdf"
+  position: '2/2'
+- author:
+  - family: Mohanarangam
+    given: Krishna
+  - family: Nguyen
+    given: Tuan V.
+  - family: Stephens
+    given: Darrin W.
+  id: mohanarangam_2009_evaluation
+  issued: 2009-12
+  publisher: Proceedings of the 7th International Conference on CFD in
+    the Minerals and Process Industries; CSIRO
+  title: Evaluation of two-equation turbulence models in a
+    laboratory-scale thickener feedwell
+  type: conference
+  url: "https://www.cfd.com.au/cfd_conf09/PDFs/215MOH.pdf"
+  type-title: '*Proceedings of the 7th International Conference on CFD in*'
+  date: 2009-12
+  path: "https://www.cfd.com.au/cfd_conf09/PDFs/215MOH.pdf"
+  position: '3/3'
+- accessed: 2025-02-09
+  author:
+  - family: Stephens
+    given: D. W
+  - family: Mohanarangam
+    given: K.
+  container-title: Progress in Computational Fluid Dynamics An
+    International Journal
+  doi: 10.1504/pcfd.2010.035370
+  id: stephens_2010_turbulence
+  issued: 2010-01
+  page: 366-366
+  publisher: Inderscience Publishers
+  title: Turbulence model analysis of flow inside a hydrocyclone
+  type: journal
+  volume: 10
+  type-title: '*Progress in Computational Fluid Dynamics An*'
+  date: 2010-01
+  path: https://doi.org/10.1504/pcfd.2010.035370
+  position: '1/2'
+- accessed: 2022-04-13
+  author:
+  - family: Stephens
+    given: D. W.
+  - family: Gorissen
+    given: D.
+  - family: Crombecq
+    given: K.
+  - family: Dhaene
+    given: T.
+  container-title: Applied Mathematical Modelling
+  doi: 10.1016/j.apm.2010.09.044
+  id: stephens_2011_surrogate
+  issued: 2011-04
+  page: 1676-1687
+  title: Surrogate based sensitivity analysis of process equipment
+  type: journal
+  volume: 35
+  type-title: '*Applied Mathematical Modelling*'
+  date: 2011-04
+  path: https://doi.org/10.1016/j.apm.2010.09.044
+  position: '1/4'
+- author:
+  - family: Hutton
+    given: Kieran
+  - family: Stephens
+    given: Darrin W.
+  - family: Livk
+    given: Iztok
+  id: hutton_2010_qmomcfd
+  issued: 2010-09
+  publisher: Proceeding of the Chemeca 2010 Conference
+  title: QMOM-CFD model development for an idealized pipe gibbsite
+    precipitator
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.3505.9041"
+  type-title: '*Proceeding of the Chemeca 2010 Conference*'
+  date: 2010-09
+  path: "https://doi.org/10.13140/RG.2.1.3505.9041"
+  position: '2/3'
+- author:
+  - family: Fawell
+    given: Philip D.
+  - family: Simic
+    given: Kosta
+  - family: Mohanarangam
+    given: Krishna
+  - family: Stephens
+    given: Darrin W.
+  - family: Rudman
+    given: Murray
+  - family: Paterson
+    given: David
+  - family: Yang
+    given: William
+  - family: Farrow
+    given: John B.
+  id: fawell_2011_pilot
+  issued: 2011-04
+  publisher: Proceedings of the 14th International Seminar on Paste and
+    Thickened Tailings
+  title: Pilot and full-scale validation of thickener and feedwell
+    modelling
+  type: conference
+  url: "https://doi.org/10.36487/ACG_rep/1104_08_Fawell"
+  type-title: '*Proceedings of the 14th International Seminar on Paste and*'
+  date: 2011-04
+  path: "https://doi.org/10.36487/ACG_rep/1104_08_Fawell"
+  position: '4/8'
+- author:
+  - family: Stephens
+    given: Darrin W.
+  - family: Tabib
+    given: Mandar
+  - family: Davis
+    given: Mark
+  - family: Schwarz
+    given: Philip
+  id: stephens_2011_cfd
+  issued: 2011-06
+  publisher: Proceeding of the 8th International Conference on CFD in
+    Oil & Gas, Metallurgical and Process Industries; SINTEF/NTNU
+  title: CFD simulation of bath dynamics in the HISMELT smelt reduction
+    vessel for iron production
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.4423.4082"
+  type-title: '*Proceeding of the 8th International Conference on CFD in*'
+  date: 2011-06
+  path: "https://doi.org/10.13140/RG.2.1.4423.4082"
+  position: '1/4'
+- author:
+  - family: Hutton
+    given: Kieran
+  - family: Stephens
+    given: Darrin W.
+  - family: Livk
+    given: Iztok
+  id: hutton_2011_implementation
+  issued: 2011-06
+  publisher: Proceeding of the 8th International Conference on CFD in
+    Oil & Gas, Metallurgical and Process Industries; SINTEF/NTNU
+  title: Implementation of the quadrature method of moments in a 3D CFD
+    pipe geometry for gibbsite precipitation
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.4423.4082"
+  type-title: '*Proceeding of the 8th International Conference on CFD in*'
+  date: 2011-06
+  path: "https://doi.org/10.13140/RG.2.1.4423.4082"
+  position: '2/3'
+- accessed: 2023-10-12
+  author:
+  - family: Stephens
+    given: Darrin
+  - family: Tabib
+    given: Mandar
+  - family: Schwarz
+    given: M. Philip
+  - given: Mark
+  container-title: Progress in Computational Fluid Dynamics
+  doi: 10.1504/pcfd.2012.047462
+  id: stephens_2012_cfd
+  issued: 2012-01
+  page: 196-196
+  publisher: Inderscience Publishers
+  title: CFD simulation of bath dynamics in the HIsmelt smelt reduction
+    vessel for iron production
+  type: journal
+  volume: 12
+  type-title: '*Progress in Computational Fluid Dynamics*'
+  date: 2012-01
+  path: https://doi.org/10.1504/pcfd.2012.047462
+  position: '1/3'
+- author:
+  - family: Jemcov
+    given: Aleksandar
+  - family: Stephens
+    given: Darrin W.
+  id: jemcov_2012_topological
+  issued: 2012-12
+  publisher: Proceedings of the 9th International Conference on CFD in
+    the Minerals and Process Industries; CSIRO
+  title: Topological derivative formulation for shape sensitivity in
+    incompressible turbulent flows
+  type: conference
+  url: "https://www.cfd.com.au/cfd_conf12/PDFs/063JEM.pdf"
+  type-title: '*Proceedings of the 9th International Conference on CFD in*'
+  date: 2012-12
+  path: "https://www.cfd.com.au/cfd_conf12/PDFs/063JEM.pdf"
+  position: '2/2'
+- author:
+  - family: Stephens
+    given: Darrin W.
+  - family: Fawell
+    given: Philip
+  id: stephens_2012_optimisation
+  issued: 2012-12
+  publisher: Proceedings of the 9th International Conference on CFD in
+    the Minerals and Process Industries; CSIRO
+  title: Optimisation of process equipment using global surrogate models
+  type: conference
+  url: "https://www.cfd.com.au/cfd_conf12/PDFs/030STE.pdf"
+  type-title: '*Proceedings of the 9th International Conference on CFD in*'
+  date: 2012-12
+  path: "https://www.cfd.com.au/cfd_conf12/PDFs/030STE.pdf"
+  position: '1/2'
+- author:
+  - family: Jemcov
+    given: Aleksandar
+  - family: Stephens
+    given: Darrin W.
+  - family: Sideroff
+    given: Chris
+  id: jemcov_2014_application
+  issued: 2014-04
+  publisher: Proceedings of the SAE 2014 World Congress
+  title: Application of time symmetry preserving adjoint solver in
+    external car aerodynamics
+  type: conference
+  url: "https://doi.org/10.4271/2014-01-0412"
+  type-title: '*Proceedings of the SAE 2014 World Congress*'
+  date: 2014-04
+  path: "https://doi.org/10.4271/2014-01-0412"
+  position: '2/3'
+- author:
+  - family: Plaza
+    given: Floren
+  - family: Kent
+    given: Geoff
+  - family: Reckemann
+    given: Darryn W.
+  - family: Stephens
+    given: Darrin W.
+  id: plaza_2014_review
+  issued: 2014-05
+  page: 288-297
+  publisher: Proceedings of the Australian Society of Sugar Cane
+    Technologists
+  title: Review and future options for computer modelling in the sugar
+    industry
+  type: conference
+  url: "chrome-extension://efaidnbmnnnihttps://eprints.qut.edu.au/74758/1/review_computer_modelling_sugar_industry.pdf"
+  volume: 36
+  type-title: '*Proceedings of the Australian Society of Sugar Cane*'
+  date: 2014-05
+  path: "chrome-extension://efaidnbmnnnihttps://eprints.qut.edu.au/74758/1/review_computer_modelling_sugar_industry.pdf"
+  position: '4/4'
+- accessed: 2025-10-05
+  author:
+  - family: Stephens
+    given: D. W
+  - family: Fawell
+    given: P. D
+  container-title: Progress in Computational Fluid Dynamics An
+    International Journal
+  doi: 10.1504/pcfd.2015.068818
+  id: stephens_2015_process
+  issued: 2015-01
+  page: 102-102
+  publisher: Inderscience Publishers
+  title: Process equipment optimisation using CFD and surrogate models
+  type: journal
+  volume: 15
+  type-title: '*Progress in Computational Fluid Dynamics An*'
+  date: 2015-01
+  path: https://doi.org/10.1504/pcfd.2015.068818
+  position: '1/2'
+- author:
+  - family: Sideroff
+    given: Chris
+  - family: Stephens
+    given: Darrin W.
+  - family: Jemcov
+    given: Aleksandar
+  id: sideroff_2015_a
+  issued: 2015-06
+  publisher: Proceeding of the Annual Meeting of CFD Society of Canada
+    (CFDSC2015)
+  title: A projection method based fast transient solver for
+    incompressible turbulent flows
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.4094.2242"
+  type-title: '*Proceeding of the Annual Meeting of CFD Society of Canada*'
+  date: 2015-06
+  path: "https://doi.org/10.13140/RG.2.1.4094.2242"
+  position: '2/3'
+- author:
+  - family: Stephens
+    given: Darrin W.
+  - family: Sideroff
+    given: Chris
+  - family: Jemcov
+    given: Aleksandar
+  id: stephens_2015_validation
+  issued: 2015-07
+  publisher: Proceedings of the 6th International Conference on
+    Computational Methods
+  title: Validation of a fast transient solver based on the projection
+    method
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.1335.1527"
+  type-title: '*Proceedings of the 6th International Conference on*'
+  date: 2015-07
+  path: "https://doi.org/10.13140/RG.2.1.1335.1527"
+  position: '1/3'
+- author:
+  - family: Boulanger
+    given: Joan
+  - family: Stephens
+    given: Darrin W.
+  - family: Nguyen
+    given: Tuan V.
+  - family: Tanguay
+    given: M N
+  - family: Mohanarangam
+    given: Krishna
+  - family: Simic
+    given: Kosta
+  id: boulanger_2015_advanced
+  issued: 2015-08
+  publisher: CSIRO Advanced Materials and Intelligent Processing
+    Conference
+  title: Advanced modelling of flocculation and thickening as applied
+    for full-scale continuous gravity sedimentation
+  type: conference
+  type-title: '*CSIRO Advanced Materials and Intelligent Processing*'
+  date: 2015-08
+  position: '2/6'
+- author:
+  - family: Stephens
+    given: Darrin W.
+  - family: Keough
+    given: Shannon
+  - family: Sideroff
+    given: Chris
+  id: stephens_2015_eulerlagrange
+  issued: 2015-10
+  publisher: PCChE 2015 Congress incorporating Chemeca 2015
+  title: Euler-lagrange large eddy simulation of a square
+    cross-sectioned bubble column
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.4772.4003"
+  type-title: '*PCChE 2015 Congress incorporating Chemeca 2015*'
+  date: 2015-10
+  path: "https://doi.org/10.13140/RG.2.1.4772.4003"
+  position: '1/3'
+- author:
+  - family: Stephens
+    given: Darrin W.
+  - family: Sideroff
+    given: Chris
+  - family: Jemcov
+    given: Aleksandar
+  id: stephens_2015_a
+  issued: 2015-11
+  publisher: Proceedings of the 7th Asia-Pacific International Symposium
+    on Aerospace Technology
+  title: A two equation VLES turbulence model with near-wall delayed
+    behaviour
+  type: conference
+  url: "https://doi.org/10.13140/RG.2.1.1791.1125"
+  type-title: '*Proceedings of the 7th Asia-Pacific International Symposium*'
+  date: 2015-11
+  path: "https://doi.org/10.13140/RG.2.1.1791.1125"
+  position: '1/3'
+- author:
+  - family: Stephens
+    given: Darrin W.
+  - family: Sideroff
+    given: Chris
+  - family: Jemcov
+    given: Aleksandar
+  id: stephens_2015_simulation
+  issued: 2015-12
+  publisher: Proceedings of the 11th International Conference on CFD in
+    the Minerals and Process Industries; CSIRO
+  title: Simulation and validation of turbulent gas flow in a cyclone
+    using caelus
+  type: conference
+  url: "https://www.cfd.com.au/cfd_conf15/PDFs/053STE.pdf"
+  type-title: '*Proceedings of the 11th International Conference on CFD in*'
+  date: 2015-12
+  path: "https://www.cfd.com.au/cfd_conf15/PDFs/053STE.pdf"
+  position: '1/3'
+- author:
+  - family: Mohanarangam
+    given: Krishna
+  - family: Stephens
+    given: Darrin W.
+  - family: Cao
+    given: Xiaodong
+  - family: Fawell
+    given: Phillip
+  - family: Simic
+    given: Kosta
+  id: mohanarangam_2015_experimental
+  issued: 2015-12
+  publisher: Proceedings of the 11th International Conference on CFD in
+    the Minerals and Process Industries; CSIRO
+  title: Experimental and numerical investigation of turbulent mixing
+    fields behind bluff body jets
+  type: conference
+  url: "https://www.cfd.com.au/cfd_conf15/PDFs/130MOH.pdf"
+  type-title: '*Proceedings of the 11th International Conference on CFD in*'
+  date: 2015-12
+  path: "https://www.cfd.com.au/cfd_conf15/PDFs/130MOH.pdf"
+  position: '2/5'
+- author:
+  - family: Rozycki
+    given: Andrew
+  - family: Atif
+    given: Sharjeel
+  - family: Stephens
+    given: Darrin
+  id: rozycki_2017_hydraulic
+  issued: 2017-05
+  publisher: Proceedings of Oz Water
+  title: Hydraulic and CFD modelling highlight opportunities for
+    operational efficiency in sewage treatment plants
+  type: conference
+  type-title: '*Proceedings of Oz Water*'
+  date: 2017-05
+  position: '3/3'
+- author:
+  - family: Jemcov
+    given: Aleksandar
+  - family: Stephens
+    given: Darrin W
+  - family: Sideroff
+    given: Chris
+  doi: 10.1115/fedsm2017-69174
+  id: jemcov_2017_verification
+  issued: 2017-07
+  publisher: Proceedings of the ASME 2017 Fluids Engineering Division
+    Summer Meeting
+  title: "Verification and validation of the caelus library:
+    Incompressible flow solvers"
+  title-short: Verification and validation of the caelus library
+  type: conference
+  url: "https://asmedigitalcollection.asme.org/FEDSM/proceedings-abstract/FEDSM2017/58059/V01BT11A009/234009"
+  type-title: '*Proceedings of the ASME 2017 Fluids Engineering Division*'
+  date: 2017-07
+  path: https://doi.org/10.1115/fedsm2017-69174
+  path: "https://asmedigitalcollection.asme.org/FEDSM/proceedings-abstract/FEDSM2017/58059/V01BT11A009/234009"
+  position: '2/3'
+- author:
+  - family: Stephens
+    given: Darrin W
+  - family: Jemcov
+    given: Aleksandar
+  - family: Sideroff
+    given: Chris
+  doi: 10.1115/fedsm2017-69174
+  id: stephens_2017_verification
+  issued: 2017-07
+  publisher: Proceedings of the ASME 2017 Fluids Engineering Division
+    Summer Meeting
+  title: "Verification and validation of the caelus library:
+    Incompressible turbulence models"
+  title-short: Verification and validation of the caelus library
+  type: conference
+  url: "https://asmedigitalcollection.asme.org/FEDSM/proceedings-abstract/FEDSM2017/58059/V01BT11A009/234009"
+  type-title: '*Proceedings of the ASME 2017 Fluids Engineering Division*'
+  date: 2017-07
+  path: https://doi.org/10.1115/fedsm2017-69174
+  path: "https://asmedigitalcollection.asme.org/FEDSM/proceedings-abstract/FEDSM2017/58059/V01BT11A009/234009"
+  position: '1/3'
+- author:
+  - family: Sethuraman
+    given: Lavanya
+  - family: Rudman
+    given: Murray
+  - family: Gopalakrishnan
+    given: Shivasubramanian
+  - family: Bhardwaj
+    given: Rajneesh
+  - family: Chryss
+    given: Andrew
+  - family: Stephens
+    given: Darrin W.
+  id: sethuraman_2017_predicting
+  issued: 2017-09
+  publisher: 18th International Conference on Transport and
+    Sedimentation of Solid
+  title: Predicting particle settling rate in a sheared mining slurry
+  type: conference
+  type-title: '*18th International Conference on Transport and*'
+  date: 2017-09
+  position: '6/6'
+- accessed: 2024-02-15
+  author:
+  - family: Mohanarangam
+    given: K
+  - family: Hopkins
+    given: J
+  - family: Simic
+    given: K
+  - family: Stephens
+    given: Darrin W.
+  - family: Fawell
+    given: P. D
+  container-title: Minerals Engineering
+  doi: 10.1016/j.mineng.2018.08.015
+  id: mohanarangam_2018_turbulent
+  issued: 2018-11
+  page: 1-16
+  publisher: Elsevier BV
+  title: "Turbulent mixing of concentrated viscoelastic polymer
+    solution: Influence of submerged sparge shape and orientation"
+  title-short: Turbulent mixing of concentrated viscoelastic polymer
+    solution
+  type: journal
+  volume: 128
+  type-title: '*Minerals Engineering*'
+  date: 2018-11
+  path: https://doi.org/10.1016/j.mineng.2018.08.015
+  position: '4/5'
+- author:
+  - family: Fawell
+    given: Phillip
+  - family: Nguyen
+    given: Tuan V.
+  - family: Solnordal
+    given: Chris
+  - family: Stephens
+    given: Darrin W.
+  id: fawell_2019_enhancing
+  issued: 2019-07
+  publisher: Proceedings of the Foundations of Mineral Processing &
+    Extractive Metallurgy
+  title: Enhancing gravity thickener feedwell design and operation for
+    optimal flocculation through the application of computational fluid
+    dynamics
+  type: conference
+  type-title: '*Proceedings of the Foundations of Mineral Processing &*'
+  date: 2019-07
+  position: '4/4'
+- author:
+  - family: Keough
+    given: Shannon
+  - family: Stephens
+    given: Darrin W.
+  - family: Ooi
+    given: Andrew
+  - family: Phillip
+    given: J.
+  - family: Monty
+    given: J. P.
+  id: keough_2018_cfd
+  issued: 2018-12
+  publisher: Prcoeedings of the 21st Australasian Fluid Mechanics
+    Conference
+  title: CFD simulations of vertical surface piercing circular cylinders
+    and comparison against experiments
+  type: conference
+  url: "https://www.afms.org.au/proceedings/21/Keough_et_al_2018.pdf"
+  type-title: '*Prcoeedings of the 21st Australasian Fluid Mechanics*'
+  date: 2018-12
+  path: "https://www.afms.org.au/proceedings/21/Keough_et_al_2018.pdf"
+  position: '2/5'
+- author:
+  - family: Fawell
+    given: Phillip
+  - family: Solnordal
+    given: Chris
+  - family: Nguyen
+    given: Taun V.
+  - family: Grabsch
+    given: Alton
+  - family: Stephens
+    given: Darrin W.
+  id: fawell_2019_making
+  issued: 2019-09
+  page: 193-208
+  publisher: MetPlant 2019, The Australasian Institute of Mining and
+    Metallurgy
+  title: Making your thickener's feedwell an effective flocculation
+    vessel -- lessons from the AMIRA P266 projects
+  type: conference
+  type-title: '*MetPlant 2019, The Australasian Institute of Mining and*'
+  date: 2019-09
+  position: '5/5'
+- author:
+  - family: Jemcov
+    given: Aleksandar
+  - family: Stephens
+    given: Darrin W.
+  - family: Wahono
+    given: Stevano
+  id: jemcov_2020_a
+  issued: 2020-01
+  publisher: Proceedings of the AIAA Scitech 2020 Forum
+  title: A high-resolution primitive variable solver for compressible
+    flow simulation
+  type: conference
+  url: "https://arc.aiaa.org/doi/10.2514/6.2020-0567"
+  type-title: '*Proceedings of the AIAA Scitech 2020 Forum*'
+  date: 2020-01
+  path: "https://arc.aiaa.org/doi/10.2514/6.2020-0567"
+  position: '2/3'
+- author:
+  - family: Leahy
+    given: Martin
+  - family: Lansell-Kenny
+    given: Daniel
+  - family: Stephens
+    given: Darrin W.
+  - family: Harvey
+    given: Tom
+  - family: Leb
+    given: Corey
+  id: leahy_2020_a
+  issued: 2020-12
+  publisher: Proceedings of the 22nd Australasian Fluid Mechanics
+    Conference
+  title: A comparison of FDS, ANSYS-CFX and caelus for car park CO
+    ventilation
+  type: conference
+  url: "https://espace.library.uq.edu.au/view/UQ:0ed43a6"
+  type-title: '*Proceedings of the 22nd Australasian Fluid Mechanics*'
+  date: 2020-12
+  path: "https://espace.library.uq.edu.au/view/UQ:0ed43a6"
+  position: '3/5'
+- accessed: 2024-07-18
+  author:
+  - family: Fawell
+    given: P D
+  - family: Nguyen
+    given: T V
+  - family: Solnordal
+    given: C B
+  - family: Stephens
+    given: D W
+  container-title: Mineral processing and extractive metallurgy review
+  doi: 10.1080/08827508.2019.1678156
+  id: fawell_2019_enhancing
+  issued: 2019-10
+  page: 496-510
+  publisher: Taylor & Francis
+  title: Enhancing gravity thickener feedwell design and operation for
+    optimal flocculation through the application of computational fluid
+    dynamics
+  type: journal
+  volume: 42
+  type-title: '*Mineral processing and extractive metallurgy review*'
+  date: 2019-10
+  path: https://doi.org/10.1080/08827508.2019.1678156
+  position: '4/4'

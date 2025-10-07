@@ -1,5 +1,20 @@
 ---
-title: "Publications"
+title: 'Publications (17 + 30)'
+title-block-banner: true
+date-format: 'MMMM,<br>YYYY'
+listing:
+  contents:
+    - publications.yml
+  page-size: 10
+  sort: 'date desc'
+  type: table
+  categories: false
+  sort-ui: [date, title, type, type-title, position]
+  filter-ui: [date, title, type, type-title]
+  fields: [date, title, type, type-title, position]
+  field-display-names:
+    date: Date
+    type: Type
+    type-title: Type Name
+    position: Rank
 ---
-
-ToDo
