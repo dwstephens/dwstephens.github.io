@@ -1,0 +1,229 @@
+---
+title: "Generalised Additive Models"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE, warning = FALSE, message = FALSE, fig.width = 6, fig.align='center')
+```
+
+```{r, echo = FALSE, include=FALSE}
+library(tidyverse)
+library(gapminder)
+library(mgcv)
+library(rsample)
+```
+
+
+# Introduction
+In this task, generalised additive model's are explored for two datasets.
+
+
+## 1. Define a string and print it
+This section defines a string containing my name, the unit name and the task name.
+```{r}
+description = 'Darrin William Stephens, SIT741: Statistical Data Analysis, Task T06.P6'
+```
+
+Print the string using the cat() function.
+```{r}
+cat(description)
+```
+
+## 2. Read the first dataset
+This part of the task uses the Afghanistan data from the gapminder dataset.
+```{r}
+afghan_data = gapminder |> 
+  filter(country == "Afghanistan")
+```
+
+### Fit a generalised additive model
+Fitting generalised additive model that predicts life expectancy from the population using the default smoothing function. The histogram of life expectancy is shown below, it appears to resemble a normal distribution, although more more data would help. 
+
+```{r}
+afghan_data |> 
+  ggplot(aes(x=lifeExp)) +
+  geom_histogram(bins=6, color="darkgray") +
+  labs(title="Distribution of life expectancy", x="Life expectancy (years)", y="Count") +
+  theme(plot.title=element_text(hjust=0.5))
+```
+
+I have used a Gaussian distribution for the family based on the distribution of life expectancy.
+```{r}
+gam_model = gam(lifeExp ~ s(pop), family=gaussian(link = "identity"), data = afghan_data)
+```
+
+### Model outputs
+
+```{r}
+summary(gam_model)
+```
+The baseline life expectancy (intercept) is ~37.5 years and is highly significant. The estimated degrees of freedom for the smoothing is 3.1 suggesting it is non-linear. The p-value indicates the s(pop) is statistically significant, suggesting the population has a non-linear and meaningful effect on life expectancy. 
+
+```{r}
+plot(gam_model, shade = TRUE, main = "Effect of Population on Life Expectancy in Afghanistan")
+```
+
+## 3. Re-fit with different smoother
+The default smoother in gam(), is the thin plate regression splines. Here, I fit a new model using cubic regression splines for the smoothing function.
+```{r}
+gam_model2_k10 = gam(lifeExp ~ s(pop, bs = "cr"),
+                     family=gaussian(link = "identity"), data = afghan_data)
+summary(gam_model2_k10)
+```
+### Effect of k
+The default k value for cubic regression splines is 10. Now, I'll fit models with different values of k (3, 5, 7 and 10). 
+```{r}
+# Fit models with different k values
+gam_model2_k3 = gam(lifeExp ~ s(pop, bs = "cr", k = 3), 
+                    family=gaussian(link = "identity"), data = afghan_data)
+gam_model2_k5 = gam(lifeExp ~ s(pop, bs = "cr", k = 5),
+                    family=gaussian(link = "identity"), data = afghan_data)
+gam_model2_k7 = gam(lifeExp ~ s(pop, bs = "cr", k = 7),
+                    family=gaussian(link = "identity"), data = afghan_data)
+
+# Compare summaries
+summary(gam_model2_k3)
+summary(gam_model2_k5)
+summary(gam_model2_k7)
+summary(gam_model2_k10)
+
+```
+```{r}
+# Compare AIC values
+AIC(gam_model2_k3, gam_model2_k5, gam_model2_k7, gam_model2_k10)
+```
+As k is increased from 3 to 10 the Deviance explained increase then decreases and the AIC value decreases then increases. From the k values tested, k=5 gives the highest Deviance explained and the lowest AIC value.  
+
+```{r}
+par(mfrow = c(2, 2))
+plot(gam_model2_k3, shade = TRUE, main = "Cubic Regression Spline (k=3)")
+plot(gam_model2_k5, shade = TRUE, main = "Cubic Regression Spline (k=5)")
+plot(gam_model2_k7, shade = TRUE, main = "Cubic Regression Spline (k=7)")
+plot(gam_model2_k10, shade = TRUE, main = "Cubic Regression Spline (k=10)")
+```
+
+## 4. Read the second dataset
+This section uses a dataset on abalone from https://archive.ics.uci.edu/dataset/1/abalone. The data is read and columns renamed to have appropriate labels. then convert the "rings" into the "age" as suggested by the dataset source.
+```{r}
+abalone = read.table(
+  "http://archive.ics.uci.edu/ml/machine-learning-databases/abalone/abalone.data", sep = ",") 
+
+# Rename columns
+abalone_df = abalone |> 
+  rename(
+    sex=V1,
+    length=V2,
+    diameter=V3,
+    height=V4,
+    whole_weight=V5,
+    shucked_weight=V6,
+    viscera_weight=V7,
+    shell_weight=V8,
+    rings=V9
+  )
+
+glimpse(abalone_df)
+```
+```{r}
+# Convert "rings" to "age" by adding 1.5 (as per dataset documentation)
+abalone_df = abalone_df |> 
+  mutate(
+    age=rings + 1.5,
+    )
+```
+
+### Create training/test sets
+Create training and test sets using a 10-fold cross-validation.
+
+```{r}
+# Create 10-fold cross-validation splits
+set.seed(42)
+cv_splits = vfold_cv(abalone_df, v = 10)
+
+for (i in seq_along(cv_splits$splits)) {
+  cat("Fold", i, "\n")
+  
+  print(cv_splits$splits[[i]])
+  cat("\n")
+}
+```
+## 5.  Fit a generalised additive model
+In this section I look at fitting a model that predicts the age of abalone from Shell Weight, Diameter and Length.
+
+The fit_gam and predict_gam function have been copied from the Week 10 R activity.
+```{r}
+fit_gam <- function(splt, ...) 
+  gam(..., data = analysis(splt))
+
+predict_gam <- function(splt, mod, ...) 
+  broom::augment(mod, newdata = assessment(splt))
+```
+
+In a previous task it was shown that the distribution of Age looks normal with some positive skew. I will use Gaussian for the family and "identity" for the link function.
+
+```{r}
+cv_splits = cv_splits |> 
+  mutate(models = map(splits, 
+                      fit_gam, 
+                      age ~ s(shell_weight) + s(diameter) + s(length),
+                      )
+         )
+```
+
+We can generate predictions for each fold using the predict_gam function..
+```{r}
+cv_splits <- cv_splits |>  
+  mutate(predictions = map2(splits, 
+                            models, 
+                            predict_gam)
+         )
+
+cv_splits
+```
+
+## 6. Erorrs and variation in cross-validation
+
+Then we can calculate the error of each fold. Here I have used the RMSE and MAE error metrics.
+```{r}
+library(yardstick)
+cv_splits <- cv_splits |> 
+  mutate(
+    rmse = map_dbl(predictions, function(x, ...) rmse(x, ...)$.estimate, age, .fitted),
+    mae  = map_dbl(predictions, function(x, ...) mae(x, ...)$.estimate,  age, .fitted)
+  )
+
+cv_splits
+```
+
+```{r}
+# Create a dataframe with the error for each fold
+error_df <- cv_splits |>
+  select(rmse, mae) |>
+  mutate(fold = row_number()) |>
+  pivot_longer(cols = c(rmse, mae), names_to = "metric", values_to = "value")
+
+# Calculate summary statistics
+summary_stats <- error_df |>
+  group_by(metric) |>
+  summarise(mean = mean(value), sd = sd(value), .groups = "drop")
+
+# Plot
+ggplot(error_df, aes(x = fold, y = value, color = metric)) +
+  geom_line() +
+  geom_point(size = 2) +
+  geom_hline(data = summary_stats, aes(yintercept = mean, color = metric),
+             linetype = "dashed", show.legend = FALSE) +
+
+  labs(
+    title = "Error Variation Across CV Folds with Mean",
+    x = "Fold",
+    y = "Error",
+    color = "Metric"
+  ) +
+  theme(plot.title=element_text(hjust=0.5))
+```
+
+```{r}
+# Summary of variation
+print(summary_stats)
+```

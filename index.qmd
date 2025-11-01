@@ -55,6 +55,7 @@ WIP
 ## Interests
 
 - CFD
+- High Performance Computing
 - Machine Learning
 - Data Science
 - Knowledge Sharing

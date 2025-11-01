@@ -1,0 +1,247 @@
+---
+title: "Tidy Data"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+```{r, echo = FALSE, include=FALSE}
+library(tidyverse)
+```
+
+
+# Introduction
+In this task the dplyr and tidyr packages from tidyverse are used to work with different datasets. The first sub-task involves using dplyr to transform an manipulate a dataset of flights from New York City. The second sub-task involves using dplyr and tidyr to make a dataset tidy.
+
+# Sub-task 1 steps
+## 1. Define a string and print it
+This section defines a string containing my name, the unit name and the task name.
+```{r}
+description = 'Darrin William Stephens, SIT741: Statistical Data Analysis, Task T02.P2'
+```
+
+Print the string using the cat() function.
+```{r}
+cat(description)
+```
+
+## 2. Read the dataset
+The weather data in the "nycflights13" dataset was downloaded as a CSV file from https://github.com/tidyverse/nycflights13/blob/main/data-raw/weather.csv. The weather data can then be loaded into R.
+
+```{r}
+weather_data = read.csv('weather.csv')
+```
+
+## 3. Inspect the head of the dataset
+To inspect the header and the first n columns of the dataset, I pass the dataframe to the head() function. As I don't specify the number of rows to show the default number of rows (6) is shown.
+```{r}
+head(weather_data)
+```
+
+## 4. Inspect the size of the dataset
+To get the number of observations and the number of variables I use the dim() function. This returns the dimensions of the dataframe.
+```{r}
+# Get the dimensions of the dataset
+dims = dim(weather_data)
+obs = dims[1]
+vars = dims[2]
+
+# Print the values
+cat("Number of observations:", obs, "\n")
+cat("Number of variables:", vars, "\n")
+```
+
+## 5. Change the "origin" variable to have the factor type
+Before changing the class of the "origin" variable, I first check its current class.  
+
+```{r}
+class(weather_data$origin)
+```
+Now I use mutate to modify the "origin" column class to be factor. Since dplyr doesn't modify the existing dataframe, I need to assign the new dataframe to the old to overwrite it.
+```{r}
+weather_data = weather_data |> 
+  mutate(origin = factor(origin))
+```
+
+Check the mutate function has updated the class of "origin".
+```{r}
+class(weather_data$origin)
+```
+
+## 6. Summarise the mean and median for each level in "origin"
+The mean values for the measurements grouped by origin.
+
+```{r}
+weather_data |> 
+  group_by(origin) |> 
+  summarise(across(temp:visib, ~ mean(.x, na.rm =TRUE)))
+```
+The median values for the measurements grouped by origin.
+```{r}
+weather_data |> 
+  group_by(origin) |> 
+  summarise(across(temp:visib, ~ median(.x, na.rm =TRUE)))
+```
+
+## 7. Merge data from the airports dataset with latitude and longitude from flights dataset
+
+Load the datasets.
+```{r}
+library(nycflights13)
+data(airports)
+data(flights)
+```
+Perform a left join between flights and airports selecting the faa, lat and lon columns from airport and renaming lat to o_lat and lon to o_lon. The join uses the origin column from flights and the lat and lon columns from airports. A similar left join to performed using the dest column from flights and lat and lon columns from airports.
+```{r}
+flights |> 
+  # Join for origin
+  left_join(
+    (airports |> 
+      dplyr::select(faa, o_lat = lat, o_lon = lon)),
+    by = c("origin" ="faa")
+  ) |> 
+  # Join for destination
+  left_join(
+    (airports |> 
+      dplyr::select(faa, d_lat = lat, d_lon = lon)),
+    by = c("dest" ="faa")
+  ) 
+```
+
+# Sub-task 2
+For this subtask the dataset is climate statistics for the Melbourne Airport from the Bureau of Meteorology, available from http://www.bom.gov.au/clim_data/cdio/tables/text/IDCJCM0035_086282.csv.
+
+## Load the data
+The first eleven lines of the CSV file contains meta data and can be skipped.
+
+```{r}
+climate_data = read.csv('IDCJCM0035_086282.csv', skip=11)
+head(climate_data)
+```
+
+## Tidy the data
+Tidy data has the following characteristics
+
+ - Each column is a variable.
+ - Each row is an observation.
+ - Each cell is a single value.
+ - Each type of observational unit forms a table.
+
+The climate data is messy because the columns are not variables and the rows are not individual observations. In this dataset the rows contain some measurements across 12 months.
+
+### Pivot longer
+To tidy this data, the columns for the months need to be pivoted into rows. The Select operation is used to re-order the columns in the new dataframe after the pivot.
+
+```{r, echo = FALSE}
+climate_mod = climate_data |> 
+  pivot_longer(
+    cols = January:December,
+    names_to = "month",
+    values_to = "value"
+  ) |> 
+  select(
+    Statistic.Element,
+    month, value,
+    Annual,
+    Start.Year,
+    End.Year,
+    Number.of.Years
+  )
+```
+
+### Renaming columns
+Rename columns headings to remove spaces and make them the same case.
+```{r}
+climate_mod = climate_mod |> 
+  rename(
+    statistic_element = Statistic.Element,
+    number_of_years = Number.of.Years,
+    start_year = Start.Year,
+    end_year = End.Year,
+    annual_value = Annual
+  )
+
+head(climate_mod, n=13)
+```
+
+### Correcting data types for some columns
+```{r}
+# Correct the data types for columns
+climate_mod = climate_mod |>
+  # Cannot change value and annual_value as they contains a mix of dates and numbers
+  mutate(across(c(5:7), as.numeric)) |> 
+  mutate(month = factor(month))
+
+head(climate_mod, n=1)
+```
+
+### Extracting categorical variables from the statistic_element
+The values in the statistic_element variable appear to also contain categorical data (temperature, rainfall, mean, highest, lowest, etc) that could be used to group and filter the data. Therefore, I have extracted this information into two separate variables using keywords and units.
+
+- quantity_type: temperature, rainfall, wind, sunshine, solar, cloud_cover and humidity.
+- statistic_type: mean. highest, lowest, date, decile.
+
+```{r}
+# Create the quantity_type column
+climate_mod = climate_mod |> 
+  mutate(
+    # Categorize by looking for key words
+    quantity_type = case_when(
+      str_detect(statistic_element, pattern = "temperature|°C") ~ "temperature",
+      str_detect(statistic_element, pattern = "rainfall|rain|evaporation|mm") ~ "rainfall",
+      str_detect(statistic_element, pattern = "wind|km/h") ~ "wind",
+      str_detect(statistic_element, pattern = "sunshine|hours") ~ "sunshine",
+      str_detect(statistic_element, pattern = "solar|MJ/(m*m)") ~ "solar",
+      str_detect(statistic_element, pattern = "cloud|clear|hours|oktas") ~ "cloud_cover",
+      str_detect(statistic_element, pattern = "humidity|%") ~ "humidity",
+      .default= "other"
+    ),
+    .before = month
+  ) |> 
+  mutate(quantity_type = factor(quantity_type))
+
+```
+
+
+
+```{r}
+# Create the statistic_type column
+# Need to use startswith() so I can find instances where Maximum is used instead of Highest
+climate_mod= climate_mod |> 
+  mutate(
+    statistic_type = case_when(
+      startsWith(statistic_element, "Mean") ~ "mean",
+      startsWith(statistic_element, "Highest") ~ "highest",
+      startsWith(statistic_element, "Highest") ~ "highest",
+      startsWith(statistic_element, "Lowest") ~ "lowest", 
+      startsWith(statistic_element, "Date of") ~ "date",
+      startsWith(statistic_element, "Decile") ~ "decile",
+      .default = "other"
+    ),
+    .before = month
+  ) |> 
+  mutate(statistic_type = factor(statistic_type))
+
+head(climate_mod, n=13)
+```
+
+### Splitting the table
+The value variable currently contains a mix of dates and numbers. The last part of tidying the data is to split the data into two tables. One containing the data for dates and the other containing the numerical values.
+
+```{r}
+# Create the table with only dates
+climate_tidy_dates = climate_mod |> 
+  filter(statistic_type == "date")
+
+glimpse(climate_tidy_dates)
+```
+
+```{r}
+# Create the table with only dates
+climate_tidy_numeric = climate_mod |> 
+  filter(statistic_type != "date") |> 
+    mutate(across(c("value","annual_value"), as.numeric))
+
+glimpse(climate_tidy_numeric)
+```
+

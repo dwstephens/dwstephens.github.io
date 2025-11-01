@@ -1,0 +1,122 @@
+---
+title: "Data types"
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+# Introduction
+In this task we use some basic R commands for working with a dataset. These include importing, inspecting the size, inspecting the data types and inspecting the variable types. Additionally a function is created that summarises categorical and numerical variables in a dataframe.
+
+# Task steps
+## Define a string
+This section defines a string containing my name, the unit name and the task name.
+```{r}
+description = 'Darrin William Stephens, SIT741: Statistical Data Analysis, Task T01.P1'
+```
+
+Print the string using the cat() function.
+```{r}
+cat(description)
+```
+
+## The dataset
+The dataset I chose for this task was the blood pressure measurement data from the US Centers for Disease Control and Prevention						
+National Health and Nutrition Examination Survey. It contains three categorical and nine numerical variables.
+
+Based on 2017-March 2020 Blood Pressure - Oscillometric Measurement (P_BPXO).
+Published: May 2021						
+Description: https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2017/DataFiles/P_BPXO.htm						
+License: public domain as per https://www.cdc.gov/other/agencymaterials.html
+
+Information about dataset variables is shown in the table below.
+
+|Variable name | Data type| Description |
+|:-------------|:---------|:------------|
+|SEQN	         |Numeric	  |Respondent sequence number|
+|BPAOARM	     |Character	|Arm selected - oscillometric|
+|BPAOCSZ	     |Numeric		|Coded cuff size - oscillometric|
+|BPXOSY1	     |Numeric		|Systolic - 1st oscillometric reading|
+|BPXODI1	     |Numeric		|Diastolic - 1st oscillometric reading|
+|BPXOSY2	     |Numeric		|Systolic - 2nd oscillometric reading|
+|BPXODI2	     |Numeric		|Diastolic - 2nd oscillometric reading|
+|BPXOSY3	     |Numeric		|Systolic - 3rd oscillometric reading|
+|BPXODI3	     |Numeric		|Diastolic - 3rd oscillometric reading|
+|BPXOPLS1	     |Numeric		|Pulse - 1st oscillometric reading|
+|BPXOPLS2	     |Numeric		|Pulse - 2nd oscillometric reading|
+|BPXOPLS3	     |Numeric		|Pulse - 3rd oscillometric reading|
+
+I have used this dataset for a previous Deakin unit and had cleaned (missing values removed) CSV file available.
+
+## Import the dataset
+The class of the columns is set on import. The first three are specified as categorical (factor) and the next nine are specified as numeric.
+```{r}
+data = read.csv('Blood_Pressure_Measurement_cleaned.csv', colClasses=c(rep("factor", 3), rep("numeric", 9)))
+```
+
+## Inspect the head of the dataset
+To inspect the header and the first n columns of the dataset, I pass the dataframe to the head() function. As I don't specify the number of rows to show the default number of rows (6) is shown.
+```{r}
+head(data)
+```
+
+## Inspect the size of the dataset
+To get the number of observations and the number of variables I use the dim() function. This returns the dimensions of the dataframe.
+```{r}
+# Get the dimensions of the dataset
+dims = dim(data)
+obs = dims[1]
+vars = dims[2]
+
+# Print the values
+cat("Number of observations:", obs, "\n")
+cat("Number of variables:", vars, "\n")
+```
+
+## Inspect data types
+To inspect the data type I use the sapply function to apply the typeof function to each column in the dataframe. The typeof function returns the data type for each column (variable).
+```{r}
+sapply(data, typeof)
+```
+
+
+## Function to summarise
+A function that takes a dataframe and summarises the data within the dataframe. The function loops through all columns of a dataframe and 
+for each column it checks if the column is categorical or numerical. For categorical columns a frequency table is produced and for numerical columns the mean is calculated. The summary infrmation for each column is printed.
+
+```{r}
+summarise = function(df){
+  # This function loops through all columns of the provided dataframe
+  # For each column it checks if the column is categorical or numerical
+  # If categorical a frequency table is produced
+  # If numerical the mean is calculated
+  for (col_name in names(df)){
+    # Print column name
+    cat("Variable:", col_name)
+    
+    # Check if categorical 
+    if (is.factor(df[[col_name]])){
+      cat(" is categorical.\n")
+      cat("Frequency table:")
+      print(table(df[[col_name]]))
+      cat("\n")
+    }
+    
+    # Check if numerical
+    if (is.numeric(df[[col_name]])){
+      cat(" is numerical.\n")
+      cat("Mean:", mean(df[[col_name]]), "\n")
+      cat("\n")
+    }
+  }
+}
+```
+
+## Summarise the imported dataset
+The first column (SEQN) of the imported dataset is a nominal categorical variable that represents an identification number for each person in the survey. Since identification numbers are uniquie a frequency table for this variable would consist of 9410 ones. This is a lot of information to print, therefore, I have removed the first column from the dataframe for this section. The code below shows creating a new dataframe by excluding the first column from the original dataframe. Each column (variable) in the new dataframe is then summarised by using the summarise function.
+
+```{r}
+new_data = data[-c(1)]
+summarise(new_data)
+```

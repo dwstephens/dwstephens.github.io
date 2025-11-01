@@ -1,0 +1,15 @@
+---
+title: "Data Wrangling"
+---
+
+These are the works produced for SIT741 Statistical Data Analysis unit. This unit developed my advanced capabilities in statistical modelling and R programming, focusing on solving complex, real-world data problems.
+
+**Key competencies and knowledge gained:**
+
+* **Advanced Statistical Theory:** Applied sophisticated statistical models, including Generalized Linear Models (GLMs) and Generalized Additive Models (GAMs), to complex datasets.
+* **R Programming:** Mastered advanced R programming for statistical simulation, model development, and comprehensive model checking.
+* **End-to-End Data Analysis:** Gained hands-on experience in the complete data analysis workflow:
+    * Data Transformation: Transforming raw, untidy data into clean, tidy formats.
+    * Exploratory Data Analysis (EDA): Performing in-depth exploratory analysis to uncover insights.
+    * Model Development: Building, validating, and checking robust statistical models.
+    * Communication: Interpreting and effectively communicating analysis results.
