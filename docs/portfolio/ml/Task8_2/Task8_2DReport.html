@@ -1,0 +1,2025 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en-GB" xml:lang="en-GB"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.7.31">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+
+<title>Real Estate Price Prediction Report – DWS</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1em; /* quarto-specific, see https://github.com/quarto-dev/quarto-cli/issues/4556 */ 
+  vertical-align: middle;
+}
+/* CSS for syntax highlighting */
+html { -webkit-text-size-adjust: 100%; }
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+  }
+pre.numberSource { margin-left: 3em;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+</style>
+
+
+<script src="../../../site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="../../../site_libs/quarto-nav/headroom.min.js"></script>
+<script src="../../../site_libs/clipboard/clipboard.min.js"></script>
+<script src="../../../site_libs/quarto-search/autocomplete.umd.js"></script>
+<script src="../../../site_libs/quarto-search/fuse.min.js"></script>
+<script src="../../../site_libs/quarto-search/quarto-search.js"></script>
+<meta name="quarto:offset" content="../../../">
+<link href="../../../portfolio/ml/Task10_1/Task10_1P.html" rel="next">
+<link href="../../../portfolio/ml/Task8_2/Task8_2D.html" rel="prev">
+<script src="../../../site_libs/quarto-html/quarto.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/tabsets/tabsets.js" type="module"></script>
+<script src="../../../site_libs/quarto-html/popper.min.js"></script>
+<script src="../../../site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="../../../site_libs/quarto-html/anchor.min.js"></script>
+<link href="../../../site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-4a990d8dcb58f517c7c86712b8f2ac7c.css" rel="stylesheet" class="quarto-color-scheme" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-dark-46f4cc9626f044588a66931b604fc9c8.css" rel="stylesheet" class="quarto-color-scheme quarto-color-alternate" id="quarto-text-highlighting-styles">
+<link href="../../../site_libs/quarto-html/quarto-syntax-highlighting-4a990d8dcb58f517c7c86712b8f2ac7c.css" rel="stylesheet" class="quarto-color-scheme-extra" id="quarto-text-highlighting-styles">
+<script src="../../../site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="../../../site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="../../../site_libs/bootstrap/bootstrap-2b9fd77e7bf9b14ae7fdba3f58299520.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme" id="quarto-bootstrap" data-mode="light">
+<link href="../../../site_libs/bootstrap/bootstrap-dark-3d36643cddf665d27ef769286e85c504.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme quarto-color-alternate" id="quarto-bootstrap" data-mode="dark">
+<link href="../../../site_libs/bootstrap/bootstrap-2b9fd77e7bf9b14ae7fdba3f58299520.min.css" rel="stylesheet" append-hash="true" class="quarto-color-scheme-extra" id="quarto-bootstrap" data-mode="light">
+<script src="../../../site_libs/quarto-contrib/iconify-3.0.0/iconify-icon.min.js"></script>
+<script src="../../../site_libs/quarto-contrib/glightbox/glightbox.min.js"></script>
+<link href="../../../site_libs/quarto-contrib/glightbox/glightbox.min.css" rel="stylesheet">
+<link href="../../../site_libs/quarto-contrib/glightbox/lightbox.css" rel="stylesheet">
+<script id="quarto-search-options" type="application/json">{
+  "location": "navbar",
+  "copy-button": false,
+  "collapse-after": 3,
+  "panel-placement": "end",
+  "type": "overlay",
+  "limit": 50,
+  "keyboard-shortcut": [
+    "f",
+    "/",
+    "s"
+  ],
+  "show-item-context": false,
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-text-placeholder": "",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit",
+    "search-label": "Search"
+  }
+}</script>
+</head><body class="nav-sidebar docked nav-fixed fullcontent quarto-light"><script id="quarto-html-before-body" type="application/javascript">
+    const toggleBodyColorMode = (bsSheetEl) => {
+      const mode = bsSheetEl.getAttribute("data-mode");
+      const bodyEl = window.document.querySelector("body");
+      if (mode === "dark") {
+        bodyEl.classList.add("quarto-dark");
+        bodyEl.classList.remove("quarto-light");
+      } else {
+        bodyEl.classList.add("quarto-light");
+        bodyEl.classList.remove("quarto-dark");
+      }
+    }
+    const toggleBodyColorPrimary = () => {
+      const bsSheetEl = window.document.querySelector("link#quarto-bootstrap:not([rel=disabled-stylesheet])");
+      if (bsSheetEl) {
+        toggleBodyColorMode(bsSheetEl);
+      }
+    }
+    const setColorSchemeToggle = (alternate) => {
+      const toggles = window.document.querySelectorAll('.quarto-color-scheme-toggle');
+      for (let i=0; i < toggles.length; i++) {
+        const toggle = toggles[i];
+        if (toggle) {
+          if (alternate) {
+            toggle.classList.add("alternate");
+          } else {
+            toggle.classList.remove("alternate");
+          }
+        }
+      }
+    };
+    const toggleColorMode = (alternate) => {
+      // Switch the stylesheets
+      const primaryStylesheets = window.document.querySelectorAll('link.quarto-color-scheme:not(.quarto-color-alternate)');
+      const alternateStylesheets = window.document.querySelectorAll('link.quarto-color-scheme.quarto-color-alternate');
+      manageTransitions('#quarto-margin-sidebar .nav-link', false);
+      if (alternate) {
+        // note: dark is layered on light, we don't disable primary!
+        enableStylesheet(alternateStylesheets);
+        for (const sheetNode of alternateStylesheets) {
+          if (sheetNode.id === "quarto-bootstrap") {
+            toggleBodyColorMode(sheetNode);
+          }
+        }
+      } else {
+        disableStylesheet(alternateStylesheets);
+        enableStylesheet(primaryStylesheets)
+        toggleBodyColorPrimary();
+      }
+      manageTransitions('#quarto-margin-sidebar .nav-link', true);
+      // Switch the toggles
+      setColorSchemeToggle(alternate)
+      // Hack to workaround the fact that safari doesn't
+      // properly recolor the scrollbar when toggling (#1455)
+      if (navigator.userAgent.indexOf('Safari') > 0 && navigator.userAgent.indexOf('Chrome') == -1) {
+        manageTransitions("body", false);
+        window.scrollTo(0, 1);
+        setTimeout(() => {
+          window.scrollTo(0, 0);
+          manageTransitions("body", true);
+        }, 40);
+      }
+    }
+    const disableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        stylesheet.rel = 'disabled-stylesheet';
+      }
+    }
+    const enableStylesheet = (stylesheets) => {
+      for (let i=0; i < stylesheets.length; i++) {
+        const stylesheet = stylesheets[i];
+        if(stylesheet.rel !== 'stylesheet') { // for Chrome, which will still FOUC without this check
+          stylesheet.rel = 'stylesheet';
+        }
+      }
+    }
+    const manageTransitions = (selector, allowTransitions) => {
+      const els = window.document.querySelectorAll(selector);
+      for (let i=0; i < els.length; i++) {
+        const el = els[i];
+        if (allowTransitions) {
+          el.classList.remove('notransition');
+        } else {
+          el.classList.add('notransition');
+        }
+      }
+    }
+    const isFileUrl = () => {
+      return window.location.protocol === 'file:';
+    }
+    const hasAlternateSentinel = () => {
+      let styleSentinel = getColorSchemeSentinel();
+      if (styleSentinel !== null) {
+        return styleSentinel === "alternate";
+      } else {
+        return false;
+      }
+    }
+    const setStyleSentinel = (alternate) => {
+      const value = alternate ? "alternate" : "default";
+      if (!isFileUrl()) {
+        window.localStorage.setItem("quarto-color-scheme", value);
+      } else {
+        localAlternateSentinel = value;
+      }
+    }
+    const getColorSchemeSentinel = () => {
+      if (!isFileUrl()) {
+        const storageValue = window.localStorage.getItem("quarto-color-scheme");
+        return storageValue != null ? storageValue : localAlternateSentinel;
+      } else {
+        return localAlternateSentinel;
+      }
+    }
+    const toggleGiscusIfUsed = (isAlternate, darkModeDefault) => {
+      const baseTheme = document.querySelector('#giscus-base-theme')?.value ?? 'light';
+      const alternateTheme = document.querySelector('#giscus-alt-theme')?.value ?? 'dark';
+      let newTheme = '';
+      if(authorPrefersDark) {
+        newTheme = isAlternate ? baseTheme : alternateTheme;
+      } else {
+        newTheme = isAlternate ? alternateTheme : baseTheme;
+      }
+      const changeGiscusTheme = () => {
+        // From: https://github.com/giscus/giscus/issues/336
+        const sendMessage = (message) => {
+          const iframe = document.querySelector('iframe.giscus-frame');
+          if (!iframe) return;
+          iframe.contentWindow.postMessage({ giscus: message }, 'https://giscus.app');
+        }
+        sendMessage({
+          setConfig: {
+            theme: newTheme
+          }
+        });
+      }
+      const isGiscussLoaded = window.document.querySelector('iframe.giscus-frame') !== null;
+      if (isGiscussLoaded) {
+        changeGiscusTheme();
+      }
+    };
+    const authorPrefersDark = false;
+    const darkModeDefault = authorPrefersDark;
+      document.querySelector('link#quarto-text-highlighting-styles.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+      document.querySelector('link#quarto-bootstrap.quarto-color-scheme-extra').rel = 'disabled-stylesheet';
+    let localAlternateSentinel = darkModeDefault ? 'alternate' : 'default';
+    // Dark / light mode switch
+    window.quartoToggleColorScheme = () => {
+      // Read the current dark / light value
+      let toAlternate = !hasAlternateSentinel();
+      toggleColorMode(toAlternate);
+      setStyleSentinel(toAlternate);
+      toggleGiscusIfUsed(toAlternate, darkModeDefault);
+      window.dispatchEvent(new Event('resize'));
+    };
+    // Switch to dark mode if need be
+    if (hasAlternateSentinel()) {
+      toggleColorMode(true);
+    } else {
+      toggleColorMode(false);
+    }
+  </script>\usepackage{placeins}
+
+  <script src="https://cdnjs.cloudflare.com/polyfill/v3/polyfill.min.js?features=es6"></script>
+  <script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml-full.js" type="text/javascript"></script>
+
+<script type="text/javascript">
+const typesetMath = (el) => {
+  if (window.MathJax) {
+    // MathJax Typeset
+    window.MathJax.typeset([el]);
+  } else if (window.katex) {
+    // KaTeX Render
+    var mathElements = el.getElementsByClassName("math");
+    var macros = [];
+    for (var i = 0; i < mathElements.length; i++) {
+      var texText = mathElements[i].firstChild;
+      if (mathElements[i].tagName == "SPAN") {
+        window.katex.render(texText.data, mathElements[i], {
+          displayMode: mathElements[i].classList.contains('display'),
+          throwOnError: false,
+          macros: macros,
+          fleqn: false
+        });
+      }
+    }
+  }
+}
+window.Quarto = {
+  typesetMath
+};
+</script>
+
+
+
+
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+    <nav class="navbar navbar-expand-lg " data-bs-theme="dark">
+      <div class="navbar-container container-fluid">
+      <div class="navbar-brand-container mx-auto">
+    <a href="../../../index.html" class="navbar-brand navbar-brand-logo">
+    <img src="../../../assets/images/logo.png" alt="Darrin Stephens logo" class="navbar-logo">
+    </a>
+    <a class="navbar-brand" href="../../../index.html">
+    <span class="navbar-title">DWS</span>
+    </a>
+  </div>
+            <div id="quarto-search" class="" title="Search"></div>
+          <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarCollapse" aria-controls="navbarCollapse" role="menu" aria-expanded="false" aria-label="Toggle navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+  <span class="navbar-toggler-icon"></span>
+</button>
+          <div class="collapse navbar-collapse" id="navbarCollapse">
+            <ul class="navbar-nav navbar-nav-scroll ms-auto">
+  <li class="nav-item">
+    <a class="nav-link" href="../../../index.html"> 
+<span class="menu-text">About</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link active" href="../../../portfolio.html" aria-current="page"> 
+<span class="menu-text">Portfolio</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="../../../publications.html"> 
+<span class="menu-text">Publications</span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://www.linkedin.com/in/darrin-stephens"> 
+<span class="menu-text"><iconify-icon role="img" inline="" icon="fa7-brands:linkedin" aria-label="LinkedIn" title="LinkedIn"></iconify-icon></span></a>
+  </li>  
+  <li class="nav-item">
+    <a class="nav-link" href="https://github.com/dwstephens"> 
+<span class="menu-text"><iconify-icon role="img" inline="" icon="octicon:mark-github-16" aria-label="GitHub" title="GitHub"></iconify-icon></span></a>
+  </li>  
+</ul>
+          </div> <!-- /navcollapse -->
+            <div class="quarto-navbar-tools">
+  <a href="" class="quarto-color-scheme-toggle quarto-navigation-tool  px-1" onclick="window.quartoToggleColorScheme(); return false;" title="Toggle dark mode"><i class="bi"></i></a>
+</div>
+      </div> <!-- /container-fluid -->
+    </nav>
+  <nav class="quarto-secondary-nav">
+    <div class="container-fluid d-flex">
+      <button type="button" class="quarto-btn-toggle btn" data-bs-toggle="collapse" role="button" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+        <i class="bi bi-layout-text-sidebar-reverse"></i>
+      </button>
+        <nav class="quarto-page-breadcrumbs" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../machine_learning.html">Machine Learning</a></li><li class="breadcrumb-item"><a href="../../../portfolio/ml/Task8_2/Task8_2DReport.html">Real Estate Price Prediction Report</a></li></ol></nav>
+        <a class="flex-grow-1" role="navigation" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">      
+        </a>
+      <button type="button" class="btn quarto-search-button" aria-label="Search" onclick="window.quartoOpenSearch();">
+        <i class="bi bi-search"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article page-navbar">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse collapse-horizontal quarto-sidebar-collapse-item sidebar-navigation docked overflow-auto">
+        <div class="mt-2 flex-shrink-0 align-items-center">
+        <div class="sidebar-search">
+        <div id="quarto-search" class="" title="Search"></div>
+        </div>
+        </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction</span></a>
+  </div>
+</li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../real_world_analytics.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Real World Analytics</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-1" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-1" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/rwa/a2/sit718_a2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Red Wine</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/rwa/a3/sit718_a3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Linear programming and Game Theory</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../data_wrangling.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Wrangling</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-2" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-2" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task1/Task_1P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Introduction to Python and Jupyter Notebooks</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task2/Task_2P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with numpy vectors</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task3/Task_3P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with numpy Matrices (Multidimensional Data)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task4/Task_4P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Working with pandas Data Frames (Heterogeneous Data)</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task6/Task_6D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Pandas/Polars versus SQL</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task7/Task_7HD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Mining</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/dw/Task8/Task_8HD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Cleaning and Text Analysis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../statistical_data_analysis.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Statistical Data Analysis</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-3" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-3" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/sda/Task1/task1.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data types</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/sda/Task2/task2.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Tidy Data</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/sda/Task3/task3.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Distributions</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/sda/Task4/task4.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Exploratory Data Analysis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/sda/Task5/task5.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">EDA and Linear Regression</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/sda/Task6/task6.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Generalised Additive Models</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/sda/Task9/task9.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Car Accidents Analysis</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+        <li class="sidebar-item sidebar-item-section">
+      <div class="sidebar-item-container"> 
+            <a href="../../../machine_learning.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Machine Learning</span></a>
+          <a class="sidebar-item-toggle text-start" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar-section-4" role="navigation" aria-expanded="true" aria-label="Toggle section">
+            <i class="bi bi-chevron-right ms-2"></i>
+          </a> 
+      </div>
+      <ul id="quarto-sidebar-section-4" class="collapse list-unstyled sidebar-section depth1 show">  
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ml/Task2_1/Task2_1P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Data Wrangling</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ml/Task4_1/Task4_1P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Unsupervised Learning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ml/Task6_1/Task6_1P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Supervised Learning: Bank Marketing</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ml/Task6_2/Task6_2C.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Supervised Learning: Liver Cirrhosis</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ml/Task8_1/Task8_1P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Electricity Grid</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ml/Task8_2/Task8_2D.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Real Estate Price Prediction</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ml/Task8_2/Task8_2DReport.html" class="sidebar-item-text sidebar-link active">
+ <span class="menu-text">Real Estate Price Prediction Report</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ml/Task10_1/Task10_1P.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Basic Deep Learning</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ml/Task11_1/Task11_1HD.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Drug Induced Autoimmunity</span></a>
+  </div>
+</li>
+          <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="../../../portfolio/ml/Task11_1/Task11_1HDreport.html" class="sidebar-item-text sidebar-link">
+ <span class="menu-text">Drug Induced Autoimmunity Report</span></a>
+  </div>
+</li>
+      </ul>
+  </li>
+    </ul>
+    </div>
+</nav>
+<div id="quarto-sidebar-glass" class="quarto-sidebar-collapse-item" data-bs-toggle="collapse" data-bs-target=".quarto-sidebar-collapse-item"></div>
+<!-- margin-sidebar -->
+    
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+
+<header id="title-block-header" class="quarto-title-block default"><nav class="quarto-page-breadcrumbs quarto-title-breadcrumbs d-none d-lg-block" aria-label="breadcrumb"><ol class="breadcrumb"><li class="breadcrumb-item"><a href="../../../machine_learning.html">Machine Learning</a></li><li class="breadcrumb-item"><a href="../../../portfolio/ml/Task8_2/Task8_2DReport.html">Real Estate Price Prediction Report</a></li></ol></nav>
+<div class="quarto-title">
+<h1 class="title">Real Estate Price Prediction Report</h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+
+</header>
+
+
+<section id="introduction" class="level1">
+<h1>Introduction</h1>
+<p>The goal of this task is to develop and evaluate three regression models to predict the housing prices in three Melbourne suburbs. The selection of three suburbs on which to collect housing data was left to each student to decided. The chosen suburbs for this work were:</p>
+<ul>
+<li>Berwick</li>
+<li>Officer</li>
+<li>Pakenham</li>
+</ul>
+</section>
+<section id="melbourne-housing-data-acquisition" class="level1">
+<h1>Melbourne Housing Data acquisition</h1>
+<p>Data collection leveraged <a href="https://realestate.com.au/">realestate.com.au</a> using the process described below. The goal was to obtain at least 150 data points (50 for each suburb). As the number of data points is low to provide sufficient points per month to resolve annual seasonal patterns, it was decided to focus on the period between January to August 2025. Two property types were considered for his task, houses and townhouses. These suburbs on the outer edge of metropolitan Melbourne and other property types such as units and apartments are not as popular and have very low sales volumes.</p>
+<section id="data-ethics-and-privacy" class="level2">
+<h2 class="anchored" data-anchor-id="data-ethics-and-privacy">Data Ethics and privacy</h2>
+<p>The data is this task is publicly available on a number of property websites and contains no personal identifying information about the sellers or buyers. The source of the data, on the other hand did raise some ethical issues. Data was sourced from the <a href="https://realestate.com.au">realestate.com.au</a> website as required in the task specifications. The terms an conditions for usage of the realestate.com.au website prohibits the use of “any automated device, software, process or means to access, retrieve, scrape, or index our Platforms or any content on our websites.”. Therefore, any automated approach that directly scraped data from the website would be in violation of the terms and conditions of the websites use. The approach adopted in this work involved manually perusing the website and printing the result to a PDF file. The contents of the PDF file could then be extracted automatically.</p>
+</section>
+<section id="data-collection-process" class="level2">
+<h2 class="anchored" data-anchor-id="data-collection-process">Data collection process</h2>
+<p>The steps involved in the data collection process were:</p>
+<ol type="1">
+<li><p>For each of the chosen suburbs, search for sold properties. Limiting the search to only those properties with a sold price, and type of property i.e.&nbsp;house or townhouse and sold in the last 12 months.</p></li>
+<li><p>For each page of the search results within the required Jan to Aug period, print to a PDF file.</p></li>
+<li><p>Combine all PDF documents for each suburb and property type into a single PDF file.</p></li>
+<li><p>Process the PDF using the created Python code. The steps of the python code are:</p>
+<ol type="a">
+<li><p>Read the PDF file using the pymupdf package.</p></li>
+<li><p>For every page in the document extract the text and join the text together in a large single string.</p></li>
+<li><p>Use a regular expression patterns to split the full text into a list of blocks. The regular expression pattern looked for new line character followed by a dollar sign ($). This signifies the start of a listing block.</p></li>
+<li><p>Define regular expression patterns to identify the price, address, property details such as number of bedrooms, bathrooms, car spaces and land size, sold date, and property type.</p></li>
+<li><p>For each listing block of text find all text that matches the patterns in (step d).</p></li>
+<li><p>For all the found patterns, process them and store them into a dictionary for this listing. Appending the dictionary to a list of listings.</p></li>
+<li><p>After all of the listing blocks have been processed, convert the listings list into a DataFrame.</p></li>
+<li><p>Check for and handle missing data. Some real estate listing do not include the land size. Rather than skipping these, it was decided to included them and then impute the missing land size from the median. Since townhouses have a much lower median land size than houses, the imputation of missing land size was done per property type.</p></li>
+<li><p>Store the DataFrame for the suburb.</p></li>
+</ol></li>
+</ol>
+<p>A total of three DataFrames were obtained after executing the above process, one for each suburb. Since the data was extracted to cover the period January to August 2025, each DataFrame contained more than the required number of data points as shown in the table below.</p>
+<div class="sourceCode" id="cb1"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a>          Total Sales</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>Berwick           <span class="dv">507</span></span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a>Officer           <span class="dv">340</span></span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a>Pakenham          <span class="dv">672</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>Two options were considered for selecting the number of data points for model development from the larger set of data.</p>
+<section id="option-1-equal-sampling-from-each-suburb" class="level3">
+<h3 class="anchored" data-anchor-id="option-1-equal-sampling-from-each-suburb">Option 1: Equal Sampling from each suburb</h3>
+<ul>
+<li><strong>Pros</strong>:
+<ul>
+<li>Ensures balanced representation.</li>
+<li>Prevents the model from being biased toward suburbs with more data.</li>
+</ul></li>
+<li><strong>Cons</strong>:
+<ul>
+<li>May underutilise available data if some suburbs have many more sales.</li>
+<li>Might miss out on capturing variability in suburbs with more data.</li>
+</ul></li>
+</ul>
+</section>
+<section id="option-2-proportional-sampling-based-on-sales-ratios" class="level3">
+<h3 class="anchored" data-anchor-id="option-2-proportional-sampling-based-on-sales-ratios">Option 2: Proportional Sampling Based on Sales Ratios</h3>
+<ul>
+<li><strong>Pros</strong>:
+<ul>
+<li>Utilises more data, potentially improving model accuracy.</li>
+<li>Reflects real-world distribution of housing sales.</li>
+</ul></li>
+<li><strong>Cons</strong>:
+<ul>
+<li>Risk of model bias toward suburbs with more data.</li>
+<li>Requires stratified sampling in test/training splitting to ensure fairness.</li>
+</ul></li>
+</ul>
+<p>The chosen strategy was to use option 1 with 60 data points from each suburb. The 60 samples were chosen, as it was observed that later processing where the address is turned into geolocation data, some address were not valid for geolocation and therefore were removed from the data. Taking 60 samples ensures that after removing invalid addresses, there were still at least 50 from each suburb.</p>
+<div class="sourceCode" id="cb2"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a>          Total Sales  Number of Samples</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>Berwick           <span class="dv">507</span>                 <span class="dv">60</span></span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a>Officer           <span class="dv">340</span>                 <span class="dv">60</span></span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a>Pakenham          <span class="dv">672</span>                 <span class="dv">60</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<p>The volume of townhouse sales in each of the suburbs was much lower than houses. Stratified sampling was employed to keep the ratio of houses to townhouses in the samples from each suburb.</p>
+<p>Figure <span class="math inline">\(\ref{fig-1}\)</span> shows the proportion of property types across the suburbs for the original and sampled data, illustrating the sampling approach has maintained the proportions.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/property_type_proportions_comparison.png" class="lightbox" data-gallery="quarto-lightbox-gallery-1" title="Comparison of property type proportions for each suburb between the original and sampled data. "><img src="images/property_type_proportions_comparison.png" class="img-fluid figure-img" alt="Comparison of property type proportions for each suburb between the original and sampled data. "></a></p>
+<figcaption>Comparison of property type proportions for each suburb between the original and sampled data. </figcaption>
+</figure>
+</div>
+</section>
+</section>
+</section>
+<section id="data-preprocessing-and-exploratory-data-analysis" class="level1">
+<h1>Data preprocessing and exploratory data analysis</h1>
+<section id="feature-engineering" class="level2">
+<h2 class="anchored" data-anchor-id="feature-engineering">Feature engineering</h2>
+<p>Additional features are added to the already collected data. The additional features considered in this work are:</p>
+<ul>
+<li>The number of primary and secondary schools within an 1.5 km radius. School zones in Melbourne are a major driver of property prices <a href="https://amru.org.au/latest-news/australian-house-price-factors/">[1]</a>. Families often pay significant premiums to live within the catchment areas of top-performing public schools <a href="https://www.findamover.com.au/blog/melbourne-school-zones-impact-property-values-moving-decisions">[2]</a>.</li>
+<li>The number of child care services within an 1.5 km radius. Access to childcare is essential for working families. Areas with more childcare options are more attractive to young parents, increasing demand and prices.</li>
+<li>The distance to the nearest training station and bus stop. Public transport access significantly boosts property values, especially in suburbs connected to new infrastructure [<a href="https://www.realestate.com.au/news/how-do-public-transport-links-affect-property-prices/">3</a>, <a href="https://www.raywhite.com/news-and-market-insights/economic-updates/what-is-the-impact-of-transport-infrastructure-on-house-prices">4</a>]. Access to public transport is very important in the outer suburbs like those considered in this work as many people have to commute into the inner suburbs/city for work and would rather do this on a train than be stuck in a car for hours.</li>
+<li>The distance to the nearest shopping centre. Shopping centres provide convenience and lifestyle amenities. Proximity boosts desirability, especially in suburban areas [<a href="https://amru.org.au/latest-news/australian-house-price-factors/">1</a>, <a href="https://www.goldenagegroup.com.au/journal/a-retail-boom-major-shopping-centres-provide-property-price-boost/">5</a>].</li>
+<li>The distance to the nearest park. Parks enhance quality of life, offering recreational space and greenery. They are especially valued by families and retirees <a href="https://conveyancinggroup.com.au/resources/understanding-property-valuation-key-factors-influencing-house-prices-in-australia">[6]</a>.</li>
+<li>The month of the year sold as cosine and sine. Seasonality affects housing prices <a href="https://www.monash.edu/business/economics/research/publications/publications2/5315seasonalityunitpricesaladkhaniworthingtonsmyth.pdf">[7]</a>. Using sine and cosine transforms captures cyclical patterns without introducing discontinuities and was especially important for this work where only 8 month of data is used for the modelling. Predictions for months 9-12 would not be possible if the month was one-hot encoded but is possible for the cyclic cosine/sine encoding.</li>
+<li>The day of the week sold. While subtle, the day of sale can reflect market dynamics (e.g., weekend auctions vs.&nbsp;weekday private sales), which may influence price outcomes.</li>
+<li>The number of days since January 1st 2025. This feature captures temporal trends and market evolution over time, including interest rate changes, inflation, and market sentiment. It helps the model learn price trajectories and macroeconomic influences.</li>
+</ul>
+<p>The first six features require the geographic location for each property and converts it into features that might be meaningful for buyers. The last three feature helps include the sold data information into the models by including a time based features. Prices today are most likely different from prices weeks or month ago.</p>
+<p>A 1.5 km radius for features like proximity to schools and childcare was chosen because:</p>
+<ul>
+<li>Walkability and Accessibility. A 1.5 km = ~15–20 minutes walking distance is considered a comfortable walk for most people <a href="https://vpa.vic.gov.au/wp-content/uploads/2018/02/Open-Space-Network-Provision-and-Distribution-Reduced-Size.pdf">[8]</a>.</li>
+<li>Modelling Considerations. A 1.5 km radius balances data richness and noise reduction:
+<ul>
+<li>Smaller radii (e.g., 500 m) may miss relevant amenities.</li>
+<li>Larger radii (e.g., 3 km) may dilute the local influence and introduce unrelated features.</li>
+</ul></li>
+<li>School Catchment Zones. School zones in Melbourne vary but often extend up to 1.5 km, especially in densely populated areas.</li>
+</ul>
+<p>Each of these features requires additional data and processing steps. These are discuss in the following sections.</p>
+<section id="obtaining-latitude-and-longitude" class="level3">
+<h3 class="anchored" data-anchor-id="obtaining-latitude-and-longitude">Obtaining latitude and longitude</h3>
+<p>The geopy package is used to obtain the latitude and longitude of a location. Geopy provides a client interface for several popular geocoding web services. The Nominatim web service was utilised as it is free. Nominatim uses OpenStreetMap data to find locations on Earth by name and address. The only limitations found were that it required only one request per second and could time out. A time-out value of 60 seconds was found to work.</p>
+<p>Two functions were created, geocode_addresses() and geocode_address(), this first operates on DataFrames and calls the second function to convert the address into a latitude/longitude tuple. For efficiency, the data is saved into a CSV file so if the function is run multiple times it will only process the data once and read it from the saved data for subsequent calls.</p>
+</section>
+<section id="helper-functions-for-distance-calculations" class="level3">
+<h3 class="anchored" data-anchor-id="helper-functions-for-distance-calculations">Helper functions for distance calculations</h3>
+<p>Several functions calculate_distances_from_point(), count_entities_within_radius(), add_entity_counts_to_dataframe() were created to help with processing distances and counting the number of entities within a given distance. Further details regarding these functions can be found in their documentation and comments in the Jupyter notebook.</p>
+<p><strong>calculate_distances_from_point</strong> algorithm</p>
+<ol type="1">
+<li><p>Loop through rows from the input DataFrame.</p>
+<ul>
+<li>Create a point from the latitude and longitude.</li>
+<li>Use geopy to calculate the distance between the point and the reference point (property address).</li>
+<li>Store the distance in a list.</li>
+</ul></li>
+<li><p>Copy input input DataFrame.</p></li>
+<li><p>Add list of distances as a column in the copied input DataFrame.</p></li>
+<li><p>Drop all distances greater than 25 km.</p></li>
+<li><p>Sort by distance.</p></li>
+<li><p>Return.</p></li>
+</ol>
+<p><strong>count_entities_within_radius</strong> algorithm</p>
+<ol type="1">
+<li>Call calculate_distances_from_point function to get a DataFrame of entities within 25 km of the reference point.</li>
+<li>Filter the entities by the required radius.</li>
+<li>Count the number of entities remaining after the filtering.</li>
+<li>Store the count.</li>
+<li>Return result.</li>
+</ol>
+<p><strong>add_entity_counts_to_dataframe</strong> algorithm</p>
+<ol type="1">
+<li><p>Copy property DataFrame.</p></li>
+<li><p>Loop through each row in the DataFrame</p>
+<ul>
+<li>Call count_entities_within_radius function with thr require radius.</li>
+<li>Add count as a column for this row</li>
+</ul></li>
+<li><p>Return DataFrame.</p></li>
+</ol>
+</section>
+<section id="schools-and-childcare" class="level3">
+<h3 class="anchored" data-anchor-id="schools-and-childcare">Schools and Childcare</h3>
+<p>To determine the number of schools within a given radius of a property, required the address locations for schools. The <a href="https://discover.data.vic.gov.au/dataset/school-locations-2024/resource/a70cb615-ed28-48b6-bebe-2d0d346f7927">Victoria Government Schools Locations 2024</a> dataset was used for this purpose. The data loading, clean-up and storage was encapsulated in the Python class VictiorianSchoolLocator. The dataset contained latitude and longitude locations for every school in Victoria. To speed-up subsequent calculations, the schools were filtered by postcode, and only those in postcodes neighbouring the suburbs of interest were retained. After the data is loaded and cleaned, it is processed to classify the school types as either primary or secondary. Then the add_entity_counts_to_dataframe() function is called to count the number of each school type is within the provided radius for each property in the DataFrame and return the counts as additional columns.</p>
+<p>For childcare services, the dataset from the <a href="https://www.acecqa.gov.au/resources/national-registers">ACEQA</a> national register of child care services was utilised. This dataset did not contain geolocation information, so this had to be generated using the geocode_addresses() function that was previously created. The loading, cleaning and storing was contained within the VictorianChildCareLocator Python class.</p>
+</section>
+<section id="public-transport" class="level3">
+<h3 class="anchored" data-anchor-id="public-transport">Public transport</h3>
+<p>Two types of public transport were considered, the first was the distance to the nearest train station and the second was the distance to the nearest bus stop. To determine the distance between a property and train stations and bus stops, required the address locations for train stations and bus stops. The <a href="https://discover.data.vic.gov.au/dataset/public-transport-lines-and-stops/resource/afa7b823-0c8b-47a1-bc40-ada565f684c7">Victoria Government Public Transports Stops</a> dataset was used for this purpose. This dataset was in geojson format and required some cleaning to extract the required information. Unlike the schools dataset, this did not contain postcodes to filter the data with. It did contain latitude and longitude information, so the data was filtered by the latitude and longitude around a given point. The point chosen was for the centre of Officer with a 15 km, radius. This ensure that all public transport stops for Berwick and Pakenham remained in that dataset. All of the data loading.clean, processing and distance calculations are contained in functions that are encapsulated in a Python class VictorianPublicTransportLocator.</p>
+<p><strong>find_closest_stop</strong> algorithm</p>
+<ol type="1">
+<li>Call calculate_distances_from_point function to get a DataFrame of distances for all stops to the given reference point.</li>
+<li>Filter stops to those within 15km.</li>
+<li>Remove rows with duplicate stop names.</li>
+<li>Classify stops as training or bus.</li>
+<li>For bus and train stops find the closest to the reference point.</li>
+<li>Return the result.</li>
+</ol>
+<p><strong>add_pt_distance_to_dataframe</strong> algorithm</p>
+<ol type="1">
+<li>Copy the DataFrame.</li>
+<li>Loop through all rows in DataFrame
+<ul>
+<li>Call find_closest_point function.</li>
+<li>Add result to column</li>
+</ul></li>
+<li>Return updated DataFrame.</li>
+</ol>
+</section>
+<section id="shopping-and-parks" class="level3">
+<h3 class="anchored" data-anchor-id="shopping-and-parks">Shopping and parks</h3>
+<p>There were no existing datasets that contained the location information of the shopping centres and parks within the three suburbs. Google Earth was used to create a list of parks and shopping centres within each of the three suburbs. These lists were then exported from Google Earther and partially cleaned using Microsoft Excel and exported as CSV. The final cleaning the CSV file was performed in Python, resulting is two CSV files, one containing park data and the other shopping centre data. These CSV files can then be loaded and used to calculate the minimum distance to shopping centres and parks for each property.</p>
+</section>
+<section id="date" class="level3">
+<h3 class="anchored" data-anchor-id="date">Date</h3>
+<p>There are many features that could be engineered from the sold date. The features used in this work are:</p>
+<ul>
+<li>The month of sale (as cosine and sine) to capture seasonal patterns,</li>
+<li>The day of the week to capture the behavioral timing,</li>
+<li>The number of days since January 1st to capture temporal trends.</li>
+</ul>
+</section>
+<section id="drop-unnecessary-columns" class="level3">
+<h3 class="anchored" data-anchor-id="drop-unnecessary-columns">Drop unnecessary columns</h3>
+<p>Here the columns that are not features or the target are dropped. The columns dropped are “address”, “sold_date”, “latitude”, “longitude” and “coords”. That leaves 17 features, “suburb”, “bedrooms”, “bathrooms”, “car_spaces”, “land_size”, “property_type”, “primary_sch_count”, “secondary_sch_count”, “childcare_count”,“bus_stop_distance”, “train_stop_distance”, “park_distance”, “shopping_centre_distance”, “month_cos”, “month_sin”, “day”, “elapsed_days”.</p>
+</section>
+<section id="exported-data" class="level3">
+<h3 class="anchored" data-anchor-id="exported-data">Exported data</h3>
+<p>The data generated from the above processing can be found at https://github.com/dwstephens/SIT720-T8_2D/blob/main/red_data.csv.</p>
+</section>
+</section>
+<section id="eda" class="level2">
+<h2 class="anchored" data-anchor-id="eda">EDA</h2>
+<section id="numerical-features" class="level3">
+<h3 class="anchored" data-anchor-id="numerical-features">Numerical features</h3>
+<p>Histograms (figure <span class="math inline">\(\ref{fig-2}\)</span>) and box plots (figure <span class="math inline">\(\ref{fig-3}\)</span>) of each numerical feature are shown below.</p>
+<p>Many of the features contain outliers, such as land size, bathrooms and car spaces. Some of the features also had moderate positive skew, such as, land size, bus stop distance, park distance and shopping centre distance.</p>
+</section>
+<section id="categorical-features" class="level3">
+<h3 class="anchored" data-anchor-id="categorical-features">Categorical features</h3>
+<p>Bar plots of each categorical feature are shown below in figure <span class="math inline">\(\ref{fig-4}\)</span>. The day of sale showed a uniform distribution except for Sunday and Friday where sales are low. As already explain, houses were the dominant property type.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/cat_barplots.png" class="lightbox" data-gallery="quarto-lightbox-gallery-2" title="Bar plots of categorical features "><img src="images/cat_barplots.png" class="img-fluid figure-img" alt="Bar plots of categorical features "></a></p>
+<figcaption>Bar plots of categorical features </figcaption>
+</figure>
+</div>
+</section>
+<section id="distribution-of-property-prices" class="level3">
+<h3 class="anchored" data-anchor-id="distribution-of-property-prices">Distribution of property prices</h3>
+<p>Figure <span class="math inline">\(\ref{fig-5}\)</span> shows the distribution of property prices across the three suburbs combined. The distribution of prices for townhouses is follows a standard normal distribution, where as the prices of houses has a positive skew due to a few high prices. Both distributions contained outliers at higher prices. For this work no transformation of the target variable was applied. Future improvements should look at a log transformation to reduce the distribution skewness. Figure <span class="math inline">\(\ref{fig-5a}\)</span> shows the distribution of property prices separately for each suburb. Berwick has the highest median price, Pakenham has the lowest median price and Officer is in between Berwick and Pakenham. Distributions for all three suburbs have outliers and positive skew.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/property_price_distribution.png" class="lightbox" data-gallery="quarto-lightbox-gallery-3" title="Distribution of property prices "><img src="images/property_price_distribution.png" class="img-fluid figure-img" alt="Distribution of property prices "></a></p>
+<figcaption>Distribution of property prices </figcaption>
+</figure>
+</div>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/property_price_distribution_by_suburb.png" class="lightbox" data-gallery="quarto-lightbox-gallery-4" title="Distribution of property prices by suburb "><img src="images/property_price_distribution_by_suburb.png" class="img-fluid figure-img" alt="Distribution of property prices by suburb "></a></p>
+<figcaption>Distribution of property prices by suburb </figcaption>
+</figure>
+</div>
+</section>
+<section id="price-trends-over-time" class="level3">
+<h3 class="anchored" data-anchor-id="price-trends-over-time">Price trends over time</h3>
+<p>Figure <span class="math inline">\(\ref{fig-6}\)</span> shows the mean property price trends over time by property type for all three suburbs. The house prices have been falling from January to a low in June, then rising again. Townhouses prices have been rising steadily since January and surged since July.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/price_trends_by_month.png" class="lightbox" data-gallery="quarto-lightbox-gallery-5" title="Mean property price trends over time by property type "><img src="images/price_trends_by_month.png" class="img-fluid figure-img" alt="Mean property price trends over time by property type "></a></p>
+<figcaption>Mean property price trends over time by property type </figcaption>
+</figure>
+</div>
+<p>Figure <span class="math inline">\(\ref{fig-7}\)</span> takes the information in figure <span class="math inline">\(\ref{fig-6}\)</span> and breaks it into sub-figures for each suburb. This shows Berwick prices were high early in the year and had a low in June and a rising again. Officer house prices show large variation and Pakenham has an underlying upward trend with some shap dips in February and July. Sales for townhouse have not occurred in all months. Townhouse prices are rising in Officer and falling in Berwick and Pakenham.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/price_trends_by_suburb.png" class="lightbox" data-gallery="quarto-lightbox-gallery-6" title="Mean property price trends over time by property type separated by suburb "><img src="images/price_trends_by_suburb.png" class="img-fluid figure-img" alt="Mean property price trends over time by property type separated by suburb "></a></p>
+<figcaption>Mean property price trends over time by property type separated by suburb </figcaption>
+</figure>
+</div>
+</section>
+<section id="target-versus-feature-correlation" class="level3">
+<h3 class="anchored" data-anchor-id="target-versus-feature-correlation">Target versus Feature correlation</h3>
+<p>Figure <span class="math inline">\(\ref{fig-8}\)</span> shows scatter plots of the sold price versus each numerical feature. Additionally the Pearson correlation coefficient has been added to each figure to quantify the strength of the linear relationship between each variable pair.</p>
+<p>The below listing shows that categorisation of the strength of the linear relationship between each feature and the sold price. There are no very strong linear relationships, however a number of strong and moderate and many very weak linear relationships.</p>
+<p><strong>Very strong</strong> <span class="math inline">\((0.8&lt;|R^2|&lt;=1.0)\)</span></p>
+<ul>
+<li>No features</li>
+</ul>
+<p><strong>Strong</strong> <span class="math inline">\((0.6&lt;|R^2|&lt;=0.8)\)</span></p>
+<ul>
+<li>Land size</li>
+</ul>
+<p><strong>Moderate</strong> <span class="math inline">\((0.4&lt;|R^2|&lt;=0.6)\)</span></p>
+<ul>
+<li>Number of bedrooms</li>
+<li>Number of bathrooms</li>
+</ul>
+<p><strong>Weak</strong> <span class="math inline">\((0.2&lt;|R^2|&lt;=0.4)\)</span></p>
+<ul>
+<li>Number of car spaces</li>
+</ul>
+<p><strong>Very weak</strong> <span class="math inline">\((0.0&lt;=|R^2|&lt;=0.2)\)</span></p>
+<ul>
+<li>Number of primary schools</li>
+<li>Number of secondary schools</li>
+<li>Number of child care services</li>
+<li>Bus stop distance</li>
+<li>Train station distance</li>
+<li>Distance to nearest park</li>
+<li>Shopping centre distance</li>
+<li>Days since sale</li>
+</ul>
+</section>
+</section>
+<section id="split-data-into-test-and-train" class="level2">
+<h2 class="anchored" data-anchor-id="split-data-into-test-and-train">Split data into test and train</h2>
+<p>An 80/20 split has been used, were 80% of the data is used from training and 20% for testing.</p>
+</section>
+<section id="encoding-and-feature-scaling" class="level2">
+<h2 class="anchored" data-anchor-id="encoding-and-feature-scaling">Encoding and Feature scaling</h2>
+<p>For consistent workflow, these steps are performed in a pipeline that is executed in the model development sections.</p>
+<p>There are no ordinal categorical features, only nominal. Therefore, each categorical feature is encoded using One-Hot encoding. The dummy variables created with One-Hot encoding can create multicollinearity between the dummy variables. This can cause trouble for some regression models and therefore, when appropriate for the model, the first dummy variable for each category is dropped.</p>
+<p>The numerical features are all scaled with the standard scaler.</p>
+</section>
+</section>
+<section id="model-development" class="level1">
+<h1>Model development</h1>
+<p>This task required at least three regression models to be created. The models used in this work are ElasticNet (Linear regression), kNN and Random Forest.</p>
+<p>ElasticNet and kNN can suffer when there are highly correlated features. Figure <span class="math inline">\(\ref{fig-9}\)</span> shows a correlation heat map for the features. Cells were the absolute value of the correlation is less than 0.5 have been removed from the plot, highlight which features show some stronger correlation. Dropping the first dummy feature from the One-Hot encoding was tested for EalsticNet and kNN, however, this resulted is models with slightly larger error. Therefore all One-Hot dummy variables were retained for the final models.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/lr_correlation_heatmap.png" class="lightbox" data-gallery="quarto-lightbox-gallery-7" title="Feature correlation heat map "><img src="images/lr_correlation_heatmap.png" class="img-fluid figure-img" alt="Feature correlation heat map "></a></p>
+<figcaption>Feature correlation heat map </figcaption>
+</figure>
+</div>
+<p>The models in this task are used to predict property prices with the goal of minimising prediction error. During hyperparameter tuning the scoring method used for the grid search is neg_mean_absolute_error. The Mean Absolute Error (MAE) was chosen as the evaluation metric because it provides a more balanced and robust measure of prediction accuracy, especially in the presence of noise or outliers. MAE treats all errors equally by taking the absolute value of the difference between predicted and actual values. In contrast, Root Mean Squared Error (RMSE) squares the errors, which amplifies the impact of large errors. This made RMSE overly sensitive to a few noisy data points in the dataset, skewing the overall performance evaluation.</p>
+<section id="model-1-elasticnet-linear-regression" class="level2">
+<h2 class="anchored" data-anchor-id="model-1-elasticnet-linear-regression">Model 1: ElasticNet (Linear regression)</h2>
+<p>ElasticNet has been chosen to balance Ridge and Lasso regularisation and provide some feature selection.</p>
+<section id="hyperparameter-tuning" class="level3">
+<h3 class="anchored" data-anchor-id="hyperparameter-tuning">Hyperparameter tuning</h3>
+<p>The ElasticNet model combines both L1 (Lasso) and L2 (Ridge) regularisation, and it has a few key hyperparameters that control how it behaves. The two parameter that have been adjusted in this work are:</p>
+<p><strong>alpha</strong>: Controls the overall strength of regularisation.</p>
+<ul>
+<li>Higher values → more regularisation (simpler model, possibly under-fitting).</li>
+<li>Lower values → less regularisation (more complex model, possibly over-fitting).</li>
+</ul>
+<p><strong>l1_ratio</strong>: Controls the mix between L1 and L2 regularisation:</p>
+<ul>
+<li>l1_ratio = 0 → pure Ridge (L2)</li>
+<li>l1_ratio = 1 → pure Lasso (L1)</li>
+<li>0 &lt; l1_ratio &lt; 1 → ElasticNet mix</li>
+</ul>
+<p>The best parameters identified for ElasticNet were:</p>
+<div class="sourceCode" id="cb3"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a>Best parameters: {<span class="st">'model__alpha'</span>: <span class="fl">1.0</span>, <span class="st">'model__l1_ratio'</span>: <span class="fl">0.9</span>}</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>Best Validation Score (MAE): <span class="fl">107308.94</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="model-evaluation" class="level3">
+<h3 class="anchored" data-anchor-id="model-evaluation">Model evaluation</h3>
+<p>Figure <span class="math inline">\(\ref{fig-10}\)</span> shows the learning curves for the ElasticNet model.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/ElasticNet_learning_curve.png" class="lightbox" data-gallery="quarto-lightbox-gallery-8" title="ElasticNet learning curves "><img src="images/ElasticNet_learning_curve.png" class="img-fluid figure-img" alt="ElasticNet learning curves "></a></p>
+<figcaption>ElasticNet learning curves </figcaption>
+</figure>
+</div>
+<p>This figure shows:</p>
+<ul>
+<li>Training score (red line):
+<ul>
+<li>Starts with low MAE (good performance) on small datasets.</li>
+<li>As training size increases, MAE rises and then plateaus.</li>
+<li>This is expected—small datasets can be over-fitted, giving artificially low training error.</li>
+</ul></li>
+<li>Cross-validation score (green line):
+<ul>
+<li>Starts with high MAE (poor generalisation) on small datasets.</li>
+<li>MAE decreases as training size increases, stabilising around 105,000.</li>
+<li>This shows the model generalises better with more data.</li>
+</ul></li>
+<li>Gap between curves:
+<ul>
+<li>The gap between training and validation scores suggests some over-fitting.</li>
+<li>The model performs better on training data than on unseen data, but the gap narrows as more data is added.</li>
+</ul></li>
+<li>Confidence intervals (shaded areas):
+<ul>
+<li>Narrow bands for training suggest more stable performance.</li>
+<li>Wider bands for validation, however reaches a consistent width with larger training sizes.</li>
+</ul></li>
+</ul>
+<p>Figure <span class="math inline">\(\ref{fig-11}\)</span> shows the MAE as a function of fold number during cross validation. The model performs consistently on training data, but less reliably on unseen data. The high variance in validation scores suggests the model may not generalise well.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/lr_cv_metrics_plot.png" class="lightbox" data-gallery="quarto-lightbox-gallery-9" title="ElasticNet cross-validation "><img src="images/lr_cv_metrics_plot.png" class="img-fluid figure-img" alt="ElasticNet cross-validation "></a></p>
+<figcaption>ElasticNet cross-validation </figcaption>
+</figure>
+</div>
+<p>The model performance on the test set is shown below</p>
+<div class="sourceCode" id="cb4"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a>ElasticNet performance on Test <span class="bu">set</span>:</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a>R2 Score       MAE            RMSE           </span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fl">0.77</span>           <span class="fl">79649.33</span>       <span class="fl">106277.19</span>   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="model-2-k-nearest-neighbour" class="level2">
+<h2 class="anchored" data-anchor-id="model-2-k-nearest-neighbour">Model 2: k-Nearest-Neighbour</h2>
+<p>This section builds kNN model. KNN was chosen for the second model for the following reasons:</p>
+<ul>
+<li><p>Non-parametric and flexible: kNN doesn’t assume any underlying distribution or functional form (like linear regression does). This is useful when property prices depend on complex, non-linear relationships (e.g., location, amenities, number of schools).</p></li>
+<li><p>Intuitive and easy to understand: kNN predicts a house price by averaging the prices of the “k” most similar houses.</p></li>
+</ul>
+<section id="hyperparameter-tuning-1" class="level3">
+<h3 class="anchored" data-anchor-id="hyperparameter-tuning-1">Hyperparameter tuning</h3>
+<p>kNN has several hyper parameters</p>
+<p><strong>n_neighbors (k)</strong>: Sets the number of neighbours to consider when making a prediction.</p>
+<ul>
+<li>Small k → more sensitive to noise, lower bias, higher variance.</li>
+<li>Large k → smoother predictions, higher bias, lower variance.</li>
+</ul>
+<p><strong>weights</strong>: How the neighbours contribute to the value.</p>
+<ul>
+<li>uniform: All neighbours contribute equally.</li>
+<li>distance: Closer neighbours have more influence.</li>
+</ul>
+<p><strong>metric</strong>: Defines how distance is calculated between points.</p>
+<p>Figure <span class="math inline">\(\ref{fig-12}\)</span> shows a plot of the mean absolute error as a function of the number of nearest neighbours.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/rmse_vs_k.png" class="lightbox" data-gallery="quarto-lightbox-gallery-10" title="Mean absolute error versus the number of nearest neighbours (k) "><img src="images/rmse_vs_k.png" class="img-fluid figure-img" alt="Mean absolute error versus the number of nearest neighbours (k) "></a></p>
+<figcaption>Mean absolute error versus the number of nearest neighbours (k) </figcaption>
+</figure>
+</div>
+<p>The best parameters identified for kNN were:</p>
+<div class="sourceCode" id="cb5"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a>Best k: {<span class="st">'model__metric'</span>: <span class="st">'euclidean'</span>, <span class="st">'model__n_neighbors'</span>: <span class="dv">4</span>, <span class="st">'model__p'</span>: <span class="dv">1</span>, <span class="st">'model__weights'</span>: <span class="st">'distance'</span>}</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a>Best Validation Score (MAE): <span class="fl">127873.1405</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="model-evaluation-1" class="level3">
+<h3 class="anchored" data-anchor-id="model-evaluation-1">Model evaluation</h3>
+<p>Figure <span class="math inline">\(\ref{fig-13}\)</span> shows the learning curves for the kNN model using the best parameters.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/KNN_learning_curve.png" class="lightbox" data-gallery="quarto-lightbox-gallery-11" title="kNN learning curves "><img src="images/KNN_learning_curve.png" class="img-fluid figure-img" alt="kNN learning curves "></a></p>
+<figcaption>kNN learning curves </figcaption>
+</figure>
+</div>
+<p>This figure shows:</p>
+<ul>
+<li>Training score (red line):
+<ul>
+<li>Constant at 0 MAE across all training sizes, suggests over-fitting. The model perfectly predicts the training data.</li>
+<li>A zero training error is unrealistic for generalisation.</li>
+</ul></li>
+<li>Cross-validation score (green line):
+<ul>
+<li>Starts high (high MAE) with small training sets.</li>
+<li>Decreases as training size increases — this is expected, as more data helps the model generalise better.</li>
+</ul></li>
+<li>Gap between curves:
+<ul>
+<li>The gap between training and validation scores suggests over-fitting.</li>
+</ul></li>
+<li>Confidence intervals (shaded areas):
+<ul>
+<li>Fluctuations and the validation shaded area indicate variability in performance across different validation folds — possibly due to noise or uneven distribution in the data.</li>
+</ul></li>
+</ul>
+<p>Figure <span class="math inline">\(\ref{fig-14}\)</span> shows the MAE as a function of fold number during cross validation. The model performs consistently on training data, but less reliably on unseen data. The high variance in validation scores suggests the model may not generalise well.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/knn_cv_metrics_plot.png" class="lightbox" data-gallery="quarto-lightbox-gallery-12" title="kNN cross-validation "><img src="images/knn_cv_metrics_plot.png" class="img-fluid figure-img" alt="kNN cross-validation "></a></p>
+<figcaption>kNN cross-validation </figcaption>
+</figure>
+</div>
+<p>The model performance on the test set is shown below.</p>
+<div class="sourceCode" id="cb6"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a>kNN performance on Test <span class="bu">set</span>:</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a>R2 Score       MAE            RMSE           </span>
+<span id="cb6-3"><a href="#cb6-3" aria-hidden="true" tabindex="-1"></a><span class="fl">0.633</span>          <span class="fl">100021.53</span>      <span class="fl">134346.81</span>   </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+<section id="model-3-random-forest" class="level2">
+<h2 class="anchored" data-anchor-id="model-3-random-forest">Model 3: Random Forest</h2>
+<p>This section builds a random forest model. Reasons for selecting Random Forest:</p>
+<ul>
+<li><p>Unlike linear models (e.g., ElasticNet), Random Forest can model complex interactions between features without needing to explicitly define them.</p></li>
+<li><p>Each tree is trained on a random subset of the data, so outliers have less influence on the overall prediction.</p></li>
+<li><p>Feature importance insights: Provides estimates of feature importance.</p></li>
+<li><p>Good generalisation: Averaging predictions across many trees reduces over-fitting compared to a single decision tree.</p></li>
+</ul>
+<section id="hyperparameter-tuning-2" class="level3">
+<h3 class="anchored" data-anchor-id="hyperparameter-tuning-2">Hyperparameter tuning</h3>
+<p>The scikit learn Random Forest regressor has many hyperparameters. However, most of these relate to the underlying decision trees and those settings are concerned with pre-pruning controls. For the Random Forest model in this work, fully grown trees are used, which means that the hyperparameters relating to the decision trees can be left at their default values (no pre-pruning) and only those parameters affecting the random forest algorithm are changes. Those parameters are:</p>
+<p><strong>n_estimators</strong>: Number of trees in the forest.</p>
+<ul>
+<li>More trees generally improve performance but increase training time.</li>
+<li>Too many trees might lead to over-fitting.</li>
+</ul>
+<p><strong>criterion</strong>: The function to measure the quality of a split.</p>
+<p><strong>max_features</strong>: The number of features to take into account in order to make the best split.</p>
+<p>The best parameters identified for Random Forest were:</p>
+<div class="sourceCode" id="cb7"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a>Best Parameters: {<span class="st">'model__criterion'</span>: <span class="st">'squared_error'</span>, <span class="st">'model__max_features'</span>: <span class="va">None</span>, <span class="st">'model__n_estimators'</span>: <span class="dv">600</span>}</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a>Best Validation Score (MAE): <span class="fl">112635.7592</span></span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="model-evaluation-2" class="level3">
+<h3 class="anchored" data-anchor-id="model-evaluation-2">Model evaluation</h3>
+<p>Figure <span class="math inline">\(\ref{fig-15}\)</span> shows the learning curves for the Random Forest model using the best parameters.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/Random Forrest_learning_curve.png" class="lightbox" data-gallery="quarto-lightbox-gallery-13" title="Random Forest learning curves "><img src="images/Random Forrest_learning_curve.png" class="img-fluid figure-img" alt="Random Forest learning curves "></a></p>
+<figcaption>Random Forest learning curves </figcaption>
+</figure>
+</div>
+<p>This figure shows:</p>
+<ul>
+<li>Training score (red line):
+<ul>
+<li>MAE decreases as training size increases, but starts relatively low and flattens out. The model fits the training data well, and performance improves slightly with more data.</li>
+</ul></li>
+<li>Cross-validation score (green line):
+<ul>
+<li>MAE also decreases with more training data, showing improved generalization.</li>
+<li>The model benefits from more data and is learning to generalise better.</li>
+</ul></li>
+<li>Gap between curves:
+<ul>
+<li>This suggests some variance, but not severe over-fitting.</li>
+<li>The model is learning well and generalising reasonably.</li>
+</ul></li>
+<li>Confidence intervals (shaded areas):
+<ul>
+<li>As training size increases, variability decreases — a good sign of model stability.</li>
+</ul></li>
+</ul>
+<p>Figure <span class="math inline">\(\ref{fig-16}\)</span> shows the MAE as a function of fold number during cross validation. Similar to the other two models the Random Forest model performs consistently on training data, but less reliably on unseen data and exhibits a high variance in validation scores.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/rf_cv_metrics_plot.png" class="lightbox" data-gallery="quarto-lightbox-gallery-14" title="Random Forest cross-validation "><img src="images/rf_cv_metrics_plot.png" class="img-fluid figure-img" alt="Random Forest cross-validation "></a></p>
+<figcaption>Random Forest cross-validation </figcaption>
+</figure>
+</div>
+<p>The model performance on the test set is shown below.</p>
+<div class="sourceCode" id="cb8"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a>Random Forest performance on Test <span class="bu">set</span>:</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a>R2 Score       MAE            RMSE           </span>
+<span id="cb8-3"><a href="#cb8-3" aria-hidden="true" tabindex="-1"></a><span class="fl">0.699</span>          <span class="fl">80013.42</span>       <span class="fl">121542.34</span>  </span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+</section>
+</section>
+<section id="feature-importance" class="level1">
+<h1>Feature importance</h1>
+<p>Two methods were used to analyse feature importance model:</p>
+<ul>
+<li><p>ElasticNet and Random Forest</p>
+<ul>
+<li>Model-Based Importance and SHAP analysis</li>
+</ul></li>
+<li><p>kNN</p>
+<ul>
+<li>Permutation importance and SHAP analysis</li>
+</ul></li>
+</ul>
+<p><strong>Model-Based Importance</strong> - use inherent attribute of the model to asses feature importance. For ElasticNet, use coefficient magnitudes and for Random Forest use the Mean Decrease in Impurity (MDI).</p>
+<p><strong>Permutation importance</strong> - evaluates how much a model’s performance decreases when a feature’s values are randomly shuffled. If shuffling a feature significantly worsens the model’s performance, that feature is considered important.</p>
+<p><strong>SHAP analysis</strong> - ensures robust statistical inference by examining feature contributions at both individual and aggregate levels, while accounting for potential non-linear effects and class-specific patterns in the data.</p>
+<p>For reporting the Model-base and permutation importances have been grouped together and the SHAP values are reported together.</p>
+<section id="permutationmodel-based-importance" class="level2">
+<h2 class="anchored" data-anchor-id="permutationmodel-based-importance">Permutation/model-based importance</h2>
+<p>Figure <span class="math inline">\(\ref{fig-17}\)</span> shows the feature importance values for each model. ElasticNet and Random forest values were calculated using model-based method and the kNN result is from permutation importance. The feature have been sorted based upon the ElasticNet importances. The bar length shows the mean importance values. The ElasticNet values are absolute values. The kNN value can be positive or negative, positive values indicate that these features contribute positively to the model’s predictive power. Negative values suggest that shuffling the feature actually improved model performance, implying it may be noise or negatively correlated with the target.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/feature_importance_grp1.png" class="lightbox" data-gallery="quarto-lightbox-gallery-15" title="Feature importances using permutation or model based measures "><img src="images/feature_importance_grp1.png" class="img-fluid figure-img" alt="Feature importances using permutation or model based measures "></a></p>
+<figcaption>Feature importances using permutation or model based measures </figcaption>
+</figure>
+</div>
+<p><strong>ElasticNet</strong> top features:</p>
+<ul>
+<li>bathrooms</li>
+<li>land_size</li>
+<li>suburb_Berwick</li>
+<li>suburb_Pakenham</li>
+<li>bedrooms</li>
+</ul>
+<p>ElasticNet gives weight to both physical property attributes and location-based features.</p>
+<p><strong>kNN</strong> top Features:</p>
+<ul>
+<li>land_size</li>
+<li>bedrooms</li>
+<li>bathrooms</li>
+</ul>
+<p>kNN focuses more narrowly on a few strong predictors, especially size and location.</p>
+<p><strong>Random Forest</strong> top features:</p>
+<ul>
+<li>land_size</li>
+<li>bathrooms</li>
+<li>bedrooms</li>
+<li>Random Forest aligns closely with kNN in terms of top features, emphasising size and location.</li>
+</ul>
+<p><strong>Key Observations</strong></p>
+<ul>
+<li>land_size, bathrooms, and bedrooms are consistently important across all three models.</li>
+<li>ElasticNet includes more features in its top rankings, suggesting it captures a broader range of influences.</li>
+<li>Random Forest and kNN show similar patterns, possibly due to their non-linear nature and reliance on proximity or ensemble decision trees.</li>
+</ul>
+</section>
+<section id="shap-analysis-importance" class="level2">
+<h2 class="anchored" data-anchor-id="shap-analysis-importance">SHAP analysis importance</h2>
+<p>Figure <span class="math inline">\(\ref{fig-18}\)</span> shows the feature importances for each model calculated from SHAP analysis.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/feature_importance_grp2.png" class="lightbox" data-gallery="quarto-lightbox-gallery-16" title="Feature importances using SHAP analysis "><img src="images/feature_importance_grp2.png" class="img-fluid figure-img" alt="Feature importances using SHAP analysis "></a></p>
+<figcaption>Feature importances using SHAP analysis </figcaption>
+</figure>
+</div>
+<p><strong>Key Observations</strong></p>
+<ul>
+<li>land_size is the most important feature across all three models, especially dominant in Random Forest.</li>
+<li>bedrooms consistently ranks as a highly important feature in all models.</li>
+<li>suburb_Berwick and bathrooms are also influential, though their importance varies slightly between models.</li>
+<li>ElasticNet shows a more balanced distribution of feature importance, while Random Forest heavily prioritizes land_size.</li>
+</ul>
+</section>
+<section id="conclusion" class="level2">
+<h2 class="anchored" data-anchor-id="conclusion">Conclusion</h2>
+<p>Based on the results shown in figures <span class="math inline">\(\ref{fig-17}\)</span> and <span class="math inline">\(\ref{fig-18}\)</span> the following conclusion can be made regarding the importance of various features in predicting property prices for the suburbs of Berwick, Officer and Pakenham:</p>
+<ul>
+<li>Property size (land_size) is the strongest predictor of price.</li>
+<li>Number of bedrooms and bathrooms are key indicators of property value. These are usually a good indicator of property size.</li>
+<li>Location features (like suburb_Berwick and suburb_Pakenham) are important, suggesting that suburb-specific trends affect pricing. The mean price in Berwick is higher than Pakenham. Including both suburbs spans the entire price range observed in the data.</li>
+<li>ElasticNet tends to distribute importance across more features, while Random Forest and KNN concentrate on fewer, high-impact ones.</li>
+</ul>
+</section>
+<section id="recommended-model" class="level2">
+<h2 class="anchored" data-anchor-id="recommended-model">Recommended model</h2>
+<p>Figure <span class="math inline">\(\ref{fig-19}\)</span> shows the comparison of the MAE, RMSE and <span class="math inline">\(R^2\)</span> metrics for each model. The ElasticNet model has the highest <span class="math inline">\(R^2\)</span> and lowest RMSE. Its MAE is slightly higher than Random Forest which has the lowest value for this metric. The kNN model has the worst of all three metrics. Based on these metrics, ElasticNet is the recommended model.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/model_performance_comparison.png" class="lightbox" data-gallery="quarto-lightbox-gallery-17" title="Model performance comparison "><img src="images/model_performance_comparison.png" class="img-fluid figure-img" alt="Model performance comparison "></a></p>
+<figcaption>Model performance comparison </figcaption>
+</figure>
+</div>
+</section>
+</section>
+<section id="model-deployment" class="level1">
+<h1>Model deployment</h1>
+<p>To delopy the best model, it is first saved to a file so it can be uploaded and utilised in a Streamlit web application. The code for the Streamlit app can be found below and in the GitHub repository at https://github.com/dwstephens/SIT720-T8_2D. To predict the property price using the web application, the user is required to enter the details about the property. These are the features the model was built using. To keep the application simple, the user needs to enter values for most of the engineered features as well, except for those derived from the date. The features derived from the date are calculated in the web application using a custom transformer. Encoding and scaling are performed in the pipeline encapsulated with the loaded model.</p>
+<p>The Streamlit web application is hosted on the Streamlit community cloud and can be found at https://sit720-t82d-bdzrxstjm3nmm3v8yashcu.streamlit.app/.</p>
+<p>Figures <span class="math inline">\(\ref{fig-20}\)</span> shows the web application after a prediction.</p>
+<div class="quarto-figure quarto-figure-center">
+<figure class="figure">
+<p><a href="images/web_app_prediction.jpg" class="lightbox" data-gallery="quarto-lightbox-gallery-18" title="Property prediction Streamlit web app prediction "><img src="images/web_app_prediction.jpg" class="img-fluid figure-img" alt="Property prediction Streamlit web app prediction "></a></p>
+<figcaption>Property prediction Streamlit web app prediction </figcaption>
+</figure>
+</div>
+<div class="sourceCode" id="cb9"><pre class="sourceCode python code-with-copy"><code class="sourceCode python"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> streamlit <span class="im">as</span> st</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> pandas <span class="im">as</span> pd</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> math</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> json</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> joblib</span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a><span class="im">import</span> folium</span>
+<span id="cb9-7"><a href="#cb9-7" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> datetime <span class="im">import</span> date, datetime</span>
+<span id="cb9-8"><a href="#cb9-8" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.base <span class="im">import</span> BaseEstimator, TransformerMixin</span>
+<span id="cb9-9"><a href="#cb9-9" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.compose <span class="im">import</span> ColumnTransformer</span>
+<span id="cb9-10"><a href="#cb9-10" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> sklearn.pipeline <span class="im">import</span> Pipeline</span>
+<span id="cb9-11"><a href="#cb9-11" aria-hidden="true" tabindex="-1"></a><span class="im">from</span> streamlit_folium <span class="im">import</span> st_folium</span>
+<span id="cb9-12"><a href="#cb9-12" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-13"><a href="#cb9-13" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-14"><a href="#cb9-14" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb9-15"><a href="#cb9-15" aria-hidden="true" tabindex="-1"></a><span class="co"># Custom Transformer</span></span>
+<span id="cb9-16"><a href="#cb9-16" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb9-17"><a href="#cb9-17" aria-hidden="true" tabindex="-1"></a><span class="kw">class</span> DateFeatureEngineer(BaseEstimator, TransformerMixin):</span>
+<span id="cb9-18"><a href="#cb9-18" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> <span class="fu">__init__</span>(<span class="va">self</span>, start_date<span class="op">=</span><span class="st">"2025-01-01"</span>):</span>
+<span id="cb9-19"><a href="#cb9-19" aria-hidden="true" tabindex="-1"></a>        <span class="cf">if</span> <span class="bu">isinstance</span>(start_date, <span class="bu">str</span>):</span>
+<span id="cb9-20"><a href="#cb9-20" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.start_date <span class="op">=</span> datetime.strptime(start_date, <span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>)</span>
+<span id="cb9-21"><a href="#cb9-21" aria-hidden="true" tabindex="-1"></a>        <span class="cf">else</span>:</span>
+<span id="cb9-22"><a href="#cb9-22" aria-hidden="true" tabindex="-1"></a>            <span class="va">self</span>.start_date <span class="op">=</span> start_date</span>
+<span id="cb9-23"><a href="#cb9-23" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-24"><a href="#cb9-24" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> fit(<span class="va">self</span>, X, y<span class="op">=</span><span class="va">None</span>):</span>
+<span id="cb9-25"><a href="#cb9-25" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> <span class="va">self</span></span>
+<span id="cb9-26"><a href="#cb9-26" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-27"><a href="#cb9-27" aria-hidden="true" tabindex="-1"></a>    <span class="kw">def</span> transform(<span class="va">self</span>, X):</span>
+<span id="cb9-28"><a href="#cb9-28" aria-hidden="true" tabindex="-1"></a>        date_series <span class="op">=</span> pd.to_datetime(X[<span class="st">'date'</span>])</span>
+<span id="cb9-29"><a href="#cb9-29" aria-hidden="true" tabindex="-1"></a>        month_number <span class="op">=</span> date_series.dt.month</span>
+<span id="cb9-30"><a href="#cb9-30" aria-hidden="true" tabindex="-1"></a>        features <span class="op">=</span> pd.DataFrame(index<span class="op">=</span>X.index)</span>
+<span id="cb9-31"><a href="#cb9-31" aria-hidden="true" tabindex="-1"></a>        features[<span class="st">'month_sin'</span>] <span class="op">=</span> month_number.<span class="bu">apply</span>(<span class="kw">lambda</span> m: math.sin(<span class="dv">2</span> <span class="op">*</span> math.pi <span class="op">*</span> m <span class="op">/</span> <span class="dv">12</span>))</span>
+<span id="cb9-32"><a href="#cb9-32" aria-hidden="true" tabindex="-1"></a>        features[<span class="st">'month_cos'</span>] <span class="op">=</span> month_number.<span class="bu">apply</span>(<span class="kw">lambda</span> m: math.cos(<span class="dv">2</span> <span class="op">*</span> math.pi <span class="op">*</span> m <span class="op">/</span> <span class="dv">12</span>))</span>
+<span id="cb9-33"><a href="#cb9-33" aria-hidden="true" tabindex="-1"></a>        features[<span class="st">'elapsed_days'</span>] <span class="op">=</span> (date_series <span class="op">-</span> <span class="va">self</span>.start_date).dt.days</span>
+<span id="cb9-34"><a href="#cb9-34" aria-hidden="true" tabindex="-1"></a>        features[<span class="st">'day'</span>] <span class="op">=</span> date_series.dt.day_name()</span>
+<span id="cb9-35"><a href="#cb9-35" aria-hidden="true" tabindex="-1"></a>        <span class="cf">return</span> features</span>
+<span id="cb9-36"><a href="#cb9-36" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-37"><a href="#cb9-37" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-38"><a href="#cb9-38" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb9-39"><a href="#cb9-39" aria-hidden="true" tabindex="-1"></a><span class="co"># Load Model</span></span>
+<span id="cb9-40"><a href="#cb9-40" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb9-41"><a href="#cb9-41" aria-hidden="true" tabindex="-1"></a><span class="at">@st.cache_resource</span></span>
+<span id="cb9-42"><a href="#cb9-42" aria-hidden="true" tabindex="-1"></a><span class="kw">def</span> load_model():</span>
+<span id="cb9-43"><a href="#cb9-43" aria-hidden="true" tabindex="-1"></a>    <span class="cf">return</span> joblib.load(<span class="st">"property_pipeline.joblib"</span>)</span>
+<span id="cb9-44"><a href="#cb9-44" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-45"><a href="#cb9-45" aria-hidden="true" tabindex="-1"></a><span class="co"># Load the pipeline from the joblib file</span></span>
+<span id="cb9-46"><a href="#cb9-46" aria-hidden="true" tabindex="-1"></a>loaded_pipeline <span class="op">=</span> load_model()</span>
+<span id="cb9-47"><a href="#cb9-47" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-48"><a href="#cb9-48" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-49"><a href="#cb9-49" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb9-50"><a href="#cb9-50" aria-hidden="true" tabindex="-1"></a><span class="co"># Column Setup</span></span>
+<span id="cb9-51"><a href="#cb9-51" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb9-52"><a href="#cb9-52" aria-hidden="true" tabindex="-1"></a>desired_order <span class="op">=</span> [</span>
+<span id="cb9-53"><a href="#cb9-53" aria-hidden="true" tabindex="-1"></a>    <span class="st">'bedrooms'</span>, <span class="st">'bathrooms'</span>, <span class="st">'car_spaces'</span>, <span class="st">'land_size'</span>, <span class="st">'primary_sch_count'</span>,</span>
+<span id="cb9-54"><a href="#cb9-54" aria-hidden="true" tabindex="-1"></a>    <span class="st">'secondary_sch_count'</span>, <span class="st">'childcare_count'</span>, <span class="st">'bus_stop_distance'</span>,</span>
+<span id="cb9-55"><a href="#cb9-55" aria-hidden="true" tabindex="-1"></a>    <span class="st">'train_stop_distance'</span>, <span class="st">'park_distance'</span>, <span class="st">'shopping_centre_distance'</span>,</span>
+<span id="cb9-56"><a href="#cb9-56" aria-hidden="true" tabindex="-1"></a>    <span class="st">'month_sin'</span>, <span class="st">'month_cos'</span>, <span class="st">'elapsed_days'</span>, <span class="st">'suburb'</span>, <span class="st">'property_type'</span>,</span>
+<span id="cb9-57"><a href="#cb9-57" aria-hidden="true" tabindex="-1"></a>    <span class="st">'day'</span></span>
+<span id="cb9-58"><a href="#cb9-58" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb9-59"><a href="#cb9-59" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-60"><a href="#cb9-60" aria-hidden="true" tabindex="-1"></a>transformed_columns <span class="op">=</span> [</span>
+<span id="cb9-61"><a href="#cb9-61" aria-hidden="true" tabindex="-1"></a>    <span class="st">'month_sin'</span>, <span class="st">'month_cos'</span>, <span class="st">'elapsed_days'</span>, <span class="st">'day'</span>,</span>
+<span id="cb9-62"><a href="#cb9-62" aria-hidden="true" tabindex="-1"></a>    <span class="st">'bedrooms'</span>, <span class="st">'bathrooms'</span>, <span class="st">'car_spaces'</span>, <span class="st">'land_size'</span>, <span class="st">'primary_sch_count'</span>,</span>
+<span id="cb9-63"><a href="#cb9-63" aria-hidden="true" tabindex="-1"></a>    <span class="st">'secondary_sch_count'</span>, <span class="st">'childcare_count'</span>, <span class="st">'bus_stop_distance'</span>,</span>
+<span id="cb9-64"><a href="#cb9-64" aria-hidden="true" tabindex="-1"></a>    <span class="st">'train_stop_distance'</span>, <span class="st">'park_distance'</span>, <span class="st">'shopping_centre_distance'</span>,</span>
+<span id="cb9-65"><a href="#cb9-65" aria-hidden="true" tabindex="-1"></a>    <span class="st">'suburb'</span>, <span class="st">'property_type'</span></span>
+<span id="cb9-66"><a href="#cb9-66" aria-hidden="true" tabindex="-1"></a>]</span>
+<span id="cb9-67"><a href="#cb9-67" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-68"><a href="#cb9-68" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb9-69"><a href="#cb9-69" aria-hidden="true" tabindex="-1"></a><span class="co"># Pipeline Setup</span></span>
+<span id="cb9-70"><a href="#cb9-70" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb9-71"><a href="#cb9-71" aria-hidden="true" tabindex="-1"></a>feature_engineer <span class="op">=</span> ColumnTransformer(</span>
+<span id="cb9-72"><a href="#cb9-72" aria-hidden="true" tabindex="-1"></a>    transformers<span class="op">=</span>[</span>
+<span id="cb9-73"><a href="#cb9-73" aria-hidden="true" tabindex="-1"></a>        (<span class="st">'date_features'</span>, DateFeatureEngineer(start_date<span class="op">=</span><span class="st">"2025-01-01"</span>), [<span class="st">'date'</span>])</span>
+<span id="cb9-74"><a href="#cb9-74" aria-hidden="true" tabindex="-1"></a>    ],</span>
+<span id="cb9-75"><a href="#cb9-75" aria-hidden="true" tabindex="-1"></a>    remainder<span class="op">=</span><span class="st">'passthrough'</span></span>
+<span id="cb9-76"><a href="#cb9-76" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-77"><a href="#cb9-77" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-78"><a href="#cb9-78" aria-hidden="true" tabindex="-1"></a>pipeline <span class="op">=</span> Pipeline([</span>
+<span id="cb9-79"><a href="#cb9-79" aria-hidden="true" tabindex="-1"></a>    (<span class="st">'preprocessing'</span>, feature_engineer)</span>
+<span id="cb9-80"><a href="#cb9-80" aria-hidden="true" tabindex="-1"></a>])</span>
+<span id="cb9-81"><a href="#cb9-81" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-82"><a href="#cb9-82" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-83"><a href="#cb9-83" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb9-84"><a href="#cb9-84" aria-hidden="true" tabindex="-1"></a><span class="co"># Sidebar Inputs</span></span>
+<span id="cb9-85"><a href="#cb9-85" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb9-86"><a href="#cb9-86" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-87"><a href="#cb9-87" aria-hidden="true" tabindex="-1"></a><span class="co"># Sidebar input</span></span>
+<span id="cb9-88"><a href="#cb9-88" aria-hidden="true" tabindex="-1"></a>st.sidebar.header(<span class="st">"Enter Property Details"</span>)</span>
+<span id="cb9-89"><a href="#cb9-89" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-90"><a href="#cb9-90" aria-hidden="true" tabindex="-1"></a><span class="co"># Top section (single column)</span></span>
+<span id="cb9-91"><a href="#cb9-91" aria-hidden="true" tabindex="-1"></a>top <span class="op">=</span> st.sidebar.container()</span>
+<span id="cb9-92"><a href="#cb9-92" aria-hidden="true" tabindex="-1"></a>selected_date <span class="op">=</span> top.date_input(<span class="st">"Date"</span>,                      </span>
+<span id="cb9-93"><a href="#cb9-93" aria-hidden="true" tabindex="-1"></a>    min_value<span class="op">=</span>date(<span class="dv">2025</span>, <span class="dv">1</span>, <span class="dv">1</span>),</span>
+<span id="cb9-94"><a href="#cb9-94" aria-hidden="true" tabindex="-1"></a>    max_value<span class="op">=</span>date(<span class="dv">2025</span>, <span class="dv">12</span>, <span class="dv">31</span>)</span>
+<span id="cb9-95"><a href="#cb9-95" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb9-96"><a href="#cb9-96" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-97"><a href="#cb9-97" aria-hidden="true" tabindex="-1"></a><span class="co"># Main property info</span></span>
+<span id="cb9-98"><a href="#cb9-98" aria-hidden="true" tabindex="-1"></a>top.header(<span class="st">"Main Property Info"</span>)</span>
+<span id="cb9-99"><a href="#cb9-99" aria-hidden="true" tabindex="-1"></a>suburb <span class="op">=</span> top.selectbox(<span class="st">"Suburb"</span>, [<span class="st">"Berwick"</span>, <span class="st">"Officer"</span>, <span class="st">"Pakenham"</span>])</span>
+<span id="cb9-100"><a href="#cb9-100" aria-hidden="true" tabindex="-1"></a>property_type <span class="op">=</span> top.selectbox(<span class="st">"Property Type"</span>, [<span class="st">"House"</span>, <span class="st">"Townhouse"</span>])</span>
+<span id="cb9-101"><a href="#cb9-101" aria-hidden="true" tabindex="-1"></a>bedrooms <span class="op">=</span> top.slider(<span class="st">"Bedrooms"</span>, <span class="dv">2</span>, <span class="dv">6</span>, <span class="dv">3</span>)</span>
+<span id="cb9-102"><a href="#cb9-102" aria-hidden="true" tabindex="-1"></a>bathrooms <span class="op">=</span> top.slider(<span class="st">"Bathrooms"</span>, <span class="dv">1</span>, <span class="dv">5</span>, <span class="dv">2</span>)</span>
+<span id="cb9-103"><a href="#cb9-103" aria-hidden="true" tabindex="-1"></a>car_spaces <span class="op">=</span> top.slider(<span class="st">"Car Spaces"</span>, <span class="dv">1</span>, <span class="dv">6</span>, <span class="dv">1</span>)</span>
+<span id="cb9-104"><a href="#cb9-104" aria-hidden="true" tabindex="-1"></a>land_size <span class="op">=</span> top.slider(<span class="st">"Land Size (sqm)"</span>, <span class="dv">90</span>, <span class="dv">2200</span>, <span class="dv">100</span>)</span>
+<span id="cb9-105"><a href="#cb9-105" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-106"><a href="#cb9-106" aria-hidden="true" tabindex="-1"></a><span class="co"># Middle section (two columns)</span></span>
+<span id="cb9-107"><a href="#cb9-107" aria-hidden="true" tabindex="-1"></a>middle <span class="op">=</span> st.sidebar.container()</span>
+<span id="cb9-108"><a href="#cb9-108" aria-hidden="true" tabindex="-1"></a>middle.header(<span class="st">"Nearby Education"</span>)</span>
+<span id="cb9-109"><a href="#cb9-109" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-110"><a href="#cb9-110" aria-hidden="true" tabindex="-1"></a>m_col1, m_col2, m_col3 <span class="op">=</span> middle.columns(<span class="dv">3</span>)</span>
+<span id="cb9-111"><a href="#cb9-111" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-112"><a href="#cb9-112" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> m_col1:</span>
+<span id="cb9-113"><a href="#cb9-113" aria-hidden="true" tabindex="-1"></a>    primary_sch_count <span class="op">=</span> st.slider(<span class="st">"Primary Schools"</span>, <span class="dv">0</span>, <span class="dv">5</span>, <span class="dv">0</span>)</span>
+<span id="cb9-114"><a href="#cb9-114" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-115"><a href="#cb9-115" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> m_col2:</span>
+<span id="cb9-116"><a href="#cb9-116" aria-hidden="true" tabindex="-1"></a>    secondary_sch_count <span class="op">=</span> st.slider(<span class="st">"Secondary Schools"</span>, <span class="dv">0</span>, <span class="dv">2</span>, <span class="dv">1</span>)</span>
+<span id="cb9-117"><a href="#cb9-117" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-118"><a href="#cb9-118" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> m_col3:</span>
+<span id="cb9-119"><a href="#cb9-119" aria-hidden="true" tabindex="-1"></a>    childcare_count <span class="op">=</span> st.slider(<span class="st">"Childcare"</span>, <span class="dv">2</span>, <span class="dv">24</span>, <span class="dv">5</span>)</span>
+<span id="cb9-120"><a href="#cb9-120" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-121"><a href="#cb9-121" aria-hidden="true" tabindex="-1"></a><span class="co"># Bottom section (two columns)</span></span>
+<span id="cb9-122"><a href="#cb9-122" aria-hidden="true" tabindex="-1"></a>bottom <span class="op">=</span> st.sidebar.container()</span>
+<span id="cb9-123"><a href="#cb9-123" aria-hidden="true" tabindex="-1"></a>bottom.header(<span class="st">"Nearby Amenities"</span>)</span>
+<span id="cb9-124"><a href="#cb9-124" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-125"><a href="#cb9-125" aria-hidden="true" tabindex="-1"></a>b_col1, b_col2 <span class="op">=</span> bottom.columns(<span class="dv">2</span>)</span>
+<span id="cb9-126"><a href="#cb9-126" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-127"><a href="#cb9-127" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> b_col1:</span>
+<span id="cb9-128"><a href="#cb9-128" aria-hidden="true" tabindex="-1"></a>    bus_stop_distance <span class="op">=</span> st.slider(<span class="st">"Bus Stop (km)"</span>, <span class="fl">0.0</span>, <span class="fl">1.3</span>, <span class="fl">0.5</span>)</span>
+<span id="cb9-129"><a href="#cb9-129" aria-hidden="true" tabindex="-1"></a>    park_distance <span class="op">=</span> st.slider(<span class="st">"Park (km)"</span>, <span class="fl">0.0</span>, <span class="fl">1.3</span>, <span class="fl">0.5</span>)</span>
+<span id="cb9-130"><a href="#cb9-130" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-131"><a href="#cb9-131" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> b_col2:</span>
+<span id="cb9-132"><a href="#cb9-132" aria-hidden="true" tabindex="-1"></a>    train_stop_distance <span class="op">=</span> st.slider(<span class="st">"Train Station (km)"</span>, <span class="fl">0.0</span>, <span class="fl">3.2</span>, <span class="fl">1.0</span>)</span>
+<span id="cb9-133"><a href="#cb9-133" aria-hidden="true" tabindex="-1"></a>    shopping_centre_distance <span class="op">=</span> st.slider(<span class="st">"Shopping (km)"</span>, <span class="fl">0.0</span>, <span class="fl">2.5</span>, <span class="fl">1.0</span>)</span>
+<span id="cb9-134"><a href="#cb9-134" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-135"><a href="#cb9-135" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-136"><a href="#cb9-136" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb9-137"><a href="#cb9-137" aria-hidden="true" tabindex="-1"></a><span class="co"># Main Layout</span></span>
+<span id="cb9-138"><a href="#cb9-138" aria-hidden="true" tabindex="-1"></a><span class="co"># -----------------------------</span></span>
+<span id="cb9-139"><a href="#cb9-139" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-140"><a href="#cb9-140" aria-hidden="true" tabindex="-1"></a>st.markdown(<span class="st">"""</span></span>
+<span id="cb9-141"><a href="#cb9-141" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;div style='text-align: center;'&gt;</span></span>
+<span id="cb9-142"><a href="#cb9-142" aria-hidden="true" tabindex="-1"></a><span class="st">        &lt;h1&gt;Berwick, Officer, Pakenham&lt;/h1&gt;</span></span>
+<span id="cb9-143"><a href="#cb9-143" aria-hidden="true" tabindex="-1"></a><span class="st">        &lt;h2&gt;Property Price Prediction&lt;/h2&gt;</span></span>
+<span id="cb9-144"><a href="#cb9-144" aria-hidden="true" tabindex="-1"></a><span class="st">        &lt;hr style='margin-top: 0;'&gt;</span></span>
+<span id="cb9-145"><a href="#cb9-145" aria-hidden="true" tabindex="-1"></a><span class="st">    &lt;/div&gt;</span></span>
+<span id="cb9-146"><a href="#cb9-146" aria-hidden="true" tabindex="-1"></a><span class="st">"""</span>, unsafe_allow_html<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-147"><a href="#cb9-147" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-148"><a href="#cb9-148" aria-hidden="true" tabindex="-1"></a>left_col, right_col <span class="op">=</span> st.columns([<span class="dv">1</span>, <span class="dv">2</span>])</span>
+<span id="cb9-149"><a href="#cb9-149" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-150"><a href="#cb9-150" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> left_col:</span>
+<span id="cb9-151"><a href="#cb9-151" aria-hidden="true" tabindex="-1"></a>    st.header(<span class="st">"Prediction"</span>)</span>
+<span id="cb9-152"><a href="#cb9-152" aria-hidden="true" tabindex="-1"></a>    <span class="cf">if</span> st.button(<span class="st">"Predict"</span>):</span>
+<span id="cb9-153"><a href="#cb9-153" aria-hidden="true" tabindex="-1"></a>        <span class="co"># </span></span>
+<span id="cb9-154"><a href="#cb9-154" aria-hidden="true" tabindex="-1"></a>        input_data <span class="op">=</span> {</span>
+<span id="cb9-155"><a href="#cb9-155" aria-hidden="true" tabindex="-1"></a>            <span class="st">"bedrooms"</span>: bedrooms,</span>
+<span id="cb9-156"><a href="#cb9-156" aria-hidden="true" tabindex="-1"></a>            <span class="st">"bathrooms"</span>: bathrooms,</span>
+<span id="cb9-157"><a href="#cb9-157" aria-hidden="true" tabindex="-1"></a>            <span class="st">"car_spaces"</span>: car_spaces,</span>
+<span id="cb9-158"><a href="#cb9-158" aria-hidden="true" tabindex="-1"></a>            <span class="st">"land_size"</span>: land_size,</span>
+<span id="cb9-159"><a href="#cb9-159" aria-hidden="true" tabindex="-1"></a>            <span class="st">"primary_sch_count"</span>: primary_sch_count,</span>
+<span id="cb9-160"><a href="#cb9-160" aria-hidden="true" tabindex="-1"></a>            <span class="st">"secondary_sch_count"</span>: secondary_sch_count,</span>
+<span id="cb9-161"><a href="#cb9-161" aria-hidden="true" tabindex="-1"></a>            <span class="st">"childcare_count"</span>: childcare_count,</span>
+<span id="cb9-162"><a href="#cb9-162" aria-hidden="true" tabindex="-1"></a>            <span class="st">"bus_stop_distance"</span>: bus_stop_distance,</span>
+<span id="cb9-163"><a href="#cb9-163" aria-hidden="true" tabindex="-1"></a>            <span class="st">"train_stop_distance"</span>: train_stop_distance,</span>
+<span id="cb9-164"><a href="#cb9-164" aria-hidden="true" tabindex="-1"></a>            <span class="st">"park_distance"</span>: park_distance,</span>
+<span id="cb9-165"><a href="#cb9-165" aria-hidden="true" tabindex="-1"></a>            <span class="st">"shopping_centre_distance"</span>: shopping_centre_distance,</span>
+<span id="cb9-166"><a href="#cb9-166" aria-hidden="true" tabindex="-1"></a>            <span class="st">"date"</span>: selected_date.strftime(<span class="st">"%Y-%m-</span><span class="sc">%d</span><span class="st">"</span>),</span>
+<span id="cb9-167"><a href="#cb9-167" aria-hidden="true" tabindex="-1"></a>            <span class="st">"suburb"</span>: suburb,</span>
+<span id="cb9-168"><a href="#cb9-168" aria-hidden="true" tabindex="-1"></a>            <span class="st">"property_type"</span>: property_type</span>
+<span id="cb9-169"><a href="#cb9-169" aria-hidden="true" tabindex="-1"></a>        }</span>
+<span id="cb9-170"><a href="#cb9-170" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-171"><a href="#cb9-171" aria-hidden="true" tabindex="-1"></a>        input_df <span class="op">=</span> pd.DataFrame([input_data])</span>
+<span id="cb9-172"><a href="#cb9-172" aria-hidden="true" tabindex="-1"></a>        transformed <span class="op">=</span> pipeline.fit_transform(input_df)</span>
+<span id="cb9-173"><a href="#cb9-173" aria-hidden="true" tabindex="-1"></a>        transformed_df <span class="op">=</span> pd.DataFrame(transformed, columns<span class="op">=</span>transformed_columns)</span>
+<span id="cb9-174"><a href="#cb9-174" aria-hidden="true" tabindex="-1"></a>        final_df <span class="op">=</span> transformed_df[desired_order]</span>
+<span id="cb9-175"><a href="#cb9-175" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-176"><a href="#cb9-176" aria-hidden="true" tabindex="-1"></a>        prediction <span class="op">=</span> loaded_pipeline.predict(final_df)[<span class="dv">0</span>]</span>
+<span id="cb9-177"><a href="#cb9-177" aria-hidden="true" tabindex="-1"></a>        <span class="co">#st.write(f"**Predicted Price:** ${prediction:,.0f}")</span></span>
+<span id="cb9-178"><a href="#cb9-178" aria-hidden="true" tabindex="-1"></a>        st.markdown(<span class="ss">f"&lt;h2 style='color:limegreen; font-weight:bold'&gt;Predicted Price: $</span><span class="sc">{</span>prediction<span class="sc">:,.0f}</span><span class="ss">&lt;/h2&gt;"</span>, unsafe_allow_html<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-179"><a href="#cb9-179" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-180"><a href="#cb9-180" aria-hidden="true" tabindex="-1"></a>    <span class="cf">else</span>:</span>
+<span id="cb9-181"><a href="#cb9-181" aria-hidden="true" tabindex="-1"></a>        st.write(<span class="st">""</span>)</span>
+<span id="cb9-182"><a href="#cb9-182" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-183"><a href="#cb9-183" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> right_col:</span>
+<span id="cb9-184"><a href="#cb9-184" aria-hidden="true" tabindex="-1"></a>    <span class="co">#st.header("Map")</span></span>
+<span id="cb9-185"><a href="#cb9-185" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-186"><a href="#cb9-186" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Load GeoJSON boundaries</span></span>
+<span id="cb9-187"><a href="#cb9-187" aria-hidden="true" tabindex="-1"></a>    <span class="cf">with</span> <span class="bu">open</span>(<span class="st">"data/berwick_officer_pakenham_boundaries.geojson"</span>, <span class="st">"r"</span>, encoding<span class="op">=</span><span class="st">"utf-8"</span>) <span class="im">as</span> f:</span>
+<span id="cb9-188"><a href="#cb9-188" aria-hidden="true" tabindex="-1"></a>        suburb_geojson <span class="op">=</span> json.load(f)</span>
+<span id="cb9-189"><a href="#cb9-189" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-190"><a href="#cb9-190" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Map setup</span></span>
+<span id="cb9-191"><a href="#cb9-191" aria-hidden="true" tabindex="-1"></a>    map_centre <span class="op">=</span> [<span class="op">-</span><span class="fl">38.05916</span>,  <span class="fl">145.40947</span>]</span>
+<span id="cb9-192"><a href="#cb9-192" aria-hidden="true" tabindex="-1"></a>    m <span class="op">=</span> folium.Map(location<span class="op">=</span>map_centre, control_scale<span class="op">=</span><span class="va">True</span>)</span>
+<span id="cb9-193"><a href="#cb9-193" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-194"><a href="#cb9-194" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add the GeoJSON data to the map</span></span>
+<span id="cb9-195"><a href="#cb9-195" aria-hidden="true" tabindex="-1"></a>    geojson_layer <span class="op">=</span> folium.GeoJson(</span>
+<span id="cb9-196"><a href="#cb9-196" aria-hidden="true" tabindex="-1"></a>        suburb_geojson,</span>
+<span id="cb9-197"><a href="#cb9-197" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">"Suburb Boundaries"</span>,</span>
+<span id="cb9-198"><a href="#cb9-198" aria-hidden="true" tabindex="-1"></a>        style_function<span class="op">=</span><span class="kw">lambda</span> feature: {</span>
+<span id="cb9-199"><a href="#cb9-199" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fillColor"</span>: <span class="st">"blue"</span>,</span>
+<span id="cb9-200"><a href="#cb9-200" aria-hidden="true" tabindex="-1"></a>            <span class="st">"color"</span>: <span class="st">"blue"</span>,</span>
+<span id="cb9-201"><a href="#cb9-201" aria-hidden="true" tabindex="-1"></a>            <span class="st">"weight"</span>: <span class="dv">2</span>,</span>
+<span id="cb9-202"><a href="#cb9-202" aria-hidden="true" tabindex="-1"></a>            <span class="st">"fillOpacity"</span>: <span class="fl">0.2</span>,</span>
+<span id="cb9-203"><a href="#cb9-203" aria-hidden="true" tabindex="-1"></a>        },</span>
+<span id="cb9-204"><a href="#cb9-204" aria-hidden="true" tabindex="-1"></a>        tooltip<span class="op">=</span>folium.GeoJsonTooltip(fields<span class="op">=</span>[<span class="st">"name"</span>], aliases<span class="op">=</span>[<span class="st">"Suburb"</span>])</span>
+<span id="cb9-205"><a href="#cb9-205" aria-hidden="true" tabindex="-1"></a>    ).add_to(m)</span>
+<span id="cb9-206"><a href="#cb9-206" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-207"><a href="#cb9-207" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Fit the map to the bounds of the GeoJSON layer</span></span>
+<span id="cb9-208"><a href="#cb9-208" aria-hidden="true" tabindex="-1"></a>    m.fit_bounds(geojson_layer.get_bounds())</span>
+<span id="cb9-209"><a href="#cb9-209" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-210"><a href="#cb9-210" aria-hidden="true" tabindex="-1"></a>    folium.TileLayer(</span>
+<span id="cb9-211"><a href="#cb9-211" aria-hidden="true" tabindex="-1"></a>        tiles<span class="op">=</span><span class="st">'https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/</span><span class="sc">{z}</span><span class="st">/</span><span class="sc">{y}</span><span class="st">/</span><span class="sc">{x}</span><span class="st">'</span>,</span>
+<span id="cb9-212"><a href="#cb9-212" aria-hidden="true" tabindex="-1"></a>        attr<span class="op">=</span><span class="st">'Esri'</span>,</span>
+<span id="cb9-213"><a href="#cb9-213" aria-hidden="true" tabindex="-1"></a>        name<span class="op">=</span><span class="st">'Satellite'</span>,</span>
+<span id="cb9-214"><a href="#cb9-214" aria-hidden="true" tabindex="-1"></a>        overlay<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-215"><a href="#cb9-215" aria-hidden="true" tabindex="-1"></a>        control<span class="op">=</span><span class="va">True</span>,</span>
+<span id="cb9-216"><a href="#cb9-216" aria-hidden="true" tabindex="-1"></a>        show<span class="op">=</span><span class="va">False</span> </span>
+<span id="cb9-217"><a href="#cb9-217" aria-hidden="true" tabindex="-1"></a>    ).add_to(m)</span>
+<span id="cb9-218"><a href="#cb9-218" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-219"><a href="#cb9-219" aria-hidden="true" tabindex="-1"></a>    <span class="co"># Add layer control to toggle layers</span></span>
+<span id="cb9-220"><a href="#cb9-220" aria-hidden="true" tabindex="-1"></a>    folium.LayerControl().add_to(m)</span>
+<span id="cb9-221"><a href="#cb9-221" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-222"><a href="#cb9-222" aria-hidden="true" tabindex="-1"></a>    st_folium(m, height<span class="op">=</span><span class="dv">600</span>)</span>
+<span id="cb9-223"><a href="#cb9-223" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb9-224"><a href="#cb9-224" aria-hidden="true" tabindex="-1"></a><span class="co"># Footer section</span></span>
+<span id="cb9-225"><a href="#cb9-225" aria-hidden="true" tabindex="-1"></a><span class="cf">with</span> st.container():</span>
+<span id="cb9-226"><a href="#cb9-226" aria-hidden="true" tabindex="-1"></a>    st.markdown(<span class="st">"---"</span>)</span>
+<span id="cb9-227"><a href="#cb9-227" aria-hidden="true" tabindex="-1"></a>    st.markdown(<span class="st">"**Disclaimer:** This is a demo app. Predictions are for illustrative purposes only."</span>)</span>
+<span id="cb9-228"><a href="#cb9-228" aria-hidden="true" tabindex="-1"></a>    st.markdown(<span class="st">"**Created by Darrin William Stephens** for Deakin SIT720 Machine Learning Task 8.2D"</span>)</span>
+<span id="cb9-229"><a href="#cb9-229" aria-hidden="true" tabindex="-1"></a>    st.markdown(<span class="st">"Copyright 2025"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</section>
+<section id="references" class="level1">
+<h1>References</h1>
+<p>[1] V. Cadwell, “6 Key Factors That Impact House Prices in Australia,” AMRU, Oct.&nbsp;13, 2023. https://amru.org.au/latest-news/australian-house-price-factors/</p>
+<p>‌[2] Findamover, “Find and Compare Top Removalists,” Find a Mover, 2023. https://www.findamover.com.au/blog/melbourne-school-zones-impact-property-values-moving-decisions (accessed Sep.&nbsp;17, 2025).</p>
+<p>[3] REA, “How Do Public Transport Links Affect Property Prices? - realestate.com.au,” www.realestate.com.au. https://www.realestate.com.au/news/how-do-public-transport-links-affect-property-prices/</p>
+<p>‌‌[4] Ray, White “What is the impact of transport infrastructure on house prices?,” Ray White, 2025. https://www.raywhite.com/news-and-market-insights/economic-updates/what-is-the-impact-of-transport-infrastructure-on-house-prices</p>
+<p>‌[5] Golden Age Group, “A Retail Boom: Major Shopping Centres Provide Property Price Boost | Golden Age Group,” Golden Age Group, 2020. https://www.goldenagegroup.com.au/journal/a-retail-boom-major-shopping-centres-provide-property-price-boost/ (accessed Sep.&nbsp;17, 2025).</p>
+<p>‌[6] Colwell Conveyancing Group, “Understanding Property Valuation: Key Factors Influencing House Prices in Australia,” Conveyancinggroup.com.au, Oct.&nbsp;07, 2024. https://conveyancinggroup.com.au/resources/understanding-property-valuation-key-factors-influencing-house-prices-in-australia</p>
+<p>[7] A. Valadkhani, A. Worthington, and R. Smyth, “Seasonality in Australian Capital City House and Unit Prices Seasonality in Australian Capital City House and Unit Prices.” Accessed: Aug.&nbsp;3, 2025. [Online]. Available: https://www.monash.edu/business/economics/research/publications/publications2/5315seasonalityunitpricesaladkhaniworthingtonsmyth.pdf</p>
+<p>‌[8] “Metropolitan Open Space Network Provision and Distribution,” 2017. Available: https://vpa.vic.gov.au/wp-content/uploads/2018/02/Open-Space-Network-Provision-and-Distribution-Reduced-Size.pdf</p>
+
+
+</section>
+
+<a onclick="window.scrollTo(0, 0); return false;" role="button" id="quarto-back-to-top"><i class="bi bi-arrow-up"></i> Back to top</a></main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+  window.document.addEventListener("DOMContentLoaded", function (event) {
+    // Ensure there is a toggle, if there isn't float one in the top right
+    if (window.document.querySelector('.quarto-color-scheme-toggle') === null) {
+      const a = window.document.createElement('a');
+      a.classList.add('top-right');
+      a.classList.add('quarto-color-scheme-toggle');
+      a.href = "";
+      a.onclick = function() { try { window.quartoToggleColorScheme(); } catch {} return false; };
+      const i = window.document.createElement("i");
+      i.classList.add('bi');
+      a.appendChild(i);
+      window.document.body.appendChild(a);
+    }
+    setColorSchemeToggle(hasAlternateSentinel())
+    const icon = "";
+    const anchorJS = new window.AnchorJS();
+    anchorJS.options = {
+      placement: 'right',
+      icon: icon
+    };
+    anchorJS.add('.anchored');
+    const isCodeAnnotation = (el) => {
+      for (const clz of el.classList) {
+        if (clz.startsWith('code-annotation-')) {                     
+          return true;
+        }
+      }
+      return false;
+    }
+    const onCopySuccess = function(e) {
+      // button target
+      const button = e.trigger;
+      // don't keep focus
+      button.blur();
+      // flash "checked"
+      button.classList.add('code-copy-button-checked');
+      var currentTitle = button.getAttribute("title");
+      button.setAttribute("title", "Copied!");
+      let tooltip;
+      if (window.bootstrap) {
+        button.setAttribute("data-bs-toggle", "tooltip");
+        button.setAttribute("data-bs-placement", "left");
+        button.setAttribute("data-bs-title", "Copied!");
+        tooltip = new bootstrap.Tooltip(button, 
+          { trigger: "manual", 
+            customClass: "code-copy-button-tooltip",
+            offset: [0, -8]});
+        tooltip.show();    
+      }
+      setTimeout(function() {
+        if (tooltip) {
+          tooltip.hide();
+          button.removeAttribute("data-bs-title");
+          button.removeAttribute("data-bs-toggle");
+          button.removeAttribute("data-bs-placement");
+        }
+        button.setAttribute("title", currentTitle);
+        button.classList.remove('code-copy-button-checked');
+      }, 1000);
+      // clear code selection
+      e.clearSelection();
+    }
+    const getTextToCopy = function(trigger) {
+        const codeEl = trigger.previousElementSibling.cloneNode(true);
+        for (const childEl of codeEl.children) {
+          if (isCodeAnnotation(childEl)) {
+            childEl.remove();
+          }
+        }
+        return codeEl.innerText;
+    }
+    const clipboard = new window.ClipboardJS('.code-copy-button:not([data-in-quarto-modal])', {
+      text: getTextToCopy
+    });
+    clipboard.on('success', onCopySuccess);
+    if (window.document.getElementById('quarto-embedded-source-code-modal')) {
+      const clipboardModal = new window.ClipboardJS('.code-copy-button[data-in-quarto-modal]', {
+        text: getTextToCopy,
+        container: window.document.getElementById('quarto-embedded-source-code-modal')
+      });
+      clipboardModal.on('success', onCopySuccess);
+    }
+    const viewSource = window.document.getElementById('quarto-view-source') ||
+                       window.document.getElementById('quarto-code-tools-source');
+    if (viewSource) {
+      const sourceUrl = viewSource.getAttribute("data-quarto-source-url");
+      viewSource.addEventListener("click", function(e) {
+        if (sourceUrl) {
+          // rstudio viewer pane
+          if (/\bcapabilities=\b/.test(window.location)) {
+            window.open(sourceUrl);
+          } else {
+            window.location.href = sourceUrl;
+          }
+        } else {
+          const modal = new bootstrap.Modal(document.getElementById('quarto-embedded-source-code-modal'));
+          modal.show();
+        }
+        return false;
+      });
+    }
+    function toggleCodeHandler(show) {
+      return function(e) {
+        const detailsSrc = window.document.querySelectorAll(".cell > details > .sourceCode");
+        for (let i=0; i<detailsSrc.length; i++) {
+          const details = detailsSrc[i].parentElement;
+          if (show) {
+            details.open = true;
+          } else {
+            details.removeAttribute("open");
+          }
+        }
+        const cellCodeDivs = window.document.querySelectorAll(".cell > .sourceCode");
+        const fromCls = show ? "hidden" : "unhidden";
+        const toCls = show ? "unhidden" : "hidden";
+        for (let i=0; i<cellCodeDivs.length; i++) {
+          const codeDiv = cellCodeDivs[i];
+          if (codeDiv.classList.contains(fromCls)) {
+            codeDiv.classList.remove(fromCls);
+            codeDiv.classList.add(toCls);
+          } 
+        }
+        return false;
+      }
+    }
+    const hideAllCode = window.document.getElementById("quarto-hide-all-code");
+    if (hideAllCode) {
+      hideAllCode.addEventListener("click", toggleCodeHandler(false));
+    }
+    const showAllCode = window.document.getElementById("quarto-show-all-code");
+    if (showAllCode) {
+      showAllCode.addEventListener("click", toggleCodeHandler(true));
+    }
+      var localhostRegex = new RegExp(/^(?:http|https):\/\/localhost\:?[0-9]*\//);
+      var mailtoRegex = new RegExp(/^mailto:/);
+        var filterRegex = new RegExp('/' + window.location.host + '/');
+      var isInternal = (href) => {
+          return filterRegex.test(href) || localhostRegex.test(href) || mailtoRegex.test(href);
+      }
+      // Inspect non-navigation links and adorn them if external
+     var links = window.document.querySelectorAll('a[href]:not(.nav-link):not(.navbar-brand):not(.toc-action):not(.sidebar-link):not(.sidebar-item-toggle):not(.pagination-link):not(.no-external):not([aria-hidden]):not(.dropdown-item):not(.quarto-navigation-tool):not(.about-link)');
+      for (var i=0; i<links.length; i++) {
+        const link = links[i];
+        if (!isInternal(link.href)) {
+          // undo the damage that might have been done by quarto-nav.js in the case of
+          // links that we want to consider external
+          if (link.dataset.originalHref !== undefined) {
+            link.href = link.dataset.originalHref;
+          }
+            // target, if specified
+            link.setAttribute("target", "_blank");
+            if (link.getAttribute("rel") === null) {
+              link.setAttribute("rel", "noopener");
+            }
+        }
+      }
+    function tippyHover(el, contentFn, onTriggerFn, onUntriggerFn) {
+      const config = {
+        allowHTML: true,
+        maxWidth: 500,
+        delay: 100,
+        arrow: false,
+        appendTo: function(el) {
+            return el.parentElement;
+        },
+        interactive: true,
+        interactiveBorder: 10,
+        theme: 'quarto',
+        placement: 'bottom-start',
+      };
+      if (contentFn) {
+        config.content = contentFn;
+      }
+      if (onTriggerFn) {
+        config.onTrigger = onTriggerFn;
+      }
+      if (onUntriggerFn) {
+        config.onUntrigger = onUntriggerFn;
+      }
+      window.tippy(el, config); 
+    }
+    const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+    for (var i=0; i<noterefs.length; i++) {
+      const ref = noterefs[i];
+      tippyHover(ref, function() {
+        // use id or data attribute instead here
+        let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+        try { href = new URL(href).hash; } catch {}
+        const id = href.replace(/^#\/?/, "");
+        const note = window.document.getElementById(id);
+        if (note) {
+          return note.innerHTML;
+        } else {
+          return "";
+        }
+      });
+    }
+    const xrefs = window.document.querySelectorAll('a.quarto-xref');
+    const processXRef = (id, note) => {
+      // Strip column container classes
+      const stripColumnClz = (el) => {
+        el.classList.remove("page-full", "page-columns");
+        if (el.children) {
+          for (const child of el.children) {
+            stripColumnClz(child);
+          }
+        }
+      }
+      stripColumnClz(note)
+      if (id === null || id.startsWith('sec-')) {
+        // Special case sections, only their first couple elements
+        const container = document.createElement("div");
+        if (note.children && note.children.length > 2) {
+          container.appendChild(note.children[0].cloneNode(true));
+          for (let i = 1; i < note.children.length; i++) {
+            const child = note.children[i];
+            if (child.tagName === "P" && child.innerText === "") {
+              continue;
+            } else {
+              container.appendChild(child.cloneNode(true));
+              break;
+            }
+          }
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(container);
+          }
+          return container.innerHTML
+        } else {
+          if (window.Quarto?.typesetMath) {
+            window.Quarto.typesetMath(note);
+          }
+          return note.innerHTML;
+        }
+      } else {
+        // Remove any anchor links if they are present
+        const anchorLink = note.querySelector('a.anchorjs-link');
+        if (anchorLink) {
+          anchorLink.remove();
+        }
+        if (window.Quarto?.typesetMath) {
+          window.Quarto.typesetMath(note);
+        }
+        if (note.classList.contains("callout")) {
+          return note.outerHTML;
+        } else {
+          return note.innerHTML;
+        }
+      }
+    }
+    for (var i=0; i<xrefs.length; i++) {
+      const xref = xrefs[i];
+      tippyHover(xref, undefined, function(instance) {
+        instance.disable();
+        let url = xref.getAttribute('href');
+        let hash = undefined; 
+        if (url.startsWith('#')) {
+          hash = url;
+        } else {
+          try { hash = new URL(url).hash; } catch {}
+        }
+        if (hash) {
+          const id = hash.replace(/^#\/?/, "");
+          const note = window.document.getElementById(id);
+          if (note !== null) {
+            try {
+              const html = processXRef(id, note.cloneNode(true));
+              instance.setContent(html);
+            } finally {
+              instance.enable();
+              instance.show();
+            }
+          } else {
+            // See if we can fetch this
+            fetch(url.split('#')[0])
+            .then(res => res.text())
+            .then(html => {
+              const parser = new DOMParser();
+              const htmlDoc = parser.parseFromString(html, "text/html");
+              const note = htmlDoc.getElementById(id);
+              if (note !== null) {
+                const html = processXRef(id, note);
+                instance.setContent(html);
+              } 
+            }).finally(() => {
+              instance.enable();
+              instance.show();
+            });
+          }
+        } else {
+          // See if we can fetch a full url (with no hash to target)
+          // This is a special case and we should probably do some content thinning / targeting
+          fetch(url)
+          .then(res => res.text())
+          .then(html => {
+            const parser = new DOMParser();
+            const htmlDoc = parser.parseFromString(html, "text/html");
+            const note = htmlDoc.querySelector('main.content');
+            if (note !== null) {
+              // This should only happen for chapter cross references
+              // (since there is no id in the URL)
+              // remove the first header
+              if (note.children.length > 0 && note.children[0].tagName === "HEADER") {
+                note.children[0].remove();
+              }
+              const html = processXRef(null, note);
+              instance.setContent(html);
+            } 
+          }).finally(() => {
+            instance.enable();
+            instance.show();
+          });
+        }
+      }, function(instance) {
+      });
+    }
+        let selectedAnnoteEl;
+        const selectorForAnnotation = ( cell, annotation) => {
+          let cellAttr = 'data-code-cell="' + cell + '"';
+          let lineAttr = 'data-code-annotation="' +  annotation + '"';
+          const selector = 'span[' + cellAttr + '][' + lineAttr + ']';
+          return selector;
+        }
+        const selectCodeLines = (annoteEl) => {
+          const doc = window.document;
+          const targetCell = annoteEl.getAttribute("data-target-cell");
+          const targetAnnotation = annoteEl.getAttribute("data-target-annotation");
+          const annoteSpan = window.document.querySelector(selectorForAnnotation(targetCell, targetAnnotation));
+          const lines = annoteSpan.getAttribute("data-code-lines").split(",");
+          const lineIds = lines.map((line) => {
+            return targetCell + "-" + line;
+          })
+          let top = null;
+          let height = null;
+          let parent = null;
+          if (lineIds.length > 0) {
+              //compute the position of the single el (top and bottom and make a div)
+              const el = window.document.getElementById(lineIds[0]);
+              top = el.offsetTop;
+              height = el.offsetHeight;
+              parent = el.parentElement.parentElement;
+            if (lineIds.length > 1) {
+              const lastEl = window.document.getElementById(lineIds[lineIds.length - 1]);
+              const bottom = lastEl.offsetTop + lastEl.offsetHeight;
+              height = bottom - top;
+            }
+            if (top !== null && height !== null && parent !== null) {
+              // cook up a div (if necessary) and position it 
+              let div = window.document.getElementById("code-annotation-line-highlight");
+              if (div === null) {
+                div = window.document.createElement("div");
+                div.setAttribute("id", "code-annotation-line-highlight");
+                div.style.position = 'absolute';
+                parent.appendChild(div);
+              }
+              div.style.top = top - 2 + "px";
+              div.style.height = height + 4 + "px";
+              div.style.left = 0;
+              let gutterDiv = window.document.getElementById("code-annotation-line-highlight-gutter");
+              if (gutterDiv === null) {
+                gutterDiv = window.document.createElement("div");
+                gutterDiv.setAttribute("id", "code-annotation-line-highlight-gutter");
+                gutterDiv.style.position = 'absolute';
+                const codeCell = window.document.getElementById(targetCell);
+                const gutter = codeCell.querySelector('.code-annotation-gutter');
+                gutter.appendChild(gutterDiv);
+              }
+              gutterDiv.style.top = top - 2 + "px";
+              gutterDiv.style.height = height + 4 + "px";
+            }
+            selectedAnnoteEl = annoteEl;
+          }
+        };
+        const unselectCodeLines = () => {
+          const elementsIds = ["code-annotation-line-highlight", "code-annotation-line-highlight-gutter"];
+          elementsIds.forEach((elId) => {
+            const div = window.document.getElementById(elId);
+            if (div) {
+              div.remove();
+            }
+          });
+          selectedAnnoteEl = undefined;
+        };
+          // Handle positioning of the toggle
+      window.addEventListener(
+        "resize",
+        throttle(() => {
+          elRect = undefined;
+          if (selectedAnnoteEl) {
+            selectCodeLines(selectedAnnoteEl);
+          }
+        }, 10)
+      );
+      function throttle(fn, ms) {
+      let throttle = false;
+      let timer;
+        return (...args) => {
+          if(!throttle) { // first call gets through
+              fn.apply(this, args);
+              throttle = true;
+          } else { // all the others get throttled
+              if(timer) clearTimeout(timer); // cancel #2
+              timer = setTimeout(() => {
+                fn.apply(this, args);
+                timer = throttle = false;
+              }, ms);
+          }
+        };
+      }
+        // Attach click handler to the DT
+        const annoteDls = window.document.querySelectorAll('dt[data-target-cell]');
+        for (const annoteDlNode of annoteDls) {
+          annoteDlNode.addEventListener('click', (event) => {
+            const clickedEl = event.target;
+            if (clickedEl !== selectedAnnoteEl) {
+              unselectCodeLines();
+              const activeEl = window.document.querySelector('dt[data-target-cell].code-annotation-active');
+              if (activeEl) {
+                activeEl.classList.remove('code-annotation-active');
+              }
+              selectCodeLines(clickedEl);
+              clickedEl.classList.add('code-annotation-active');
+            } else {
+              // Unselect the line
+              unselectCodeLines();
+              clickedEl.classList.remove('code-annotation-active');
+            }
+          });
+        }
+    const findCites = (el) => {
+      const parentEl = el.parentElement;
+      if (parentEl) {
+        const cites = parentEl.dataset.cites;
+        if (cites) {
+          return {
+            el,
+            cites: cites.split(' ')
+          };
+        } else {
+          return findCites(el.parentElement)
+        }
+      } else {
+        return undefined;
+      }
+    };
+    var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+    for (var i=0; i<bibliorefs.length; i++) {
+      const ref = bibliorefs[i];
+      const citeInfo = findCites(ref);
+      if (citeInfo) {
+        tippyHover(citeInfo.el, function() {
+          var popup = window.document.createElement('div');
+          citeInfo.cites.forEach(function(cite) {
+            var citeDiv = window.document.createElement('div');
+            citeDiv.classList.add('hanging-indent');
+            citeDiv.classList.add('csl-entry');
+            var biblioDiv = window.document.getElementById('ref-' + cite);
+            if (biblioDiv) {
+              citeDiv.innerHTML = biblioDiv.innerHTML;
+            }
+            popup.appendChild(citeDiv);
+          });
+          return popup.innerHTML;
+        });
+      }
+    }
+  });
+  </script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="../../../portfolio/ml/Task8_2/Task8_2D.html" class="pagination-link" aria-label="Real Estate Price Prediction">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text">Real Estate Price Prediction</span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="../../../portfolio/ml/Task10_1/Task10_1P.html" class="pagination-link" aria-label="Basic Deep Learning">
+        <span class="nav-page-text">Basic Deep Learning</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left">
+<p>Powered by <a href="https://quarto.org">Quarto</a>.</p>
+</div>   
+    <div class="nav-footer-center">
+<p>© <span id="current-year"></span> Darrin William Stephens.</p>
+</div>
+    <div class="nav-footer-right">
+<p>License: <a href="https://creativecommons.org/licenses/by-nc-sa/4.0">CC BY NC SA 4.0</a>.</p>
+</div>
+  </div>
+</footer>
+<script type="text/javascript">
+document.addEventListener("DOMContentLoaded", function() {
+  const currentYear = new Date().getFullYear();
+  document.getElementById('current-year').textContent = currentYear;
+});
+</script>
+<script>var lightboxQuarto = GLightbox({"closeEffect":"zoom","descPosition":"bottom","loop":false,"openEffect":"zoom","selector":".lightbox"});
+(function() {
+  let previousOnload = window.onload;
+  window.onload = () => {
+    if (previousOnload) {
+      previousOnload();
+    }
+    lightboxQuarto.on('slide_before_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      const href = trigger.getAttribute('href');
+      if (href !== null) {
+        const imgEl = window.document.querySelector(`a[href="${href}"] img`);
+        if (imgEl !== null) {
+          const srcAttr = imgEl.getAttribute("src");
+          if (srcAttr && srcAttr.startsWith("data:")) {
+            slideConfig.href = srcAttr;
+          }
+        }
+      } 
+    });
+  
+    lightboxQuarto.on('slide_after_load', (data) => {
+      const { slideIndex, slideNode, slideConfig, player, trigger } = data;
+      if (window.Quarto?.typesetMath) {
+        window.Quarto.typesetMath(slideNode);
+      }
+    });
+  
+  };
+  
+})();
+          </script>
+
+
+
+
+</body></html>

@@ -68,9 +68,18 @@ website:
             - portfolio/sda/Task6/task6.Rmd
             - portfolio/sda/Task9/task9.Rmd
         - section: "Machine Learning"
+          href: machine_learning.qmd
           contents:
-            - portfolio/ml/empty.qmd
-
+            - portfolio/ml/Task2_1/Task2_1P.qmd
+            - portfolio/ml/Task4_1/Task4_1P.qmd
+            - portfolio/ml/Task6_1/Task6_1P.qmd
+            - portfolio/ml/Task6_2/Task6_2C.qmd
+            - portfolio/ml/Task8_1/Task8_1P.qmd
+            - portfolio/ml/Task8_2/Task8_2D.qmd
+            - portfolio/ml/Task8_2/Task8_2DReport.md
+            - portfolio/ml/Task10_1/Task10_1P.qmd
+            - portfolio/ml/Task11_1/Task11_1HD.qmd
+            - portfolio/ml/Task11_1/Task11_1HDreport.md
 format:
   html:
     theme:

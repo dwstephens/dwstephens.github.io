@@ -1,0 +1,429 @@
+---
+title: "Data Wrangling"
+jupyter: python3
+---
+
+```{python}
+import pandas as pd
+import matplotlib.pyplot as plt
+import seaborn as sns
+```
+
+# Introduction
+This task involves undertaking several data wrangling steps, including loading data, identifying missing values, handling inconsistent and missing data, aggregating the data into useful summary statistics, data transformation (feature encoding), and scaling data. 
+
+# Data
+The dataset used in this notebook is the [Microclimate sensors data](https://data.melbourne.vic.gov.au/explore/dataset/microclimate-sensors-data/export/) from the City of Melbourne. The data is licensed under CC BY, allowing it to be freely used for this exercise. The dataset contains climate readings from sensors located within the city of Melbourne. 
+
+## Load data
+The data is loaded into a pandas dataframe from the downloaded CSV file. After loading the data, the first five rows of the dataframe are inspected using the head() function.
+
+```{python}
+# Load the data file into a dataframe
+climate_df = pd.read_csv("microclimate-sensors-data.csv", comment="#")
+
+# Inspect the head of the data
+print(climate_df.head())
+print()
+```
+
+## Inspect the data for missing values
+The isnull() function is used to identify cells in the dataframe with missing or NaN values. These are summed to calculate the total number of missing values for each feature. To understand the distribution of missing data across sensors, the dataframe was also grouped by sensor device ID before calculating the sum of the missing values.
+
+```{python}
+# Check how many null values in the data frame
+print("Feature Name           Number of missing entries")
+print(climate_df.isnull().sum())
+```
+
+```{python}
+# Group the data by the Device_id and then sum the null values to understand the distribution of missing data across devices.
+climate_df.groupby("Device_id").agg(lambda x:  x.isnull().sum())
+```
+
+# Data Imputation
+From the above data inspections, it is observed that some features have significant missing data, e.g. PM25, PM10 and Noise for device aws5-0999. The values for certain features should be constant, such as sensor location, latitude and longitude, making the correction of missing data for them easier. Whereas the values of other features are based on measurement, and therefore, the correction of missing data will require some assumptions and computations. 
+
+## SensorLocation
+The number of unique sensor locations for each device is one, confirming the assumption that each sensor is in a fixed location. Therefore, the existing values can be used to correct any missing values in the dataset. To correct the missing sensor locations, I grouped the data by Device_id and then selected the SensorLocation column using only the first entry in each group. The first entry in each group is then used in a map command to replace the missing sensor locations.
+
+```{python}
+# Get the number of unique locations for each sensor. 
+num_locations = climate_df.groupby("Device_id")[["SensorLocation"]].nunique()
+print("Number of unique sensor locations for each device:", num_locations)
+```
+
+```{python}
+# Create sensor location mapping for each device
+device_location_map = climate_df.groupby("Device_id")[["SensorLocation"]].first()
+
+# Apply the device location map to correct the missing sensor locations 
+climate_df["SensorLocation"] = climate_df["Device_id"].map(device_location_map["SensorLocation"])
+
+# Check the number of missing sensor locations after correction
+print("Number of missing sensor locations values:", climate_df["SensorLocation"].isnull().sum())
+```
+
+## LatLong
+The same approach used to correct the SensorLocation is used for the LatLong. First, I check that each device only has one unique value, then I retrieve the valid value for each device and use it to correct the missing values.
+
+```{python}
+# Get the number of unique latitude/longitude locations for each sensor. 
+num_latlong = climate_df.groupby("Device_id")[["LatLong"]].nunique()
+print("Number of unique sensor latitude/longitude locations for each device:")
+print(num_locations)
+```
+
+```{python}
+# Create lat/long mapping for each device
+device_latlong_map = climate_df.groupby("Device_id")[["LatLong"]].first()
+
+# Apply the device lat/long map to correct the missing sensor latitudes and longitudes 
+climate_df["LatLong"] = climate_df["Device_id"].map(device_latlong_map["LatLong"])
+
+# Check the number of missing LatLong values after correction
+print("Number of missing sensor latitude/logitude values:", climate_df["LatLong"].isnull().sum())
+```
+
+## Continuous features
+### Inconsistent data
+Before making any corrections to the continuous features, it is a good idea to inspect some basic statistics.
+
+```{python}
+climate_df.describe()
+```
+
+From the above table, there appears to be some issue with the MinimumWindSpeed, AtmosphericPressure and PM25.
+
+- MinimumWindSpeed: The maximum minimum wind speed value is 359 m/s. This is not sensible and beyond the upper bound (60 m/s) of the instrument's measurement range.
+- AtmosphericPressure: The minimum atmospheric pressure value of 20.9 hPa is too low.
+- PM25: The maximum value of 1030.7 is beyond the measurement range of the instrument (0-1000 micrograms/m^3).
+
+To inspect further, I calculated the descriptive statistics for each device.
+
+```{python}
+# Calculate the min, max, mean and standard deviation for each device, only for the MinimumWindSpeed, AtmosphericPressure, and PM25 features
+climate_df.groupby("Device_id")[["MinimumWindSpeed", "AtmosphericPressure", "PM25"]].agg(["min", "max", "mean", "std"])
+```
+
+Inspection of the statistics for each device shows that the problematic values only occur for the ICTMicroclimate-10 and ICTMicroclimate-11 sensors, which are both at the same location, Treasury Place.
+
+```{python}
+climate_df.groupby("Device_id")[["SensorLocation"]].first().iloc[-3:-1]
+```
+
+The next step is to visualise the temporal distribution of the MinimumWindSpeed, AtmosphericPressure, and PM25 for the ICTMicroclimate-10 and ICTMicroclimate-11 sensors to see if the inconsistent values were random or followed a pattern. For the visualisation, I used a heatmap of Day in the Month versus Month in the Year. 
+
+```{python}
+# Ensure Time is datetime
+climate_df["Time"] = pd.to_datetime(climate_df["Time"], utc=True)
+
+# Drop timezone information
+climate_df["Time"] = climate_df["Time"].dt.tz_localize(None)
+
+# Extract year-month and hour
+climate_df["year_month"] = climate_df["Time"].dt.to_period("M").astype(str)
+climate_df["day"] = climate_df["Time"].dt.day
+
+# Extract groups ICTMicroclimate-10 and ICTMicroclimate-11 as DataFrames
+d_10_df = climate_df.groupby("Device_id").get_group("ICTMicroclimate-10")
+d_11_df = climate_df.groupby("Device_id").get_group("ICTMicroclimate-11")
+
+# Group by year_month and hour, and get max windspeed
+g_10 = d_10_df.groupby(["day","year_month", ])["MinimumWindSpeed"].max().unstack()
+g_11 = d_11_df.groupby(["day","year_month", ])["MinimumWindSpeed"].max().unstack()
+
+# Set common colour scale limits
+vmin = 0
+vmax = 360
+
+# Create subplots
+fig, axes = plt.subplots(1, 2, figsize=(14, 10), sharey=True)
+
+cmap = plt.cm.YlGnBu
+cmap.set_bad(color="grey")
+
+# Plot heatmap
+sns.heatmap(g_10, ax=axes[0], annot=True, fmt=".1f", cmap=cmap, vmin=vmin, vmax=vmax, cbar=False)
+axes[0].set_title("ICTMicroclimate-10 maximum of MinimumWindSpeed")
+axes[0].set_ylabel("Day in Month")
+axes[0].set_xlabel("Month in Year")
+
+# Plot heatmap
+sns.heatmap(g_11, ax=axes[1], vmin=vmin, vmax=vmax, annot=True, fmt=".1f", cmap=cmap, cbar=False)
+axes[1].set_title("ICTMicroclimate-11 maximum of MinimumWindSpeed")
+axes[1].set_ylabel("")
+axes[1].tick_params(left=False)
+axes[1].set_xlabel("Month in Year")
+
+# Add a title to the entire figure
+fig.suptitle("Maximum Minimum Windspeed by Day in Month and Month in Year", fontsize=16)
+
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+# Group by year_month and hour, and get min AtmosphericPressure
+g_10 = d_10_df.groupby(["day","year_month", ])["AtmosphericPressure"].min().unstack()
+g_11 = d_11_df.groupby(["day","year_month", ])["AtmosphericPressure"].min().unstack()
+
+# Set common color scale limits
+vmin = 0
+vmax = 1300
+
+# Create subplots
+fig, axes = plt.subplots(1, 2, figsize=(14, 10), sharey=True)
+
+cmap = plt.cm.YlGnBu_r
+cmap.set_bad(color="grey")
+
+# Plot heatmap
+sns.heatmap(g_10, ax=axes[0], annot=True, fmt=".1f", cmap=cmap, vmin=vmin, vmax=vmax, cbar=False)
+axes[0].set_title("ICTMicroclimate-10 minimum of AtmosphericPressure")
+axes[0].set_ylabel("Day in Month")
+axes[0].set_xlabel("Month in Year")
+
+# Plot heatmap
+sns.heatmap(g_11, ax=axes[1], vmin=vmin, vmax=vmax, annot=True, fmt=".1f", cmap=cmap, cbar=False)
+axes[1].set_title("ICTMicroclimate-11 minimum of AtmosphericPressure")
+axes[1].set_ylabel("")
+axes[1].tick_params(left=False)
+axes[1].set_xlabel("Month in Year")
+
+# Add a title to the entire figure
+fig.suptitle("Minimum AtmosphericPressure by Month-Year and Day of Month", fontsize=16)
+
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+# Group by year_month and hour, and get min AtmosphericPressure
+g_10 = d_10_df.groupby(["day","year_month", ])["PM25"].max().unstack()
+g_11 = d_11_df.groupby(["day","year_month", ])["PM25"].max().unstack()
+
+# Set common colour scale limits
+vmin = 0
+vmax = 1300
+
+# Create subplots
+fig, axes = plt.subplots(1, 2, figsize=(14, 10), sharey=True)
+
+cmap = plt.cm.YlGnBu
+cmap.set_bad(color="grey")
+
+# Plot heatmap
+sns.heatmap(g_10, ax=axes[0], annot=True, fmt=".1f", cmap=cmap, vmin=vmin, vmax=vmax, cbar=False)
+axes[0].set_title("ICTMicroclimate-10 maximum of PM25")
+axes[0].set_ylabel("Day in Month")
+axes[0].set_xlabel("Month in Year")
+
+# Plot heatmap
+sns.heatmap(g_11, ax=axes[1], vmin=vmin, vmax=vmax, annot=True, fmt=".1f", cmap=cmap, cbar=False)
+axes[1].set_title("ICTMicroclimate-11 maximum of PM25")
+axes[1].set_ylabel("")
+axes[1].tick_params(left=False)
+axes[1].set_xlabel("Month in Year")
+
+# Add a title to the entire figure
+fig.suptitle("Maximum PM25 by Month-Year and Day of Month", fontsize=16)
+
+plt.tight_layout()
+plt.show()
+```
+
+From the above plots, it is clear that the data for sensors ICTMicroclimate-10 and ICTMicroclimate-11 is unreliable from August 2024 until the 2nd of October 2024. For the purposes of this exercise, the data for these sensors during this period will be removed from the dataframe.
+
+```{python}
+# Define the device and time range to filter out
+devices_to_remove = ["ICTMicroclimate-10","ICTMicroclimate-11"]
+end_time = "2024-10-01 23:59:59"
+
+# Filter out rows for that device in the given time range
+df_filtered = climate_df[~((climate_df["Device_id"].isin(devices_to_remove)) & (climate_df["Time"] <= end_time))].copy()
+
+df_filtered.groupby("Device_id")[["MinimumWindSpeed", "AtmosphericPressure", "PM25"]].agg(["min", "max", "mean", "std"])
+
+# Drop the columns created for the above plotting
+df_filtered.drop(columns=["day","year_month"], inplace=True)
+
+# Calculate the min, max, mean and standard deviation for each device, only for the MinimumWindSpeed, AtmosphericPressure, and PM25 features
+df_filtered.groupby("Device_id")[["MinimumWindSpeed", "AtmosphericPressure", "PM25"]].agg(["min", "max", "mean", "std"])
+```
+
+The table above shows some descriptive statistics for the MinimumWindSpeed, AtmosphericPressure, and PM25 features after filtering out the corrupted data for sensors ICTMicroclimate-10 and ICTMicroclimate-11. It is observed that the previosuly identified issues are no longer present. 
+
+### Missing data
+The task description requires the use of either the mean or the median to fill in missing values. The median is the best choice for distributions that are skewed or contain outliers. Therefore, I'll plot the distributions of all variables to decide if the median or mean should be used.
+
+```{python}
+# Get list of features to plot
+float_features = df_filtered.select_dtypes(include='number').columns.tolist()
+
+# Plot histograms using the pandas hist() function
+axes = df_filtered.hist(column=float_features, bins=15,layout=(8,2), figsize=(10,15), edgecolor="white",log=True)
+for ax in axes.flatten():
+    ax.set_ylabel("Count (log scale)")
+    
+plt.tight_layout()
+plt.show()
+```
+
+The majority of the above distributions are highly skewed or contain outliers. The distributions for AtmosphericPressure and AirTemperature are the closest to symmetric distributions. Based on this evidence, I decided to use the median value for imputing missing values as it is less affected by the skewness of a distribution.
+
+```{python}
+# Calculate the median value for each feature
+feature_medians = df_filtered.median(numeric_only=True)
+print("Meadian values for each feature:")
+print(feature_medians)
+
+# Replace missing values in numeric feature columns with the median
+df_filled = df_filtered.fillna(feature_medians)
+```
+
+```{python}
+# Check how many null values in the data frame after filling missing values
+print("Feature Name           Number of missing entries")
+print(df_filled.isnull().sum())
+```
+
+# Distributions of PM10 and PM25
+The histograms of the PM10 and PM25 features are shown in the figures below. Both distributions have the shape of an exponential distribution, with high counts at low particulate matter, and the counts decreasing exponentially as the particulate matter increases. 
+
+```{python}
+num_bins = 10
+
+# Create figure with specified size
+hist_fig = plt.figure(figsize=(10, 7))
+
+# Plot PM10 
+ax1 = plt.subplot(2, 1, 1)  # 2 rows, 1 column, 1st subplot
+ax1.hist(df_filled["PM10"], num_bins, edgecolor="white", log=True)
+ax1.set_title(f'Histogram of PM10 (n={df_filtered["PM10"].shape[0]})')
+ax1.set_ylabel("Count (log scale)")
+ax1.set_xlabel(r"Particular matter 10 $\mu m$ diameter $\left(\frac{\mu g}{m^3}\right)$")
+
+# Plot PM25
+ax2 = plt.subplot(212, sharex=ax1)  # 2 rows, 1 column, 2nd subplot
+ax2.hist(df_filled["PM25"], num_bins, edgecolor="white", log=True)
+ax2.set_title(f'Histogram of PM25 (n={df_filtered["PM25"].shape[0]})')
+ax2.set_ylabel("Count (log scale)")
+ax2.set_xlabel(r"Particulate matter 2.5 $\mu m$ diameter $\left(\frac{\mu g}{m^3}\right)$")
+
+# Set the x limit for both plots
+#plt.xlim(0, 350)
+
+plt.tight_layout()
+plt.show()
+```
+
+To investigate any possible correlation between the PM10 and PM25 features, a scater plot was created to allow visual inspection. Then the pearson correlation cofficient was calculated.
+
+```{python}
+# Create figure with specified size
+plt.figure(figsize=(10, 7))
+
+# Scatter plot of 
+plt.scatter(df_filtered["PM25"], df_filtered["PM10"], s=10, edgecolor="lightskyblue", alpha=0.5)
+plt.grid(zorder=1, alpha=0.5)
+
+plt.title("Scatter plot of PM25 verus PM10")
+plt.xlabel(r"Particulate matter 2.5 $\mu m$ diameter $\left(\frac{\mu g}{m^3}\right)$")
+plt.ylabel(r"Particulate matter 10 $\mu m$ diameter $\left(\frac{\mu g}{m^3}\right)$")
+
+plt.xlim(0, 350)
+plt.ylim(0, 350)
+
+plt.tight_layout()
+plt.show()
+```
+
+```{python}
+# Pearson correlation coefficient
+correlation = df_filled["PM25"].corr(df_filled["PM10"])
+print(f"Correlation coefficient between features PM25 and PM10 is: {correlation:.3}")
+```
+
+The scatter plot between the features PM25 and PM10 shows a strong positive linear relationship. This is confirmed with the high pearson correlation. 
+
+# LatLong encoding
+The first step in encoding the LatLong feature was to split it into the latitude and longitude components.
+
+```{python}
+df_filled[['latitude', 'longitude']] = df_filled['LatLong'].str.split(',', expand=True).astype(float)
+```
+
+The second step is to choose an encoding system. Here, I have chosen to encode the latitude and longitude into a 3D Cartesian coordinate system, giving values for x, y and z. This approximates the Earth as a sphere, which is reasonable since the region of interest is a tiny portion of the Earth's surface. This encoding approach will enable accurate distance measurement between points if required in the machine learning algorithm.
+
+```{python}
+# Converting lat/long to cartesian
+import numpy as np
+
+# Convert from degrees to radians
+df_filled["lat_rad"] = np.radians(df_filled["latitude"])
+df_filled["long_rad"] = np.radians(df_filled["longitude"])
+
+# Calculate the Cartesian values
+df_filled["x"] = np.cos(df_filled["lat_rad"]) * np.cos(df_filled["long_rad"])
+df_filled["y"] = np.cos(df_filled["lat_rad"]) * np.sin(df_filled["long_rad"])
+df_filled["z"] = np.sin(df_filled["lat_rad"])
+
+# Drop the intermediate lat_rad and long_rad columns
+df_filled.drop(columns=["lat_rad","long_rad"], inplace=True)
+    
+# Print out the encoding
+print("Table showing the encoded values, x, y and z for each latitude and longitude pair.")
+df_filled.groupby(['latitude','longitude'])[['x','y','z']].agg(['unique'])
+```
+
+```{python}
+# Drop the latitude and longitude columns
+df_filled.drop(columns=["latitude","longitude","LatLong"], inplace=True)
+```
+
+# Feature scaling
+Each feature in the dataset has different scale (range). To normalise the features, min-max scaling is applied to all continuous data.
+
+### Feature distributions before scaling
+Distributions of the features are plotted before scaling.
+
+```{python}
+# Get list of features to plot
+scale_float_features = df_filled.select_dtypes(include='number').columns.tolist()
+
+axes = df_filled.hist(column=scale_float_features, bins=15,layout=(8,2), figsize=(10,15), edgecolor="white", xlabelsize=7, ylabelsize=7, log=True)
+for ax in axes.flatten():
+    ax.set_ylabel("Count (log scale)")
+
+plt.tight_layout()
+plt.show()
+```
+
+### Scaling operation
+
+```{python}
+# Create a copy of the filled dataframe
+df_scaled = df_filled.copy()
+
+# Apply min-max scaling to the selected columns
+for feature in scale_float_features:
+    min_val = df_scaled[feature].min()
+    max_val = df_scaled[feature].max()
+    df_scaled[feature] = (df_scaled[feature] - min_val) / (max_val - min_val)
+```
+
+### Feature distributions after scaling
+Distributions of the features plotted after scaling. Inspection of the before an after figures for each features distribution shows that the scaling did not affect the relative shape of the distribution (e.g. skewness).
+
+```{python}
+# Loop through all of the continuous features, plotting their distributions
+axes = df_scaled.hist(column=scale_float_features, bins=15,layout=(8,2), figsize=(10,15), edgecolor="white", xlabelsize=7, ylabelsize=7, log=True)
+
+for ax in axes.flatten():
+    ax.set_ylabel("Count (log scale)")
+plt.tight_layout()
+plt.show()
+```
+
+
