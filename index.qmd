@@ -35,9 +35,9 @@ WIP
 ::: {.g-col-12 .g-col-md-8 style="text-align: left;"}
 ## Education
 
-<!-- - **_Master_ of Data Science**, **2026**  
+- **_Master_ of Data Science**, **2026**  
   *Deakin University, Melbourne, Victoria, Australia*
--->
+
 - **_Graduate Certificate_ of Cyber Security**, **2023**  
   *Charles Sturt University, Albury, New South Wales, Australia*
 
